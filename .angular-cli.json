@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "./assets/startbootstrap-sb-admin-2-gh-pages/dist/css/sb-admin-2.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

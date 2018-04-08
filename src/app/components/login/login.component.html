@@ -8,12 +8,16 @@
       <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
     </div>
 
-    <!-- Login Form -->
-    <form>
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-      <input type="password" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
-    </form>
+    <!--
+       Login Form -->
+    
+      <input type="text" id="login" class="fadeIn second" name="login" placeholder="User" [(ngModel)]="inputUser">
+      <input type="password" id="password" class="fadeIn third" name="login" placeholder="Password" [(ngModel)]="inputPassword">
+      <input type="submit" class="fadeIn fourth" value="Log In" (click)= "tryValidation()">
+      <div *ngIf="errorValidating" class="alert alert-danger">
+          User or password were incorrect. Try again!
+      </div>
+    
 
     <!-- Remind Passowrd -->
     <div id="formFooter">
