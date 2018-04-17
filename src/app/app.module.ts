@@ -30,6 +30,10 @@ import { MenuComponent } from './components/menu/menu.component';   // our custo
         component: LoginComponent
       },
       {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
         path: 'menu',
         component: MenuComponent
       }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -7,16 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  private tokenUser;
+  public tokenUser;
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit() {
     if (localStorage.getItem('tokenUser')) {
       this.tokenUser = localStorage.getItem('tokenUser');
+      console.log("  Login realizado correctamente. El token ha sido: " + this.tokenUser);
       }else{
         this.tokenUser = "no hay token almacenado";
+        console.log("  Login realizado correctamente. El token ha sido: " + this.tokenUser);
     }
+  }
+
+  disconnect(){
+    console.log("entre en el disconnect");
+    this.tokenUser = "";
+    localStorage.removeItem('tokenUser');
+    this.router.navigate(["/login"]);
   }
 
 }

@@ -10,9 +10,9 @@ import {Observable} from 'rxjs/Rx';
 })
 export class LoginComponent implements OnInit {
 
-  private inputUser;
-  private inputPassword;
-  private errorValidating=false;
+  public inputUser;
+  public inputPassword;
+  public errorValidating=false;
 
   constructor(private _authenticationService: AuthenticationService, private router:Router) { }
 
