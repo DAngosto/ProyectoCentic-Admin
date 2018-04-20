@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+
 
 
 import { AppComponent } from './app.component';
@@ -10,34 +11,39 @@ import { FormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http'; 
 import { AuthenticationService } from './services/authentication.service';
-import { MenuComponent } from './components/menu/menu.component';   // our custom service responsible of communications between the front-end and back-end of the application
+import { MenuComponent } from './components/menu/menu.component';
+import { CreateCardComponent } from './components/create-card/create-card.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';   // our custom service responsible of communications between the front-end and back-end of the application
 
 
+
+
+const appRoutes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'menu', component: MenuComponent },
+  { path: 'newCard',component: CreateCardComponent },
+  { path: '',
+    redirectTo: '/login',
+    pathMatch: 'full'
+  }
+  //{ path: '**', component: PageNotFoundComponent }
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    MenuComponent
+    MenuComponent,
+    CreateCardComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot([
-      {
-        path: '',
-        component: LoginComponent
-      },
-      {
-        path: 'login',
-        component: LoginComponent
-      },
-      {
-        path: 'menu',
-        component: MenuComponent
-      }
-    ])
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: false }) //Poner a true en el caso de querer saber que ruta está itnenta encontrar
   ],
   providers: [AuthenticationService],
   bootstrap: [AppComponent]
