@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   tryValidation(){
     this._authenticationService.validate(this.inputUser,this.inputPassword).subscribe(
       data => {
-        let token = data['token'];
+            let token = data['token'];
             localStorage.setItem('tokenUser', token);
             this.router.navigate(["/menu"]);
          },

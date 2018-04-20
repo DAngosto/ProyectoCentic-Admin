@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-menu',
@@ -10,7 +10,7 @@ export class MenuComponent implements OnInit {
 
   public tokenUser;
 
-  constructor(private router:Router) { }
+  constructor() { }
 
   ngOnInit() {
     if (localStorage.getItem('tokenUser')) {
@@ -22,11 +22,6 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  disconnect(){
-    console.log("entre en el disconnect");
-    this.tokenUser = "";
-    localStorage.removeItem('tokenUser');
-    this.router.navigate(["/login"]);
-  }
+ 
 
 }

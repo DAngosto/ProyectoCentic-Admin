@@ -4,11 +4,20 @@
         <form method="post">
             <h2 class="text-center">Create new card</h2>
             <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name"></div>
-            <div class="form-group"><input class="form-control is-invalid" type="email" name="email" placeholder="Email"><small class="form-text text-danger">Please enter a correct email address.</small></div>
-            <div class="form-group"><textarea class="form-control" rows="14" name="message" placeholder="Message"></textarea></div>
-            <div class="form-group"><button class="btn btn-primary" type="submit">send </button></div>
+            <div class="form-group"><textarea class="form-control" rows="9" name="history" placeholder="History"></textarea></div>
+            <input type="file" (change)="onFileSelected($event)"><br>
+            <div *ngIf="errorNoImageSelected" class="alert alert-danger">
+                Select an image first before trying to create a new card!
+            </div>
+            
+            <div class="form-group"><button class="btn btn-primary" type="submit" (click)="uploadImage()" value="Upload File"> Create </button></div>
+            <div *ngIf="cardUploaded" class="alert alert-success">
+                The new card has been created!
+            </div>
         </form>
     </div>
+
+    
 
 </div>
 
