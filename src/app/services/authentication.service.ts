@@ -18,7 +18,7 @@ export class AuthenticationService {
         let message = {
           "user": user,
           "password": password
-      }
+        }
       let body= JSON.stringify(message);
       return this.http.post('https://gameserver.centic.ovh/auth/login',body, { headers: headers});
     }
