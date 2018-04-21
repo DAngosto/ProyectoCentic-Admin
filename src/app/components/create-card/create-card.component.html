@@ -11,6 +11,9 @@
                 <p class="text-info">In the case that you wish to put more than one, put them like Tag1, Tag2, Tag3...</p>
             </div>
             <input type="file" (change)="onFileSelected($event)"><br>
+            <div id="preview" class="preview" *ngIf="prevImage">
+                <img [src] = "url">
+            </div><br>
             <div *ngIf="errorNoImageSelected" class="alert alert-danger">
                 Select an image first before trying to create a new card!
             </div>

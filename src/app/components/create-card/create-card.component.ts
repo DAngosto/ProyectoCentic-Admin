@@ -15,10 +15,13 @@ export class CreateCardComponent implements OnInit {
   errorNoImageSelected: boolean = false;
   errorNoInfo: boolean = false;
   cardUploaded: boolean = false;
+  prevImage: boolean = false;
 
   inputName: string = "";
   inputHistory: string = "";
   inputTags: string = "";
+
+  url: string = "";
 
 
   constructor(private _cardsService: CardsService) { }
@@ -27,8 +30,17 @@ export class CreateCardComponent implements OnInit {
   }
 
   onFileSelected(event){
-    this.selectedFile = <File> event.target.files[0];
-
+    if (event.target.files && event.target.files[0]) {
+      this.selectedFile = <File> event.target.files[0];
+      var reader = new FileReader();
+      reader.onload = (event:any) => {
+        this.url = event.target.result;
+        this.prevImage = true;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+      this.url = reader.result;
+      this.errorNoImageSelected = false;
+    }
   }
 
   uploadImage(){
@@ -44,7 +56,12 @@ export class CreateCardComponent implements OnInit {
               console.log(data);
               this.errorNoImageSelected = false;
               this.errorNoInfo = false;
+              this.prevImage = false;
               this.cardUploaded = true;
+              this.inputName = "";
+              this.inputHistory = "";
+              this.inputTags = "";
+              this.url = "";    
             })
           })
         }else{
