@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import { CardsService } from '../../services/cards.service';
+import {AuthenticationService} from '../../services/authentication.service';
 
 
 
@@ -24,9 +25,11 @@ export class CreateCardComponent implements OnInit {
   url: string = "";
 
 
-  constructor(private _cardsService: CardsService) { }
+  constructor(private _authenticationService: AuthenticationService, private _cardsService: CardsService) { }
 
   ngOnInit() {
+
+    this._authenticationService.isUserValidated();
   }
 
   onFileSelected(event){

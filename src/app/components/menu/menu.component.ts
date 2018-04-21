@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from '../../services/authentication.service';
 
 
 @Component({
@@ -10,9 +11,13 @@ export class MenuComponent implements OnInit {
 
   public tokenUser;
 
-  constructor() { }
+  constructor(private _authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+
+    this._authenticationService.isUserValidated();
+
+    /*
     if (localStorage.getItem('tokenUser')) {
       this.tokenUser = localStorage.getItem('tokenUser');
       console.log("  Login realizado correctamente. El token ha sido: " + this.tokenUser);
@@ -20,6 +25,7 @@ export class MenuComponent implements OnInit {
         this.tokenUser = "no hay token almacenado";
         console.log("  Login realizado correctamente. El token ha sido: " + this.tokenUser);
     }
+    */
   }
 
  
