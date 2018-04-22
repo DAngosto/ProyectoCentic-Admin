@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
+import { Card } from '../interfaces/Card';
+
  
 const httpOptions = {
     //headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -11,21 +13,34 @@ export class CardsService {
  
     constructor(private http:HttpClient) {}
  
-    uploadImage(fd:FormData){
+    uploadFile(fd:FormData){
         let userToken= localStorage.getItem('tokenUser');
         let body= fd;
-        let enviar = "Bearer " + userToken;
-        let headers = new HttpHeaders().set('Authorization', enviar);
-		return this.http.post('https://gameserver.centic.ovh/files',body, { headers: headers});
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders().set('Authorization', authorization);
+            
+		return this.http.post('https://gameserver.centic.ovh/files',body, { headers: headers });
     }
 
-    uploadCard(name, history, tags, fileURL){
-
+    /*  //De momento no es necesario
+    getFile(url){
         let userToken= localStorage.getItem('tokenUser');
-        let enviar = "Bearer " + userToken;
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Authorization', authorization);
+        return this.http.get('https://gameserver.centic.ovh' + url);
+
+        
+        //return this.http.get('https://gameserver.centic.ovh' + url, { headers: headers });
+    }
+    */
+
+    uploadCard(name, history, tags, fileURL){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
         let headers = new HttpHeaders()
             .set('Content-Type', 'application/json')
-            .set('Authorization', enviar);
+            .set('Authorization', authorization);
         let message = {
                 "name": name,
                 "history": history,
@@ -35,8 +50,19 @@ export class CardsService {
                 "publish": false
         }
         let body= JSON.stringify(message);
-        return this.http.post('https://gameserver.centic.ovh/items/',body, { headers: headers});
+        return this.http.post('https://gameserver.centic.ovh/items/',body, { headers: headers });
     }
+
+    getAllItems(){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        return this.http.get<Card[]>('https://gameserver.centic.ovh/items', { headers: headers });
+    }
+
+    
 
     
 

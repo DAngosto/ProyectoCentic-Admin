@@ -10,6 +10,7 @@ import {AuthenticationService} from '../../services/authentication.service';
   templateUrl: './create-card.component.html',
   styleUrls: ['./create-card.component.css']
 })
+
 export class CreateCardComponent implements OnInit {
 
   selectedFile: File = null;
@@ -53,7 +54,7 @@ export class CreateCardComponent implements OnInit {
          if((this.inputName!="")&&(this.inputHistory!="")){
           const fd = new FormData();
           fd.append('file', this.selectedFile, this.selectedFile.name);
-          this._cardsService.uploadImage(fd).subscribe(data=>{
+          this._cardsService.uploadFile(fd).subscribe(data=>{
             let fileURL = data['file'];
             this._cardsService.uploadCard(this.inputName, this.inputHistory, this.inputTags, fileURL).subscribe(data=>{
               console.log(data);
