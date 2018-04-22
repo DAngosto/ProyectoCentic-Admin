@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import { Card } from '../interfaces/Card';
 
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
  
 const httpOptions = {
     //headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -10,7 +12,11 @@ const httpOptions = {
  
 @Injectable()
 export class CardsService {
- 
+    
+    card: Card;
+    private messageSource = new BehaviorSubject<Card>(this.card);
+    currentCardUpdating = this.messageSource.asObservable();
+
     constructor(private http:HttpClient) {}
  
     uploadFile(fd:FormData){
@@ -62,6 +68,24 @@ export class CardsService {
         return this.http.get<Card[]>('https://gameserver.centic.ovh/items', { headers: headers });
     }
 
+    updateCard(card: Card){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        let message = {
+                "name": card.name,
+                "history": card.history,
+                "tags": card.tags,
+                "fileURL": card.fileURL,
+                "itemType": "0",   //0 = carta , 1 = colección
+                "publish": false
+        }
+        let body= JSON.stringify(message);
+        return this.http.put('https://gameserver.centic.ovh/items/' + card._id,body, { headers: headers });
+    }
+
     deleteItem(id){
         let userToken= localStorage.getItem('tokenUser');
         let authorization = "Bearer " + userToken;
@@ -71,6 +95,10 @@ export class CardsService {
         return this.http.delete('https://gameserver.centic.ovh/items/' + id, { headers: headers });
     }
 
+
+    changeCard(card: Card) {
+        this.messageSource.next(card);
+    }
     
 
     

@@ -37,7 +37,7 @@
                             <td>{{ item.history }}</td>
                             <td>{{ item.tags }}</td>
                             <td class="text-center"><a (click)= "sawImage(i)"><i class="fa fa-search-plus"></i></a></td>
-                            <td class="text-center"><a routerLink="/menu" routerLinkActive="active"><i class="fa fa-pencil"></i></a></td>
+                            <td class="text-center"><a (click)= "updateCard(i)" ><i class="fa fa-pencil"></i></a></td>
                             <td class="text-center"><button type="button" class="btn btn-danger btn-circle" (click)= "deleteCard(i)"><i class="fa fa-times"></i></button></td>
                         </tr>
                     </tbody>

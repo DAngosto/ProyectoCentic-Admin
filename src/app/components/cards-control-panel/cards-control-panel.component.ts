@@ -5,6 +5,8 @@ import { CardsService } from '../../services/cards.service';
 import { Card } from '../../interfaces/Card';
 import { Observable } from 'rxjs/observable';
 
+import { ActivatedRoute, Router} from '@angular/router';
+
 
 
 
@@ -24,7 +26,10 @@ export class CardsControlPanelComponent implements OnInit {
   url: any;
   //itemsPrueba: Observ;
 
-  constructor(private _authenticationService: AuthenticationService, private _cardsService: CardsService) { }
+ 
+
+
+  constructor(private _authenticationService: AuthenticationService, private _cardsService: CardsService,  private router:Router) { }
 
   ngOnInit() {
     this._authenticationService.isUserValidated();
@@ -55,6 +60,11 @@ export class CardsControlPanelComponent implements OnInit {
     this.cardDeleted = false;
     this.url = 'https://gameserver.centic.ovh' + this.items[id].fileURL;
     this.visualizeImage = true;
+  }
+
+  updateCard(id){
+    this._cardsService.changeCard(this.items[id]);
+    this.router.navigate(["/updateCard"]);
   }
 
   deleteCard(id){

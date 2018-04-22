@@ -47,7 +47,7 @@ export class CreateCardComponent implements OnInit {
     }
   }
 
-  uploadImage(){
+  uploadCard(){
 
     if (this.selectedFile){
       

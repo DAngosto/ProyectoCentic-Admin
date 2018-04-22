@@ -15,12 +15,14 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';   // o
 import { AuthenticationService } from './services/authentication.service';
 import { CardsService } from './services/cards.service';
 import { CardsControlPanelComponent } from './components/cards-control-panel/cards-control-panel.component';
+import { UpdateCardComponent } from './components/update-card/update-card.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'menu', component: MenuComponent },
   { path: 'newCard',component: CreateCardComponent },
   { path: 'cardsCP',component: CardsControlPanelComponent },
+  { path: 'updateCard',component: UpdateCardComponent },
   { path: '',
     redirectTo: '/login',
     pathMatch: 'full'
@@ -39,7 +41,8 @@ const appRoutes: Routes = [
     MenuComponent,
     CreateCardComponent,
     NavBarComponent,
-    CardsControlPanelComponent
+    CardsControlPanelComponent,
+    UpdateCardComponent
   ],
   imports: [
     BrowserModule,
