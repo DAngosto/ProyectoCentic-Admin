@@ -19,6 +19,8 @@ export class CardsControlPanelComponent implements OnInit {
 
   items: Card[] = [];
   visualizeImage: boolean = false;
+  cardDeleted: boolean = false;
+  noCards: boolean = false;
   url: any;
   //itemsPrueba: Observ;
 
@@ -31,8 +33,7 @@ export class CardsControlPanelComponent implements OnInit {
   }
 
   getAllItems(){
-      this.itemsTable =  this._cardsService.getAllItems();
-
+      this.clearData();
       this._cardsService.getAllItems().subscribe(data=>{
           //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
           for(let i=0; i<data.length; i++){
@@ -40,11 +41,36 @@ export class CardsControlPanelComponent implements OnInit {
                 this.items.push(data[i]);
               }
           }
+
+          if (this.items.length == 0){
+            this.noCards = true;
+          }else{
+            this.noCards = false;
+          }
       });
+      
   }
 
   sawImage(id){
+    this.cardDeleted = false;
     this.url = 'https://gameserver.centic.ovh' + this.items[id].fileURL;
     this.visualizeImage = true;
   }
+
+  deleteCard(id){
+    this.cardDeleted = false;
+    this._cardsService.deleteItem(this.items[id]._id).subscribe(data=>{
+      this.clearData();
+      this.cardDeleted = true;
+      this.getAllItems();
+    });
+  }
+
+  clearData(){
+    this.items = [];
+  }
+
 }
+
+
+

@@ -69,10 +69,12 @@ export class CreateCardComponent implements OnInit {
             })
           })
         }else{
+          this.cardUploaded = false;
           this.errorNoInfo = true;
           this.errorNoImageSelected = false;
          }
     }else {
+      this.cardUploaded = false;
       this.errorNoImageSelected = true;
       this.errorNoInfo = false;
     }

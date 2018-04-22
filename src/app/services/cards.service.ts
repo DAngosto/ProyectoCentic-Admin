@@ -62,6 +62,15 @@ export class CardsService {
         return this.http.get<Card[]>('https://gameserver.centic.ovh/items', { headers: headers });
     }
 
+    deleteItem(id){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        return this.http.delete('https://gameserver.centic.ovh/items/' + id, { headers: headers });
+    }
+
     
 
     
