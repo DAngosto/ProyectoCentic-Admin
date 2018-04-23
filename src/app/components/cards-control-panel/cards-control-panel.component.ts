@@ -24,6 +24,8 @@ export class CardsControlPanelComponent implements OnInit {
   cardDeleted: boolean = false;
   noCards: boolean = false;
   url: any;
+  nameDisplay: any;
+  historyDisplay: any;
   //itemsPrueba: Observ;
 
  
@@ -59,6 +61,8 @@ export class CardsControlPanelComponent implements OnInit {
   sawImage(id){
     this.cardDeleted = false;
     this.url = 'https://gameserver.centic.ovh' + this.items[id].fileURL;
+    this.nameDisplay = this.items[id].name;
+    this.historyDisplay = this.items[id].history;
     this.visualizeImage = true;
   }
 
