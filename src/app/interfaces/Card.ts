@@ -5,4 +5,5 @@ export interface Card {
     tags: string;
     fileURL: string;
     itemType: string;
+    publish: boolean;
 }

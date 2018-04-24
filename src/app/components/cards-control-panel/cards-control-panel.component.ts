@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
-import { CardsService } from '../../services/cards.service';
+import { DataService } from '../../services/data.service';
 
 import { Card } from '../../interfaces/Card';
 import { Observable } from 'rxjs/observable';
@@ -26,12 +26,13 @@ export class CardsControlPanelComponent implements OnInit {
   url: any;
   nameDisplay: any;
   historyDisplay: any;
+  tagsDisplay: any;
   //itemsPrueba: Observ;
 
  
 
 
-  constructor(private _authenticationService: AuthenticationService, private _cardsService: CardsService,  private router:Router) { }
+  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService,  private router:Router) { }
 
   ngOnInit() {
     this._authenticationService.isUserValidated();
@@ -41,12 +42,13 @@ export class CardsControlPanelComponent implements OnInit {
 
   getAllItems(){
       this.clearData();
-      this._cardsService.getAllItems().subscribe(data=>{
+      this._dataService.getAllItems().subscribe(data=>{
           //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
           for(let i=0; i<data.length; i++){
               if (data[i].itemType=="0"){
                 this.items.push(data[i]);
               }
+              
           }
 
           if (this.items.length == 0){
@@ -63,17 +65,18 @@ export class CardsControlPanelComponent implements OnInit {
     this.url = 'https://gameserver.centic.ovh' + this.items[id].fileURL;
     this.nameDisplay = this.items[id].name;
     this.historyDisplay = this.items[id].history;
+    this.tagsDisplay = this.items[id].tags;
     this.visualizeImage = true;
   }
 
   updateCard(id){
-    this._cardsService.changeCard(this.items[id]);
+    this._dataService.changeCard(this.items[id]);
     this.router.navigate(["/updateCard"]);
   }
 
   deleteCard(id){
     this.cardDeleted = false;
-    this._cardsService.deleteItem(this.items[id]._id).subscribe(data=>{
+    this._dataService.deleteItem(this.items[id]._id).subscribe(data=>{
       this.clearData();
       this.cardDeleted = true;
       this.getAllItems();

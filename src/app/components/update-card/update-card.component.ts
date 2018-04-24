@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 
 import { Card } from '../../interfaces/Card';
-import { CardsService } from '../../services/cards.service';
+import { DataService } from '../../services/data.service';
 
 
 
@@ -32,7 +32,7 @@ export class UpdateCardComponent implements OnInit {
 
 
 
-  constructor(private _authenticationService: AuthenticationService, private _cardsService: CardsService) { }
+  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService) { }
 
   ngOnInit() {
     this._authenticationService.isUserValidated();
@@ -48,7 +48,7 @@ export class UpdateCardComponent implements OnInit {
 
   getCardForUpdate() {
     //this._cardsService.changeCard("Hello from Sibling")
-    this._cardsService.currentCardUpdating.subscribe(cardUpdating => this.cardUpdating = cardUpdating);
+    this._dataService.currentCardUpdating.subscribe(cardUpdating => this.cardUpdating = cardUpdating);
     this.inputName = this.cardUpdating.name;
     this.inputHistory = this.cardUpdating.history;
     this.inputTags = this.cardUpdating.tags;
@@ -79,7 +79,7 @@ export class UpdateCardComponent implements OnInit {
                 this.cardUpdating.name = this.inputName;
                 this.cardUpdating.history = this.inputHistory;
                 this.cardUpdating.tags = this.inputTags;
-                this._cardsService.updateCard(this.cardUpdating).subscribe(data=>{
+                this._dataService.updateCard(this.cardUpdating).subscribe(data=>{
                   console.log(data);
                   this.errorNoImageSelected = false;
                   this.errorNoInfo = false;
@@ -90,14 +90,13 @@ export class UpdateCardComponent implements OnInit {
                 //Subimos la nueva imagen y actualizamos la carta
                 const fd = new FormData();
                 fd.append('file', this.selectedFile, this.selectedFile.name);
-                this._cardsService.uploadFile(fd).subscribe(data=>{
+                this._dataService.uploadFile(fd).subscribe(data=>{
                   let fileURL = data['file'];
                   this.cardUpdating.name = this.inputName;
                   this.cardUpdating.history = this.inputHistory;
                   this.cardUpdating.tags = this.inputTags;
                   this.cardUpdating.fileURL = fileURL;
-                  this._cardsService.updateCard(this.cardUpdating).subscribe(data=>{
-                    console.log(data);
+                  this._dataService.updateCard(this.cardUpdating).subscribe(data=>{
                     this.errorNoImageSelected = false;
                     this.errorNoInfo = false;
                     this.cardUploaded = true; 

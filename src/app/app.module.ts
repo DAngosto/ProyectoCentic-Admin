@@ -13,24 +13,23 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';   // o
 
 //servicios
 import { AuthenticationService } from './services/authentication.service';
-import { CardsService } from './services/cards.service';
+import { DataService } from './services/data.service';
 import { CardsControlPanelComponent } from './components/cards-control-panel/cards-control-panel.component';
 import { UpdateCardComponent } from './components/update-card/update-card.component';
+import { CollectionsControlPanelComponent } from './components/collections-control-panel/collections-control-panel.component';
+import { CreateCollectionComponent } from './components/create-collection/create-collection.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'menu', component: MenuComponent },
-  { path: 'newCard',component: CreateCardComponent },
   { path: 'cardsCP',component: CardsControlPanelComponent },
+  { path: 'newCard',component: CreateCardComponent },
   { path: 'updateCard',component: UpdateCardComponent },
-  { path: '',
-    redirectTo: '/login',
-    pathMatch: 'full'
-  },
-  { path: '**',
-    redirectTo: '/login',
-    pathMatch: 'full'
-  }
+  
+  { path: 'collectionsCP',component: CollectionsControlPanelComponent },
+  { path: 'newCollection',component: CreateCollectionComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/login', pathMatch: 'full' }
   //{ path: '**', component: PageNotFoundComponent }
 ];
 
@@ -42,7 +41,9 @@ const appRoutes: Routes = [
     CreateCardComponent,
     NavBarComponent,
     CardsControlPanelComponent,
-    UpdateCardComponent
+    UpdateCardComponent,
+    CollectionsControlPanelComponent,
+    CreateCollectionComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +53,7 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: false }) //Poner a true en el caso de querer saber que ruta está itnenta encontrar
   ],
-  providers: [AuthenticationService, CardsService],
+  providers: [AuthenticationService, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
