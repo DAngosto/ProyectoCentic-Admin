@@ -88,9 +88,7 @@ sawCard(id){
     else{
       this.collectionFull= false;
       this.collectionEmpty = false;
-      this.selectedCards.push(this.cards[id]);
-      this.updateImages();
-      /*
+      
       if (this.selectedCards.includes(this.cards[id])){
           this.cardRepeated=true;
       }
@@ -99,7 +97,7 @@ sawCard(id){
         this.selectedCards.push(this.cards[id]);
         this.updateImages();
       }
-      */
+      
       
       
     }
