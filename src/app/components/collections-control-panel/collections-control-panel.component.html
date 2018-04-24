@@ -1,16 +1,16 @@
 <app-nav-bar></app-nav-bar>
 <div id="page-wrapper">
-  <div *ngIf="noCards" class="alert alert-info">
-    There're no cards created
+  <div *ngIf="noCollection" class="alert alert-info">
+    There're no collections created
   </div>
-  <div *ngIf="cardDeleted" class="alert alert-success">
-    The card has been removed correctly
+  <div *ngIf="collectionDeleted" class="alert alert-success">
+    The collection has been removed correctly
   </div>
   <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2 class="text-center">Cards Control Panel</h2> 
+                <h2 class="text-center">Collections Control Panel</h2> 
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -18,21 +18,17 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>History</th>
-                            <th>Tags</th>
-                            <th class="text-center">Watch Card</th>
+                            <th class="text-center">Watch Collection</th>
                             <th class="text-center">Update</th>
                             <th class="text-center">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of items ; let i = index">
-                            <td >{{ item.name }}</td>
-                            <td>{{ item.history }}</td>
-                            <td>{{ item.tags }}</td>
-                            <td class="text-center"><button class="btn btn-info btn-circle" (click)= "sawImage(i)" data-toggle="modal" data-target="#myModal"><i class="fa fa-search-plus"></i></button></td>
-                            <td class="text-center"><button class="btn btn-info btn-circle" (click)= "updateCard(i)" ><i class="fa fa-pencil"></i></button></td>
-                            <td class="text-center"><button type="button" class="btn btn-danger btn-circle" (click)= "deleteCard(i)"><i class="fa fa-times"></i></button></td>
+                        <tr *ngFor="let collection of collections ; let i = index">
+                            <td >{{ collection.name }}</td>
+                            <td class="text-center"><button class="btn btn-info btn-circle" (click)= "sawCollection(i)" data-toggle="modal" data-target="#myModal"><i class="fa fa-search-plus"></i></button></td>
+                            <td class="text-center"><button class="btn btn-info btn-circle" (click)= "updateCollection(i)" ><i class="fa fa-pencil"></i></button></td>
+                            <td class="text-center"><button type="button" class="btn btn-danger btn-circle" (click)= "deleteCollection(i)"><i class="fa fa-times"></i></button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -47,12 +43,37 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="text-center" id="myModalLabel">Card Display</h3>
+                <h3 class="text-center" id="myModalLabel">Collection Display</h3>
             </div>
             <div class="modal-body">
-                    <br><img [src] = "url" ><br>
-                    <p class="text-info">Name</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ nameDisplay }}" disabled><br>
-                    <p class="text-info">History</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ historyDisplay }}" disabled>
+                    <!-- The grid: four columns -->
+                <div class="text-center"><h1 class="text-muted">Actual cards in the collection {{ collectiondisplaying }}</h1> </div>
+                <div class="row" *ngIf="sawCollection"> 
+                        <div class="column">
+                                <div class="text-center"><h3 class="text-info">{{ nameDisplay1 }}</h3> </div>
+                                <img [src] = "urlCard1" ><br>
+                        </div><br>
+                        <div class="column">
+                                <div class="text-center"><h3 class="text-info">{{ nameDisplay2 }}</h3> </div>
+                                <img [src] = "urlCard2" ><br>
+                        </div><br>
+                        <div class="column">
+                                <div class="text-center"><h3 class="text-info">{{ nameDisplay3 }} </h3> </div>
+                                <img [src] = "urlCard3" ><br>
+                        </div><br>
+                        <div class="column">
+                                <div class="text-center"><h3 class="text-info">{{ nameDisplay4 }}</h3> </div>
+                                <img [src] = "urlCard4" ><br>
+                        </div><br>
+                        <div class="column">
+                                <div class="text-center"><h3 class="text-info">{{ nameDisplay5 }}</h3> </div>
+                                <img [src] = "urlCard5" ><br>
+                        </div><br>
+                        <div class="column">
+                                <div class="text-center"><h3 class="text-info">{{ nameDisplay6 }}</h3> </div>
+                                <img [src] = "urlCard6" ><br>
+                        </div><br>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

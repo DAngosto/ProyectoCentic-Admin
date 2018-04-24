@@ -40,6 +40,24 @@ export class DataService {
         return this.http.get<Card[]>('https://gameserver.centic.ovh/items', { headers: headers });
     }
 
+    getAllItemsCollection(){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        return this.http.get<Collection[]>('https://gameserver.centic.ovh/items', { headers: headers });
+    }
+
+    getItem(id){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        return this.http.get('https://gameserver.centic.ovh/items/' + id, { headers: headers });
+    }
+
     deleteItem(id){
         let userToken= localStorage.getItem('tokenUser');
         let authorization = "Bearer " + userToken;

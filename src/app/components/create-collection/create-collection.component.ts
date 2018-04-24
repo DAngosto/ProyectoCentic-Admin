@@ -88,6 +88,9 @@ sawCard(id){
     else{
       this.collectionFull= false;
       this.collectionEmpty = false;
+      this.selectedCards.push(this.cards[id]);
+      this.updateImages();
+      /*
       if (this.selectedCards.includes(this.cards[id])){
           this.cardRepeated=true;
       }
@@ -96,6 +99,7 @@ sawCard(id){
         this.selectedCards.push(this.cards[id]);
         this.updateImages();
       }
+      */
       
       
     }
@@ -180,8 +184,18 @@ sawCard(id){
             }
             else{
               cardsID = cardsID + ',' + this.selectedCards[i]._id;
-            }  
+            }
           }
+          this._dataService.uploadCollection(this.inputName,cardsID).subscribe(data=>{
+              this.clearImagesURL();
+              this.clearData();
+              this.getAllItems();
+              this.errorCollectionNotFull = false;
+              this.errorNoInfo = false;
+              this.prevImage = false;
+              this.collectionUploaded = true;
+              this.inputName = "";
+          });
         }else{
           this.collectionUploaded = false;
           this.errorNoInfo = true;

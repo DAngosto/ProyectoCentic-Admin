@@ -60,7 +60,7 @@ export class CardsControlPanelComponent implements OnInit {
       
   }
 
-  sawImage(id){
+  sawCard(id){
     this.cardDeleted = false;
     this.url = 'https://gameserver.centic.ovh' + this.items[id].fileURL;
     this.nameDisplay = this.items[id].name;
