@@ -16,6 +16,9 @@
                 <div *ngIf="cardNotInCollection" class="alert alert-info">
                         The card you're trying to quit is not in the actual collection. Please add it before trying to quit it.
                 </div>
+                <div *ngIf="cardRepeated" class="alert alert-info">
+                    The card you're trying to add is already in the actual collection.
+                </div>
                 <div *ngIf="noCards" class="alert alert-info">
                         There're no cards created
                 </div>
@@ -98,7 +101,7 @@
                 <div class="modal-body">
                         <br><img [src] = "url" ><br>
                         <p class="text-info">Name</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ nameDisplay }}" disabled><br>
-                        <p class="text-info">History</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ historyDisplay }}" disabled>
+                        <p class="text-info">History</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ historyDisplay }}" disabled><br>
                         <p class="text-info">Tags</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ tagsDisplay }}" disabled>
                 </div>
                 <div class="modal-footer">

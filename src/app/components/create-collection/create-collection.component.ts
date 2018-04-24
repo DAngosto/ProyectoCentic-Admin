@@ -22,6 +22,7 @@ export class CreateCollectionComponent implements OnInit {
   collectionEmpty: boolean = false;
   cardNotInCollection: boolean = false;
   sawCollection: boolean = false;
+  cardRepeated: boolean = false;
 
   inputName: string = "";
 
@@ -81,17 +82,27 @@ sawCard(id){
   addCardtoCollection(id){
     if (this.selectedCards.length>=6){
       this.collectionFull= true;
+      this.cardRepeated=false;
       this.collectionEmpty = false;
     }
     else{
       this.collectionFull= false;
       this.collectionEmpty = false;
-      this.selectedCards.push(this.cards[id]);
-      this.updateImages();
+      if (this.selectedCards.includes(this.cards[id])){
+          this.cardRepeated=true;
+      }
+      else{
+        
+        this.selectedCards.push(this.cards[id]);
+        this.updateImages();
+      }
+      
+      
     }
   }
 
   deleteCardfromCollection(id){
+    this.cardRepeated=false;
     if (this.selectedCards.length==0){
       this.collectionEmpty= true;
       this.collectionFull = false;
@@ -171,16 +182,6 @@ sawCard(id){
               cardsID = cardsID + ',' + this.selectedCards[i]._id;
             }  
           }
-          this._dataService.uploadCollection(this.inputName,cardsID).subscribe(data=>{
-              this.clearImagesURL();
-              this.clearData();
-              this.getAllItems();
-              this.errorCollectionNotFull = false;
-              this.errorNoInfo = false;
-              this.prevImage = false;
-              this.collectionUploaded = true;
-              this.inputName = "";
-          });
         }else{
           this.collectionUploaded = false;
           this.errorNoInfo = true;
