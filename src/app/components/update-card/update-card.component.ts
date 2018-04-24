@@ -4,6 +4,9 @@ import {AuthenticationService} from '../../services/authentication.service';
 import { Card } from '../../interfaces/Card';
 import { DataService } from '../../services/data.service';
 
+import { ActivatedRoute, Router} from '@angular/router';
+
+
 
 
 @Component({
@@ -32,29 +35,33 @@ export class UpdateCardComponent implements OnInit {
 
 
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService) { }
+  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router) { }
 
   ngOnInit() {
     this._authenticationService.isUserValidated();
+
+    
     //this.initCard();
     this.getCardForUpdate();
   }
 
-  initCard(){
-    this.cardUpdating.name = "";
-    this.cardUpdating.history = "";
-    this.cardUpdating.tags = "";
-  }
 
   getCardForUpdate() {
     //this._cardsService.changeCard("Hello from Sibling")
     this._dataService.currentCardUpdating.subscribe(cardUpdating => this.cardUpdating = cardUpdating);
-    this.inputName = this.cardUpdating.name;
-    this.inputHistory = this.cardUpdating.history;
-    this.inputTags = this.cardUpdating.tags;
-    this.url = 'https://gameserver.centic.ovh' + this.cardUpdating.fileURL;
-    this.sawImage = true;
-    console.log(this.cardUpdating);
+
+    if(!this.cardUpdating){
+      this.router.navigate(["/cardsCP"]);
+    }
+    else{
+      this.inputName = this.cardUpdating.name;
+      this.inputHistory = this.cardUpdating.history;
+      this.inputTags = this.cardUpdating.tags;
+      this.url = 'https://gameserver.centic.ovh' + this.cardUpdating.fileURL;
+      this.sawImage = true;
+    }
+
+    
   }
 
   onFileSelected(event){

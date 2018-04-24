@@ -116,28 +116,15 @@ export class CollectionsControlPanelComponent implements OnInit {
       this.nameDisplay6 = data['name'];
       this.urlCard6 = 'https://gameserver.centic.ovh' + data['fileURL'];
     });
-
-
-
-    //this.nameDisplay1 = this.cards[id].name;
-    //this.urlCard1 = 'https://gameserver.centic.ovh' + this.cards[id].fileURL
-    /*
-    this.cardDeleted = false;
-    this.url = 'https://gameserver.centic.ovh' + this.items[id].fileURL;
-    this.nameDisplay = this.items[id].name;
-    this.historyDisplay = this.items[id].history;
-    this.tagsDisplay = this.items[id].tags;
-    this.visualizeImage = true;
-    */
   }
   
 
-  /*
-  updateCard(id){
-    this._dataService.changeCard(this.items[id]);
-    this.router.navigate(["/updateCard"]);
+  
+  updateCollection(id){
+    this._dataService.changeCollection(this.collections[id]);
+    this.router.navigate(["/updateCollection"]);
   }
-  */
+  
 
   deleteCollection(id){
     this.collectionDeleted = false;

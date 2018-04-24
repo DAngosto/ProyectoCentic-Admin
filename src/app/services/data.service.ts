@@ -18,6 +18,10 @@ export class DataService {
     private messageSource = new BehaviorSubject<Card>(this.card);
     currentCardUpdating = this.messageSource.asObservable();
 
+    collection: Collection;
+    private messageSource2 = new BehaviorSubject<Collection>(this.collection);
+    currentCollectionUpdating = this.messageSource2.asObservable();
+
     constructor(private http:HttpClient) {}
 
     //METODOS COMUNES///
@@ -152,6 +156,26 @@ export class DataService {
         }
         let body= JSON.stringify(message);
         return this.http.post('https://gameserver.centic.ovh/items/',body, { headers: headers });
+    }
+
+    updateCollection(collection: Collection){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        let message = {
+                "name": collection.name,
+                "cards": collection.cards,
+                "itemType": "1",   //0 = carta , 1 = colección
+                "publish": collection.publish
+        }
+        let body= JSON.stringify(message);
+        return this.http.put('https://gameserver.centic.ovh/items/' + collection._id,body, { headers: headers });
+    }
+
+    changeCollection(collection: Collection) {
+        this.messageSource2.next(collection);
     }
 
 }// END OF DataService
