@@ -1,11 +1,12 @@
 <app-nav-bar></app-nav-bar>
 <div id="page-wrapper">
     <div class="contact-clean">
-        <form method="post">
+        
             <h2 class="text-center">Create new collection</h2>
             
             <div class="panel-body">
                 <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name" [(ngModel)]="inputName"></div>
+                
                 <!-- <input type="file" (change)="onFileSelected($event)"> <p class="text-info">This is the image for the collection</p> -->
                 <div *ngIf="collectionFull" class="alert alert-info">
                         Your collection already has 6 cards, if you wanna add other card please quit one firstly.
@@ -87,7 +88,7 @@
             <div *ngIf="collectionUpdated" class="alert alert-success">
                 The collection has been updated!
             </div>
-        </form>
+        
     </div>
 
     <!-- Modal -->

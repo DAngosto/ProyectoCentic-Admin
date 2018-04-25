@@ -123,7 +123,22 @@ sawCard(id){
     else{
       this.collectionFull= false;
       this.collectionEmpty = false;
+      var cortado=false;
+      for(let i=0; i<this.selectedCards.length; i++){
+          if(this.selectedCards[i]._id==this.cards[id]._id){
+            this.cardRepeated=true;
+            cortado=true;
+            break;
+          }
+      }
+      if(!cortado){
+        this.cardRepeated=false;
+        this.selectedCards.push(this.cards[id]);
+        this.updateImages();
+      }
       
+
+      /*
       if (this.selectedCards.includes(this.cards[id])){
           this.cardRepeated=true;
       }
@@ -132,6 +147,7 @@ sawCard(id){
         this.selectedCards.push(this.cards[id]);
         this.updateImages();
       }
+      */
       
       
       
@@ -147,20 +163,21 @@ sawCard(id){
     else{
       this.collectionEmpty= false;
       this.collectionFull = false;
-        if (this.selectedCards.includes(this.cards[id])){
-          this.cardNotInCollection = false;
-          for(let i=0;i<this.selectedCards.length;i++){
-            if(this.selectedCards[i]._id == this.cards[id]._id){
-                this.selectedCards.splice(i,1);
-                this.updateImages();
-                break;
-            }
-          }          
+      this.cardNotInCollection = false;
+      var cortado=false;
+      for(let i=0; i<this.selectedCards.length; i++){
+        if(this.selectedCards[i]._id==this.cards[id]._id){
+          this.selectedCards.splice(i,1);
+          this.updateImages();
+          cortado=true;
+          break;
         }
-        else{
-          this.cardNotInCollection = true;
-        }
+      }
+      if(!cortado){
+        this.cardNotInCollection = true;
+      }
     }
+    
   }
 
 
