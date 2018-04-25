@@ -28,6 +28,10 @@ export class CardsControlPanelComponent implements OnInit {
   nameDisplay: any;
   historyDisplay: any;
   tagsDisplay: any;
+  noCardsWithSpecificTag: boolean = false;
+
+
+  inputSearch: string = "";
   //itemsPrueba: Observ;
 
  
@@ -51,14 +55,41 @@ export class CardsControlPanelComponent implements OnInit {
               }
               
           }
-
+          this.noCardsWithSpecificTag = false;
           if (this.items.length == 0){
             this.noCards = true;
           }else{
             this.noCards = false;
           }
       });
-      
+  }
+
+  getSpecificItems(tag){
+    this.clearData();
+    var tagLowerCase= tag.toLowerCase();
+    this._dataService.getAllItems().subscribe(data=>{
+        //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
+        for(let i=0; i<data.length; i++){
+            if (data[i].itemType=="0"){
+              var cleanTags = data[i].tags.replace(' ','');
+              var cardTags = cleanTags.split(',');
+              for(let j=0;(j<cardTags.length);j++){
+                if(cardTags[j].toLowerCase()==tagLowerCase){
+                  this.items.push(data[i]);
+                  break;
+                }
+              }
+            }
+
+            
+        }
+        this.noCards = false;
+        if (this.items.length == 0){
+          this.noCardsWithSpecificTag = true;
+        }else{
+          this.noCardsWithSpecificTag = false;
+        }
+    });
   }
 
   sawCard(id){
@@ -88,7 +119,8 @@ export class CardsControlPanelComponent implements OnInit {
         var NotFreeOfDependencies = false;
         this.dependenceExists = false;
         this._dataService.getAllItemsCollection().subscribe(data=>{
-          //recorremos las colecciones para averiguar si alguna depende de esta carta, en el caso de que exista alguna dependencia, el método devolverá true;
+          //recorremos las colecciones para averiguar si alguna depende de esta carta, en el caso de que exista alguna dependencia cortamos los bucles de búsqueda y 
+          //notificamos que no puede ser eliminada. En el caso contrario se elimina la carta.;
           for(let i=0; (i<data.length); i++){
               if (data[i].itemType=="1"){
                   var cardsCollection = data[i].cards.split(',');
@@ -111,6 +143,16 @@ export class CardsControlPanelComponent implements OnInit {
         }
       });
   }
+
+  doSpecificSearch(){
+    if (this.inputSearch==""){
+      this.getAllItems();
+    }
+    else{
+      this.getSpecificItems(this.inputSearch);
+    }
+  }
+
 
 }
 

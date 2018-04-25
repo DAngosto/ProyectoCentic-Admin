@@ -3,6 +3,9 @@
   <div *ngIf="noCards" class="alert alert-info">
     There're no cards created
   </div>
+  <div *ngIf="noCardsWithSpecificTag" class="alert alert-info">
+        There're no cards created with the specified tag.
+    </div>
   <div *ngIf="cardDeleted" class="alert alert-success">
     The card has been removed correctly
   </div>
@@ -14,6 +17,9 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2 class="text-center">Cards Control Panel</h2> 
+            </div>
+            <div id="dataTables-example_filter" class="text-center">
+                <label >Search:<input type="search" class="form-control input-sm" placeholder="Tag"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

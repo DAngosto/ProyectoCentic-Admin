@@ -1,11 +1,14 @@
 <app-nav-bar></app-nav-bar>
+
 <div id="page-wrapper">
     <div class="contact-clean">
-        <form method="post">
-            <h2 class="text-center">Create new collection</h2>
-            
+       
+            <br><h2 class="text-center">Create new collection</h2>
             <div class="panel-body">
                 <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name" [(ngModel)]="inputName"></div>
+                <div id="dataTables-example_filter" class="text-center">
+                        <label>Search:<input  class="form-control input-sm" type="search" name="tag" placeholder="Tag"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
+                </div>
                 <!-- <input type="file" (change)="onFileSelected($event)"> <p class="text-info">This is the image for the collection</p> -->
                 <div *ngIf="collectionFull" class="alert alert-info">
                         Your collection already has 6 cards, if you wanna add other card please quit one firstly.
@@ -22,10 +25,14 @@
                 <div *ngIf="noCards" class="alert alert-info">
                         There're no cards created
                 </div>
+                <div *ngIf="noCardsWithSpecificTag" class="alert alert-info">
+                        There're no cards created with the specified tag.
+                </div>
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Tags</th>
                             <th class="text-center">Watch Card</th>
                             <th class="text-center">Add to collection</th>
                             <th class="text-center">Delete from collection</th>
@@ -34,6 +41,7 @@
                     <tbody>
                         <tr *ngFor="let card of cards ; let i = index">
                             <td >{{ card.name }}</td>
+                            <td >{{ card.tags }}</td>
                             <td class="text-center"><button class="btn btn-info btn-circle" (click)= "sawCard(i)" data-toggle="modal" data-target="#myModal"><i class="fa fa-search-plus"></i></button></td>
                             <td class="text-center"><button class="btn btn-info btn-circle" (click)= "addCardtoCollection(i)" ><i class="fa fa-pencil"></i></button></td>
                             <td class="text-center"><button type="button" class="btn btn-danger btn-circle" (click)= "deleteCardfromCollection(i)"><i class="fa fa-times"></i></button></td>
@@ -87,7 +95,7 @@
             <div *ngIf="collectionUploaded" class="alert alert-success">
                 The new collection has been created!
             </div>
-        </form>
+        
     </div>
 
     <!-- Modal -->

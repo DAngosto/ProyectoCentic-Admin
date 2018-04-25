@@ -23,8 +23,10 @@ export class CreateCollectionComponent implements OnInit {
   cardNotInCollection: boolean = false;
   sawCollection: boolean = false;
   cardRepeated: boolean = false;
+  noCardsWithSpecificTag: boolean = false;
 
   inputName: string = "";
+  inputSearch: string = "";
 
   url: string = "";
 
@@ -43,6 +45,9 @@ export class CreateCollectionComponent implements OnInit {
   historyDisplay: any;
   tagsDisplay: any;
 
+  
+
+
 
 
 
@@ -55,6 +60,7 @@ export class CreateCollectionComponent implements OnInit {
   }
 
   getAllItems(){
+    this.clearData();
     this._dataService.getAllItems().subscribe(data=>{
         //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
         for(let i=0; i<data.length; i++){
@@ -63,13 +69,42 @@ export class CreateCollectionComponent implements OnInit {
             }
             
         }
-
+        this.noCardsWithSpecificTag = false;
         if (this.cards.length == 0){
+          
           this.noCards = true;
         }else{
           this.noCards = false;
         }
     });
+}
+
+getSpecificItems(tag){
+  this.clearData();
+  var tagLowerCase= tag.toLowerCase();
+  this._dataService.getAllItems().subscribe(data=>{
+      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
+      for(let i=0; i<data.length; i++){
+          if (data[i].itemType=="0"){
+            var cleanTags = data[i].tags.replace(' ','');
+            var cardTags = cleanTags.split(',');
+            for(let j=0;(j<cardTags.length);j++){
+              if(cardTags[j].toLowerCase()==tagLowerCase){
+                this.cards.push(data[i]);
+                break;
+              }
+            }
+          }
+
+          
+      }
+      this.noCards = false;
+      if (this.cards.length == 0){
+        this.noCardsWithSpecificTag = true;
+      }else{
+        this.noCardsWithSpecificTag = false;
+      }
+  });
 }
 
 sawCard(id){
@@ -208,6 +243,15 @@ sawCard(id){
 
   clearData(){
     this.cards = [];
+  }
+
+  doSpecificSearch(){
+    if (this.inputSearch==""){
+      this.getAllItems();
+    }
+    else{
+      this.getSpecificItems(this.inputSearch);
+    }
   }
 
 }
