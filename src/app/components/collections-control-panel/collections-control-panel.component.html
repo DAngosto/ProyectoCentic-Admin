@@ -18,6 +18,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Publish Status</th>
                             <th class="text-center">Watch Collection</th>
                             <th class="text-center">Update</th>
                             <th class="text-center">Delete</th>
@@ -26,6 +27,9 @@
                     <tbody>
                         <tr *ngFor="let collection of collections ; let i = index">
                             <td >{{ collection.name }}</td>
+                            <td *ngIf= "collection.publish"> published</td>
+                            <td *ngIf="!collection.publish"> not published</td>
+
                             <td class="text-center"><button class="btn btn-info btn-circle" (click)= "sawCollection(i)" data-toggle="modal" data-target="#myModal"><i class="fa fa-search-plus"></i></button></td>
                             <td class="text-center"><button class="btn btn-info btn-circle" (click)= "updateCollection(i)" ><i class="fa fa-pencil"></i></button></td>
                             <td class="text-center"><button type="button" class="btn btn-danger btn-circle" (click)= "deleteCollection(i)"><i class="fa fa-times"></i></button></td>
