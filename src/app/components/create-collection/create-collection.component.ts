@@ -245,6 +245,7 @@ sawCard(id){
               this.prevImage = false;
               this.collectionUploaded = true;
               this.inputName = "";
+              this.prevImage = false;
           });
         }else{
           this.collectionUploaded = false;

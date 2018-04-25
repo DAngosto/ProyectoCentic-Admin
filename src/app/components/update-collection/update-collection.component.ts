@@ -29,6 +29,8 @@ export class UpdateCollectionComponent implements OnInit {
   cardRepeated: boolean = false;
 
   inputName: string = "";
+  inputSearch: string = "";
+
 
   url: string = "";
 
@@ -39,6 +41,7 @@ export class UpdateCollectionComponent implements OnInit {
   urlCard5: string = "";
   urlCard6: string = "";
   selectedCards: Card[] = [];
+  noCardsWithSpecificTag: boolean = false;
 
 
   cards: Card[] = [];
@@ -125,7 +128,9 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   getAllItems(){
+    this.clearData();
     this._dataService.getAllItems().subscribe(data=>{
+        
         //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
         for(let i=0; i<data.length; i++){
             if (data[i].itemType=="0"){
@@ -133,13 +138,39 @@ export class UpdateCollectionComponent implements OnInit {
             }
             
         }
-
+        this.noCardsWithSpecificTag = false;
         if (this.cards.length == 0){
           this.noCards = true;
         }else{
           this.noCards = false;
         }
     });
+}
+
+getSpecificItems(tag){
+  this.clearData();
+  var tagLowerCase= tag.toLowerCase();
+  this._dataService.getAllItems().subscribe(data=>{
+      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
+      for(let i=0; i<data.length; i++){
+          if (data[i].itemType=="0"){
+            var cleanTags = data[i].tags.replace(' ','');
+            var cardTags = cleanTags.split(',');
+            for(let j=0;(j<cardTags.length);j++){
+              if(cardTags[j].toLowerCase()==tagLowerCase){
+                this.cards.push(data[i]);
+                break;
+              }
+            }
+          }     
+      }
+      this.noCards = false;
+      if (this.cards.length == 0){
+        this.noCardsWithSpecificTag = true;
+      }else{
+        this.noCardsWithSpecificTag = false;
+      }
+  });
 }
 
 
@@ -157,16 +188,19 @@ export class UpdateCollectionComponent implements OnInit {
       this.collectionEmpty = false;
       this.cardRepeated=false;
       this.cardNotInCollection = false;
-      
-      if (this.selectedCards.includes(this.cards[id])){
-          this.cardRepeated=true;
-          this.cardNotInCollection = false;
+      var cortado=false;
+      for(let i=0; i<this.selectedCards.length; i++){
+          if(this.selectedCards[i]._id==this.cards[id]._id){
+            this.cardRepeated=true;
+            cortado=true;
+            break;
+          }
       }
-      else{
+      if(!cortado){
+        this.cardRepeated=false;
         this.selectedCards.push(this.cards[id]);
         this.updateImages();
-      }
-      
+      }    
       
       
     }
@@ -183,16 +217,17 @@ export class UpdateCollectionComponent implements OnInit {
       this.collectionEmpty= false;
       this.collectionFull = false;
           this.cardNotInCollection = false;
-          var updated:boolean = false;
+          var deleted:boolean = false;
           for(let i=0;i<this.selectedCards.length;i++){
             if(this.selectedCards[i]._id == this.cards[id]._id){
-                updated = true;
+                deleted = true;
                 this.selectedCards.splice(i,1);
                 this.updateImages(); 
+                
+                break;
             }
-
           }
-          if (!updated) {
+          if (!deleted) {
             this.cardNotInCollection = true;
           } 
     }
@@ -282,6 +317,15 @@ export class UpdateCollectionComponent implements OnInit {
 
   clearData(){
     this.cards = [];
+  }
+
+  doSpecificSearch(){
+    if (this.inputSearch==""){
+      this.getAllItems();
+    }
+    else{
+      this.getSpecificItems(this.inputSearch);
+    }
   }
 
 }
