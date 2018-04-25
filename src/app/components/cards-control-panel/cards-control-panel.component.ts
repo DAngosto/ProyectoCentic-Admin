@@ -23,6 +23,7 @@ export class CardsControlPanelComponent implements OnInit {
   visualizeImage: boolean = false;
   cardDeleted: boolean = false;
   noCards: boolean = false;
+  dependenceExists: boolean = false;
   url: any;
   nameDisplay: any;
   historyDisplay: any;
@@ -76,15 +77,39 @@ export class CardsControlPanelComponent implements OnInit {
 
   deleteCard(id){
     this.cardDeleted = false;
-    this._dataService.deleteItem(this.items[id]._id).subscribe(data=>{
-      this.clearData();
-      this.cardDeleted = true;
-      this.getAllItems();
-    });
+    this.cardInACollection(this.items[id]._id);
   }
 
   clearData(){
     this.items = [];
+  }
+
+  cardInACollection(idCardSearching){
+        var NotFreeOfDependencies = false;
+        this.dependenceExists = false;
+        this._dataService.getAllItemsCollection().subscribe(data=>{
+          //recorremos las colecciones para averiguar si alguna depende de esta carta, en el caso de que exista alguna dependencia, el método devolverá true;
+          for(let i=0; (i<data.length); i++){
+              if (data[i].itemType=="1"){
+                  var cardsCollection = data[i].cards.split(',');
+                  for(let j=0;(j<cardsCollection.length);j++){
+                    if(cardsCollection[j]==idCardSearching){
+                      NotFreeOfDependencies = true;
+                      this.dependenceExists = true;
+                      break;
+                    }
+                  }
+              } 
+              if(NotFreeOfDependencies) break; 
+        }
+        if(!NotFreeOfDependencies){
+          this._dataService.deleteItem(idCardSearching).subscribe(data=>{
+            this.clearData();
+            this.cardDeleted = true;
+            this.getAllItems();
+          });
+        }
+      });
   }
 
 }

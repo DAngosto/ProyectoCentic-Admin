@@ -129,6 +129,8 @@ export class DataService {
     changeCard(card: Card) {
         this.messageSource.next(card);
     }
+
+    
     
 
     //METODOS PARA COLLECTIONS///
