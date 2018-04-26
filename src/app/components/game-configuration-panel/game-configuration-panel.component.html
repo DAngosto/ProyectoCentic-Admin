@@ -98,14 +98,8 @@
             -->
             
                  
-            <div *ngIf="errorNoInfo" class="alert alert-danger">
-                Incomplete name field, please enter the corresponding information.
-            </div>
-            <div *ngIf="errorCollectionNotFull" class="alert alert-danger">
-                    Your collection dont have 6 cards, please select them before trying to create a collection.
-            </div>
-            <div *ngIf="collectionUploaded" class="alert alert-success">
-                The new collection has been created!
+            <div *ngIf="collectionStatusUpdated" class="alert alert-success">
+                The collection status has been updated!
             </div>
         
     </div>

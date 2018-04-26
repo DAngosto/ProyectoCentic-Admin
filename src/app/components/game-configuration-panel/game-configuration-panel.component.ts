@@ -25,6 +25,9 @@ export class GameConfigurationPanelComponent implements OnInit {
   visualizeImage: boolean = false;
   collectionDeleted: boolean = false;
   noCollection: boolean = false;
+  collectionStatusUpdated: boolean = false;
+
+
   url: any;
   nameDisplay: any;
   historyDisplay: any;
@@ -119,45 +122,53 @@ export class GameConfigurationPanelComponent implements OnInit {
 
   
   changeStatus(id){
-
+    var cardsCollection;
     if(this.collections[id].publish==false){
-      var cardsCollection = this.collections[id].cards.split(',');
+      console.log("entro a publish false")
+
+      cardsCollection = this.collections[id].cards.split(',');
       this._dataService.getItem(cardsCollection[0]).subscribe(data=>{
           if(data['publish']==false){
             var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],true);
-            this._dataService.updateCard(aux);
+            this._dataService.updateCard(aux).subscribe(data=>{
+            });
           }
       });
       this._dataService.getItem(cardsCollection[1]).subscribe(data=>{
         if(data['publish']==false){
           
           var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],true);
-          this._dataService.updateCard(aux);
+          this._dataService.updateCard(aux).subscribe(data=>{
+          });
         }
       });
       this._dataService.getItem(cardsCollection[2]).subscribe(data=>{
         if(data['publish']==false){
           
           var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],true);
-          this._dataService.updateCard(aux);
+          this._dataService.updateCard(aux).subscribe(data=>{
+          });
         }
       });
       this._dataService.getItem(cardsCollection[3]).subscribe(data=>{
         if(data['publish']==false){
           var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],true);
-          this._dataService.updateCard(aux);
+          this._dataService.updateCard(aux).subscribe(data=>{
+          });
         }
       });
       this._dataService.getItem(cardsCollection[4]).subscribe(data=>{
         if(data['publish']==false){
           var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],true);
-          this._dataService.updateCard(aux);
+          this._dataService.updateCard(aux).subscribe(data=>{
+          });
         }
       });
       this._dataService.getItem(cardsCollection[5]).subscribe(data=>{
         if(data['publish']==false){
           var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],true);
-          this._dataService.updateCard(aux);
+          this._dataService.updateCard(aux).subscribe(data=>{
+          });
         }
       });
 
@@ -168,45 +179,90 @@ export class GameConfigurationPanelComponent implements OnInit {
       });
     }
     else{
-      var cardsCollection = this.collections[id].cards.split(',');
-      this._dataService.getItem(cardsCollection[0]).subscribe(data=>{
-          if(data['publish']==true){
-            var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
-            this._dataService.updateCard(aux);
+      console.log("entro a publish true");
+
+      this.collections[id].publish = false;
+      var cardsCheck = this.collections[id].cards.split(',');  //Las cartas de la coleccion que deseo borrar y tengo que comprobar si en el caso de que no haya otra coleccion activa con esa carta la ponga a false
+      var check0:boolean = false;
+      var check1:boolean = false;
+      var check2:boolean = false;
+      var check3:boolean = false;
+      var check4:boolean = false;
+      var check5:boolean = false;
+      for(let i=0;i<this.collections.length;i++){  //Recorre todas las coleeciones
+        if(this.collections[i].publish==true){    //Entro si esta en publish true
+          cardsCollection = this.collections[i].cards.split(',');
+          for(let j=0;j<=cardsCollection.length;j++){   //para cada carta de la coleccion publish=true encontrada compruebo si es una de las que estoy buscando, si es asi pongo su check a true para luego saber que esa carta debe permanecer en true y no modificarla
+              if (cardsCollection[j]==cardsCheck[0]){
+                  check0=true;
+              }
+              else if (cardsCollection[j]==cardsCheck[1]){
+                check1=true;
+              }
+              else if (cardsCollection[j]==cardsCheck[2]){
+                check2=true;
+              }
+              else if (cardsCollection[j]==cardsCheck[3]){
+                check3=true;
+              }
+              else if (cardsCollection[j]==cardsCheck[4]){
+                check4=true;
+              }
+              else if (cardsCollection[j]==cardsCheck[5]){
+                check5=true;
+              }
           }
-      });
-      this._dataService.getItem(cardsCollection[1]).subscribe(data=>{
-        if(data['publish']==false){
-          
-          var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
-          this._dataService.updateCard(aux);
         }
-      });
-      this._dataService.getItem(cardsCollection[2]).subscribe(data=>{
-        if(data['publish']==false){
-          
-          var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
-          this._dataService.updateCard(aux);
-        }
-      });
-      this._dataService.getItem(cardsCollection[3]).subscribe(data=>{
-        if(data['publish']==false){
-          var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
-          this._dataService.updateCard(aux);
-        }
-      });
-      this._dataService.getItem(cardsCollection[4]).subscribe(data=>{
-        if(data['publish']==false){
-          var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
-          this._dataService.updateCard(aux);
-        }
-      });
-      this._dataService.getItem(cardsCollection[5]).subscribe(data=>{
-        if(data['publish']==false){
-          var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
-          this._dataService.updateCard(aux);
-        }
-      });
+      }
+      console.log(check0);
+      console.log(check1);
+      console.log(check2);
+      console.log(check3);
+      console.log(check4);
+      console.log(check5);
+      //En el caso de que un check siga a falso es que no hay mas colecciones a true que tengan dicha carta, por lo tanto ponemos dicha carta en publish=false;
+      if (!check0){
+        this._dataService.getItem(cardsCheck[0]).subscribe(data=>{
+            var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
+            this._dataService.updateCard(aux).subscribe(data=>{
+            });
+        });
+      }
+      if (!check1){
+        this._dataService.getItem(cardsCheck[1]).subscribe(data=>{
+            var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
+            this._dataService.updateCard(aux).subscribe(data=>{
+            });
+        });
+      }
+      if (!check2){
+        this._dataService.getItem(cardsCheck[2]).subscribe(data=>{
+            var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
+            this._dataService.updateCard(aux).subscribe(data=>{
+            });
+        });
+      }
+      if (!check3){
+        this._dataService.getItem(cardsCheck[3]).subscribe(data=>{
+            var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
+            this._dataService.updateCard(aux).subscribe(data=>{
+            });
+        });
+      }
+      if (!check4){
+        this._dataService.getItem(cardsCheck[4]).subscribe(data=>{
+            var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
+            this._dataService.updateCard(aux).subscribe(data=>{
+            });
+        });
+      }
+      if (!check5){
+        this._dataService.getItem(cardsCheck[5]).subscribe(data=>{
+            var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
+            this._dataService.updateCard(aux).subscribe(data=>{
+            });
+        });
+      }
 
       this.collections[id].publish=false;
       this._dataService.updateCollection(this.collections[id]).subscribe(data=>{
@@ -215,6 +271,7 @@ export class GameConfigurationPanelComponent implements OnInit {
       });
 
     }
+    this.collectionStatusUpdated = false;
     
   }
 
