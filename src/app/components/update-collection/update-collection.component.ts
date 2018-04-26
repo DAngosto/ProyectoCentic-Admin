@@ -276,7 +276,6 @@ getSpecificItems(tag){
   }
 
   updateCollection(){
-    console.log(this.selectedCards.length);
     if (this.selectedCards.length==6){
       
          if(this.inputName!=""){

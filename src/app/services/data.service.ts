@@ -172,6 +172,7 @@ export class DataService {
                 "itemType": "1",   //0 = carta , 1 = colección
                 "publish": collection.publish
         }
+        console.log("publish obtenido en el servicio " + collection.publish);
         let body= JSON.stringify(message);
         return this.http.put('https://gameserver.centic.ovh/items/' + collection._id,body, { headers: headers });
     }

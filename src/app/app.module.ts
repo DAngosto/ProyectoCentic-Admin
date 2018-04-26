@@ -19,6 +19,7 @@ import { UpdateCardComponent } from './components/update-card/update-card.compon
 import { CollectionsControlPanelComponent } from './components/collections-control-panel/collections-control-panel.component';
 import { CreateCollectionComponent } from './components/create-collection/create-collection.component';
 import { UpdateCollectionComponent } from './components/update-collection/update-collection.component';
+import { GameConfigurationPanelComponent } from './components/game-configuration-panel/game-configuration-panel.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
   { path: 'collectionsCP',component: CollectionsControlPanelComponent },
   { path: 'newCollection',component: CreateCollectionComponent },
   { path: 'updateCollection',component: UpdateCollectionComponent },
+  { path: 'GameConfigCP',component: GameConfigurationPanelComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' }
   //{ path: '**', component: PageNotFoundComponent }
@@ -45,7 +47,8 @@ const appRoutes: Routes = [
     UpdateCardComponent,
     CollectionsControlPanelComponent,
     CreateCollectionComponent,
-    UpdateCollectionComponent
+    UpdateCollectionComponent,
+    GameConfigurationPanelComponent
   ],
   imports: [
     BrowserModule,

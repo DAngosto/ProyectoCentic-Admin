@@ -1,0 +1,161 @@
+<app-nav-bar></app-nav-bar>
+
+<div id="page-wrapper">
+    <div class="contact-clean">
+            <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="text-center"><h1 class="page-header">Game Configuration Panel</h1></div>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                    <div class="row">
+                        <div class="col-lg-5">
+                            
+                        </div>
+                        <!-- /.col-lg-4 -->
+                        <div class="col-lg-2">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="text-center">General Configuration</div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <form oninput="x.value=parseInt(a.value)">   
+                                            <label >Time of Gamemode (seconds)<input type="range" id="a" name="a" value="50"><output name="x" for="a"><span class="fa fa-clock-o"></span></output>
+                                            </label>
+                                        </form>
+                    
+                                      <label>Gamemode: </label>
+                                      <select class="form-control-sm">
+                                          <option>Easy</option>
+                                          <option>Medium</option>
+                                          <option>Hard</option>
+                                          <option>Extreme</option>
+                                      </select>
+                                    </div>
+                                 </div>
+                                <div class="panel-footer">
+                                    <div class="text-center"><button class="btn btn-primary" type="submit" (click)="updateCard()" value="Update File"> Update </button></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-4 -->
+                        <div class="col-lg-5">
+                            
+                        </div>
+                        <!-- /.col-lg-4 -->
+                    </div>
+                    
+                    
+        
+    
+              
+
+
+              
+
+
+                <div *ngIf="noCollection" class="alert alert-info">
+                    There're no collections created
+                </div>
+                <div class="panel-body">
+                  <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Publish Status</th>
+                              <th class="text-center">Watch Collection</th>
+                              <th class="text-center">Change Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let collection of collections ; let i = index">
+                              <td >{{ collection.name }}</td>
+                              <td *ngIf= "collection.publish"> published</td>
+                              <td *ngIf="!collection.publish"> not published</td>
+  
+                              <td class="text-center"><button class="btn btn-info btn-circle" (click)= "sawCollection(i)" data-toggle="modal" data-target="#myModal"><i class="fa fa-search-plus"></i></button></td>
+                              <td class="text-center"><button class="btn btn-warning btn-circle" (click)= "changeStatus(i)" ><i class="fa fa-bomb"></i></button></td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+
+
+                
+
+            </div> <!-- fin cotnenido tabla -->
+
+            
+
+
+            <!-- 
+            <div *ngIf="errorNoImageSelected" class="alert alert-danger">
+                Select an image first before trying to create a new card!
+            </div>
+            -->
+            
+                 
+            <div *ngIf="errorNoInfo" class="alert alert-danger">
+                Incomplete name field, please enter the corresponding information.
+            </div>
+            <div *ngIf="errorCollectionNotFull" class="alert alert-danger">
+                    Your collection dont have 6 cards, please select them before trying to create a collection.
+            </div>
+            <div *ngIf="collectionUploaded" class="alert alert-success">
+                The new collection has been created!
+            </div>
+        
+    </div>
+
+   <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3 class="text-center" id="myModalLabel">Collection Display</h3>
+              </div>
+              <div class="modal-body">
+                      <!-- The grid: four columns -->
+                  <div class="text-center"><h1 class="text-muted">Actual cards in the collection {{ collectiondisplaying }}</h1> </div>
+                  <div class="row" *ngIf="sawCollection"> 
+                          <div class="column">
+                                  <div class="text-center"><h3 class="text-info">{{ nameDisplay1 }}</h3> </div>
+                                  <img [src] = "urlCard1" ><br>
+                          </div><br>
+                          <div class="column">
+                                  <div class="text-center"><h3 class="text-info">{{ nameDisplay2 }}</h3> </div>
+                                  <img [src] = "urlCard2" ><br>
+                          </div><br>
+                          <div class="column">
+                                  <div class="text-center"><h3 class="text-info">{{ nameDisplay3 }} </h3> </div>
+                                  <img [src] = "urlCard3" ><br>
+                          </div><br>
+                          <div class="column">
+                                  <div class="text-center"><h3 class="text-info">{{ nameDisplay4 }}</h3> </div>
+                                  <img [src] = "urlCard4" ><br>
+                          </div><br>
+                          <div class="column">
+                                  <div class="text-center"><h3 class="text-info">{{ nameDisplay5 }}</h3> </div>
+                                  <img [src] = "urlCard5" ><br>
+                          </div><br>
+                          <div class="column">
+                                  <div class="text-center"><h3 class="text-info">{{ nameDisplay6 }}</h3> </div>
+                                  <img [src] = "urlCard6" ><br>
+                          </div><br>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+          <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+</div>
