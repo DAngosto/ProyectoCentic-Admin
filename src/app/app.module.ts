@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule } from '@angular/common/http';
+import { Ng2ImgToolsModule } from 'ng2-img-tools'; 
 
 //componentes
 import { AppComponent } from './app.component';
@@ -54,6 +55,7 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    Ng2ImgToolsModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false }) //Poner a true en el caso de querer saber que ruta está itnenta encontrar

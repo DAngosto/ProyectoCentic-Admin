@@ -3,7 +3,7 @@ import {NgForm} from '@angular/forms';
 import { DataService } from '../../services/data.service';
 import {AuthenticationService} from '../../services/authentication.service';
 
-
+import { Ng2ImgToolsService } from 'ng2-img-tools';
 
 @Component({
   selector: 'app-create-card',
@@ -26,7 +26,7 @@ export class CreateCardComponent implements OnInit {
   url: string = "";
 
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService) { }
+  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private ng2ImgToolsService: Ng2ImgToolsService) { }
 
   ngOnInit() {
 
@@ -53,21 +53,28 @@ export class CreateCardComponent implements OnInit {
       
          if((this.inputName!="")&&(this.inputHistory!="")){
           const fd = new FormData();
-          fd.append('file', this.selectedFile, this.selectedFile.name);
-          this._dataService.uploadFile(fd).subscribe(data=>{
-            let fileURL = data['file'];
-            this._dataService.uploadCard(this.inputName, this.inputHistory, this.inputTags, fileURL).subscribe(data=>{
-              console.log(data);
-              this.errorNoImageSelected = false;
-              this.errorNoInfo = false;
-              this.prevImage = false;
-              this.cardUploaded = true;
-              this.inputName = "";
-              this.inputHistory = "";
-              this.inputTags = "";
-              this.url = "";    
+          this.ng2ImgToolsService.resizeExactCrop([this.selectedFile], 258, 183).subscribe(result => {
+            //all good, result is a file
+            fd.append('file', result, this.selectedFile.name);
+            this._dataService.uploadFile(fd).subscribe(data=>{
+              let fileURL = data['file'];
+              this._dataService.uploadCard(this.inputName, this.inputHistory, this.inputTags, fileURL).subscribe(data=>{
+                console.log(data);
+                this.errorNoImageSelected = false;
+                this.errorNoInfo = false;
+                this.prevImage = false;
+                this.cardUploaded = true;
+                this.inputName = "";
+                this.inputHistory = "";
+                this.inputTags = "";
+                this.url = "";    
             })
           })
+          }, error => {
+            console.log(error);
+            //something went wrong 
+            //use result.compressedFile or handle specific error cases individually
+          });
         }else{
           this.cardUploaded = false;
           this.errorNoInfo = true;

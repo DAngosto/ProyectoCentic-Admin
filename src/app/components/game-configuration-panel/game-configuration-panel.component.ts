@@ -124,8 +124,6 @@ export class GameConfigurationPanelComponent implements OnInit {
   changeStatus(id){
     var cardsCollection;
     if(this.collections[id].publish==false){
-      console.log("entro a publish false")
-
       cardsCollection = this.collections[id].cards.split(',');
       this._dataService.getItem(cardsCollection[0]).subscribe(data=>{
           if(data['publish']==false){
@@ -179,8 +177,6 @@ export class GameConfigurationPanelComponent implements OnInit {
       });
     }
     else{
-      console.log("entro a publish true");
-
       this.collections[id].publish = false;
       var cardsCheck = this.collections[id].cards.split(',');  //Las cartas de la coleccion que deseo borrar y tengo que comprobar si en el caso de que no haya otra coleccion activa con esa carta la ponga a false
       var check0:boolean = false;
@@ -214,12 +210,6 @@ export class GameConfigurationPanelComponent implements OnInit {
           }
         }
       }
-      console.log(check0);
-      console.log(check1);
-      console.log(check2);
-      console.log(check3);
-      console.log(check4);
-      console.log(check5);
       //En el caso de que un check siga a falso es que no hay mas colecciones a true que tengan dicha carta, por lo tanto ponemos dicha carta en publish=false;
       if (!check0){
         this._dataService.getItem(cardsCheck[0]).subscribe(data=>{

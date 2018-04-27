@@ -164,7 +164,6 @@ export class DataService {
         let userToken= localStorage.getItem('tokenUser');
         let authorization = "Bearer " + userToken;
         let headers = new HttpHeaders()
-            .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
         let message = {
                 "name": collection.name,
