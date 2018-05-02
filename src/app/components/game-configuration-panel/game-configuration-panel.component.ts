@@ -172,6 +172,8 @@ export class GameConfigurationPanelComponent implements OnInit {
 
       this.collections[id].publish=true;
       this._dataService.updateCollection(this.collections[id]).subscribe(data=>{
+        console.log(data);
+        
         this.clearData();
         this.getAllCollections();
       });

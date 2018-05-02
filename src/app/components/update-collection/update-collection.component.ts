@@ -314,6 +314,13 @@ getSpecificItems(tag){
     }
   }
 
+  sawCard(id){
+    this.url = 'https://gameserver.centic.ovh' + this.cards[id].fileURL;
+    this.nameDisplay = this.cards[id].name;
+    this.historyDisplay = this.cards[id].history;
+    this.tagsDisplay = this.cards[id].tags;
+  }
+
   clearData(){
     this.cards = [];
   }

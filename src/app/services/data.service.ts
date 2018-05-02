@@ -164,6 +164,7 @@ export class DataService {
         let userToken= localStorage.getItem('tokenUser');
         let authorization = "Bearer " + userToken;
         let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
         let message = {
                 "name": collection.name,
@@ -171,10 +172,12 @@ export class DataService {
                 "itemType": "1",   //0 = carta , 1 = colección
                 "publish": collection.publish
         }
-        console.log("publish obtenido en el servicio " + collection.publish);
         let body= JSON.stringify(message);
         return this.http.put('https://gameserver.centic.ovh/items/' + collection._id,body, { headers: headers });
     }
+
+    
+
 
     changeCollection(collection: Collection) {
         this.messageSource2.next(collection);

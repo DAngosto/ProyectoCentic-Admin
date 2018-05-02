@@ -78,6 +78,8 @@ export class UpdateCardComponent implements OnInit {
     }
   }
 
+  
+
   updateCard(){
          if((this.cardUpdating)||((this.inputName!="")&&(this.inputHistory!=""))){
               //Si no ha cambiado la imagen no hace falta volver a subirla para obtener un nuevo fileURL
