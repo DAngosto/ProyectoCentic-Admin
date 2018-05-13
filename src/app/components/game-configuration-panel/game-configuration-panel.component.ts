@@ -26,6 +26,7 @@ export class GameConfigurationPanelComponent implements OnInit {
   collectionDeleted: boolean = false;
   noCollection: boolean = false;
   collectionStatusUpdated: boolean = false;
+  urlCopied: boolean = false;
 
 
   url: any;
@@ -90,6 +91,7 @@ export class GameConfigurationPanelComponent implements OnInit {
 
   
   sawCollection(id){
+    this.urlCopied = false;
 
     this.collectiondisplaying = this.collections[id].name;
     var cardsCollection = this.collections[id].cards.split(',');
@@ -119,9 +121,41 @@ export class GameConfigurationPanelComponent implements OnInit {
     });
   }
   
+  changeGamemode(id){
+    this.urlCopied = false;
 
+    if(this.collections[id].gamemode == 0){
+      this.collections[id].gamemode = 1;
+      this._dataService.updateCollection(this.collections[id]).subscribe(data=>{
+        this.clearData();
+        this.getAllCollections();
+      });
+    }
+    else if (this.collections[id].gamemode == 1){
+      this.collections[id].gamemode = 0;
+      this._dataService.updateCollection(this.collections[id]).subscribe(data=>{        
+        this.clearData();
+        this.getAllCollections();
+      });
+    }
+    
+  
+  }
+
+  copyLink(id) {
+    var text = "&collection=" + this.collections[id]._id;
+    var event = (e: ClipboardEvent) => {
+        e.clipboardData.setData('text/plain', text);
+        e.preventDefault();
+        document.removeEventListener('copy', event);
+    }
+    document.addEventListener('copy', event);
+    document.execCommand('copy');
+    this.urlCopied = true;
+}
   
   changeStatus(id){
+    this.urlCopied = false;
     var cardsCollection;
     if(this.collections[id].publish==false){
       cardsCollection = this.collections[id].cards.split(',');

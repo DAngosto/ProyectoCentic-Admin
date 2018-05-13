@@ -144,7 +144,7 @@ export class DataService {
     publish: boolean;
     */
 
-    uploadCollection(name, cards){
+    uploadCollection(name, gamemode, cards){
         let userToken= localStorage.getItem('tokenUser');
         let authorization = "Bearer " + userToken;
         let headers = new HttpHeaders()
@@ -153,6 +153,7 @@ export class DataService {
         let message = {
                 "name": name,
                 "cards": cards,
+                "gamemode": gamemode, //0 = arcade , 1 = survival
                 "itemType": "1",   //0 = carta , 1 = colección
                 "publish": false
         }
@@ -169,6 +170,7 @@ export class DataService {
         let message = {
                 "name": collection.name,
                 "cards": collection.cards,
+                "gamemode": collection.gamemode, //0 = arcade , 1 = survival
                 "itemType": "1",   //0 = carta , 1 = colección
                 "publish": collection.publish
         }

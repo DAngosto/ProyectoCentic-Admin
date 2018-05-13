@@ -45,6 +45,8 @@ export class CreateCollectionComponent implements OnInit {
   historyDisplay: any;
   tagsDisplay: any;
 
+  selectedGamemode: number = 0;
+
   
 
 
@@ -236,10 +238,11 @@ sawCard(id){
               cardsID = cardsID + ',' + this.selectedCards[i]._id;
             }
           }
-          this._dataService.uploadCollection(this.inputName,cardsID).subscribe(data=>{
+          this._dataService.uploadCollection(this.inputName,this.selectedGamemode,cardsID).subscribe(data=>{
               this.clearImagesURL();
               this.clearData();
               this.getAllItems();
+              this.collectionFull = false;
               this.errorCollectionNotFull = false;
               this.errorNoInfo = false;
               this.prevImage = false;
@@ -261,6 +264,7 @@ sawCard(id){
 
   clearData(){
     this.cards = [];
+    this.selectedCards = [];
   }
 
   doSpecificSearch(){
@@ -270,6 +274,19 @@ sawCard(id){
     else{
       this.getSpecificItems(this.inputSearch);
     }
+  }
+
+
+  setGamemode(gamemode){
+    
+    var aux = gamemode.toLowerCase();
+    if (aux=="arcade"){
+      this.selectedGamemode = 0;
+    } 
+    else if (aux=="survival"){
+      this.selectedGamemode = 1;
+    } 
+
   }
 
 }

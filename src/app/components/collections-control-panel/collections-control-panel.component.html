@@ -19,7 +19,9 @@
                         <tr>
                             <th>Name</th>
                             <th>Publish Status</th>
+                            <th class="text-center">Gamemode</th>
                             <th class="text-center">Watch Collection</th>
+
                             <th class="text-center">Update</th>
                             <th class="text-center">Delete</th>
                         </tr>
@@ -29,6 +31,9 @@
                             <td >{{ collection.name }}</td>
                             <td *ngIf= "collection.publish"> published</td>
                             <td *ngIf="!collection.publish"> not published</td>
+                            
+                              <td *ngIf= "collection.gamemode =='0' "> Arcade</td>
+                              <td *ngIf="collection.gamemode =='1' "> Survival</td>
 
                             <td class="text-center"><button class="btn btn-info btn-circle" (click)= "sawCollection(i)" data-toggle="modal" data-target="#myModal"><i class="fa fa-search-plus"></i></button></td>
                             <td class="text-center"><button class="btn btn-info btn-circle" (click)= "updateCollection(i)" ><i class="fa fa-pencil"></i></button></td>

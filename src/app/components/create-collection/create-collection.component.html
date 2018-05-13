@@ -6,6 +6,12 @@
             <br><h2 class="text-center">Create new collection</h2>
             <div class="panel-body">
                 <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name" [(ngModel)]="inputName"></div>
+                        <label>Gamemode: </label>
+                        <select class="form-control-sm" (change)="setGamemode($event.target.value)">
+                            <option>Arcade</option>
+                            <option>Survival</option>
+                        </select>
+                
                 <div id="dataTables-example_filter" class="text-center">
                         <label>Search:<input  class="form-control input-sm" type="search" name="tag" placeholder="Tag"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
                 </div>
@@ -109,7 +115,7 @@
                 <div class="modal-body">
                         <br><img [src] = "url" ><br>
                         <p class="text-info">Name</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ nameDisplay }}" disabled><br>
-                        <p class="text-info">History</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ historyDisplay }}" disabled><br>
+                        <p class="text-info">History</p> <textarea class="form-control" id="disabledInput" type="text" rows="9" placeholder="{{ historyDisplay }}" disabled></textarea><br>
                         <p class="text-info">Tags</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ tagsDisplay }}" disabled>
                 </div>
                 <div class="modal-footer">

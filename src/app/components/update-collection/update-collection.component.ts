@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer2, ElementRef, ViewChild } from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 
 import { Card } from '../../interfaces/Card';
@@ -15,7 +15,7 @@ import { ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./update-collection.component.css']
 })
 
-export class UpdateCollectionComponent implements OnInit {
+export class UpdateCollectionComponent implements OnInit, AfterViewInit {
 
   selectedFile: File = null;
   errorCollectionNotFull: boolean = false;
@@ -52,16 +52,23 @@ export class UpdateCollectionComponent implements OnInit {
 
   collectionUpdating: Collection;
 
+  selectedGamemode: number;
 
 
+  //@ViewChild('tasknote') input: ElementRef;
+  @ViewChild('someInput') someInput: ElementRef;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router) { }
+  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router, private renderer: Renderer2) { }
 
   ngOnInit() {
 
     this._authenticationService.isUserValidated();
     this.getCollectionForUpdate();
     this.getAllItems();
+  }
+
+  ngAfterViewInit() {
+    //using selectRootElement instead of depreaced invokeElementMethod
   }
 
   getCollectionForUpdate() {
@@ -73,7 +80,14 @@ export class UpdateCollectionComponent implements OnInit {
       this.router.navigate(["/collectionsCP"]);
     }
     else{
-      this.inputName = this.collectionUpdating.name;
+    this.inputName = this.collectionUpdating.name;
+    this.selectedGamemode = this.collectionUpdating.gamemode;
+    if (this.collectionUpdating.gamemode==0){
+      this.someInput.nativeElement.value = "Arcade";
+    }
+    else if (this.collectionUpdating.gamemode==1){
+      this.someInput.nativeElement.value = "Survival";
+    }
     var aux: Card;
     
     var cardsCollection = this.collectionUpdating.cards.split(',');
@@ -233,6 +247,18 @@ getSpecificItems(tag){
     }
   }
 
+  setGamemode(gamemode){
+    
+    var aux = gamemode.toLowerCase();
+    if (aux=="arcade"){
+      this.selectedGamemode = 0;
+    } 
+    else if (aux=="survival"){
+      this.selectedGamemode = 1;
+    } 
+
+  }
+
 
   updateImages(){
     this.clearImagesURL();
@@ -291,6 +317,7 @@ getSpecificItems(tag){
 
           this.collectionUpdating.cards = cardsID;
           this.collectionUpdating.name = this.inputName;
+          this.collectionUpdating.gamemode = this.selectedGamemode;
 
 
 

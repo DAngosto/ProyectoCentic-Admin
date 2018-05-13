@@ -6,6 +6,11 @@
             
             <div class="panel-body">
                 <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name" [(ngModel)]="inputName"></div>
+                <label>Gamemode: </label>
+                        <select #someInput class="form-control-sm" (change)="setGamemode($event.target.value)">
+                            <option>Arcade</option>
+                            <option>Survival</option>
+                        </select>
                 <div id="dataTables-example_filter" class="text-center">
                     <label>Search:<input  class="form-control input-sm" type="search" name="tag" placeholder="Tag"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
                 </div>
