@@ -9,40 +9,51 @@
                         </div>
                         <!-- /.col-lg-12 -->
                     </div>
+                    <div *ngIf="configUpdated" class="alert alert-info">
+                            The game configuration has been updated
+                    </div>
+                    <div *ngIf="noValuePointsInput" class="alert alert-danger">
+                            Please select a number of success/fail points or lives before trying to update a gamemode.
+                    </div>
                     <!-- /.row -->
                     <div class="row">
-                        <div class="col-lg-5">
+                        <div class="col-lg-4">
                             
                         </div>
                         <!-- /.col-lg-4 -->
-                        <div class="col-lg-2">
+                        
+                        <div class="col-lg-4">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <div class="text-center">General Configuration</div>
+                                    <div class="text-center">Gamemode Configuration</div>
                                 </div>
                                 <div class="panel-body">
                                     <div class="form-group">
+
+                                        <!-- /.col-lg-4 
                                         <form oninput="x.value=parseInt(a.value)">   
                                             <label >Time of Gamemode (seconds)<input type="range" id="a" name="a" value="50"><output name="x" for="a"><span class="fa fa-clock-o"></span></output>
                                             </label>
-                                        </form>
-                    
-                                      <label>Gamemode: </label>
-                                      <select class="form-control-sm">
-                                          <option>Easy</option>
-                                          <option>Medium</option>
-                                          <option>Hard</option>
-                                          <option>Extreme</option>
-                                      </select>
+                                        </form>-->
+
+                                        <label>Puntos por acierto: </label><div class="form-group"><input class="form-control input-sm" type="number" name="pointsSuccess" placeholder="0" [(ngModel)]="inputSuccessPoints"></div>
+                                        <label>Puntos por fallo: </label><div class="form-group"><input class="form-control input-sm" type="number" name="pointsFail" placeholder="0" [(ngModel)]="inputFailPoints"></div>
+                                        <label>Vidas usuario: </label><div class="form-group"><input #someInput class="form-control input-sm" type="number" name="userLives" placeholder="0" [(ngModel)]="inputLives" disabled></div>
+
+                                        <label>Gamemode: </label>
+                                        <select class="form-control-sm" (change)="setGamemode($event.target.value)">
+                                            <option>Arcade</option>
+                                            <option>Survival</option>
+                                        </select>
                                     </div>
                                  </div>
                                 <div class="panel-footer">
-                                    <div class="text-center"><button class="btn btn-primary" type="submit" (click)="updateCard()" value="Update File"> Update </button></div>
+                                    <div class="text-center"><button class="btn btn-primary" type="submit" (click)="updateGamemode()" value="Update Gamemode"> Update </button></div>
                                 </div>
                             </div>
                         </div>
                         <!-- /.col-lg-4 -->
-                        <div class="col-lg-5">
+                        <div class="col-lg-4">
                             
                         </div>
                         <!-- /.col-lg-4 -->

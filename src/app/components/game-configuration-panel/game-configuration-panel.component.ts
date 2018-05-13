@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef, ViewChild} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import { DataService } from '../../services/data.service';
 
@@ -27,6 +27,8 @@ export class GameConfigurationPanelComponent implements OnInit {
   noCollection: boolean = false;
   collectionStatusUpdated: boolean = false;
   urlCopied: boolean = false;
+  configUpdated: boolean = false;
+  noValuePointsInput: boolean = false;
 
 
   url: any;
@@ -50,7 +52,15 @@ export class GameConfigurationPanelComponent implements OnInit {
   nameDisplay5: string = "";
   nameDisplay6:string = "";
 
- 
+  inputSuccessPoints: number;
+  inputFailPoints: number;
+  inputLives: number;
+
+  selectedGamemode: number = 0;
+
+  @ViewChild('someInput') someInput: ElementRef;
+
+
 
 
   constructor(private _authenticationService: AuthenticationService, private _dataService: DataService,  private router:Router) { }
@@ -92,6 +102,8 @@ export class GameConfigurationPanelComponent implements OnInit {
   
   sawCollection(id){
     this.urlCopied = false;
+    this.configUpdated = false;
+
 
     this.collectiondisplaying = this.collections[id].name;
     var cardsCollection = this.collections[id].cards.split(',');
@@ -122,6 +134,8 @@ export class GameConfigurationPanelComponent implements OnInit {
   }
   
   changeGamemode(id){
+    this.configUpdated = false;
+
     this.urlCopied = false;
 
     if(this.collections[id].gamemode == 0){
@@ -142,7 +156,74 @@ export class GameConfigurationPanelComponent implements OnInit {
   
   }
 
+  setGamemode(gamemode){
+    
+    var aux = gamemode.toLowerCase();
+    if (aux=="arcade"){
+      this.selectedGamemode = 0;
+      this.someInput.nativeElement.value = null;
+      this.someInput.nativeElement.disabled = true;
+    } 
+    else if (aux=="survival"){
+      this.selectedGamemode = 1;
+      this.someInput.nativeElement.disabled = false;
+
+    } 
+    
+
+  }
+
+  updateGamemode(){
+    this.configUpdated = false;
+    this.noValuePointsInput=false;
+    
+    
+
+    if ((!this.inputSuccessPoints) && (!this.inputFailPoints)&&(!this.someInput.nativeElement.value)){
+      this.noValuePointsInput=true;
+    }else{
+      if(this.selectedGamemode==0){
+        if (this.inputSuccessPoints){
+          this.configUpdated = true;
+          this._dataService.updateConfigPoints(this.selectedGamemode, 0, this.inputSuccessPoints).subscribe(data=>{
+          });
+        }
+        if (this.inputFailPoints){
+          this.configUpdated = true;
+          this._dataService.updateConfigPoints(this.selectedGamemode, 1, this.inputFailPoints).subscribe(data=>{
+          });
+        }
+      }
+      else if(this.selectedGamemode==1){
+        if (this.inputSuccessPoints){
+          this.configUpdated = true;
+          this._dataService.updateConfigPoints(this.selectedGamemode, 0 , this.inputSuccessPoints).subscribe(data=>{
+          });
+        }
+        if (this.inputFailPoints){
+          this.configUpdated = true;
+          this._dataService.updateConfigPoints(this.selectedGamemode, 1,this.inputFailPoints).subscribe(data=>{
+          });
+        }
+        if(this.someInput.nativeElement.value){
+          this.configUpdated = true;
+          this._dataService.updateConfigPoints(this.selectedGamemode, 2, this.inputLives).subscribe(data=>{
+          });
+        }
+        
+      }
+    }
+
+
+    
+      
+
+
+  }
+
   copyLink(id) {
+    this.configUpdated = false;
+
     var text = "&collection=" + this.collections[id]._id;
     var event = (e: ClipboardEvent) => {
         e.clipboardData.setData('text/plain', text);
@@ -156,6 +237,8 @@ export class GameConfigurationPanelComponent implements OnInit {
   
   changeStatus(id){
     this.urlCopied = false;
+    this.configUpdated = false;
+
     var cardsCollection;
     if(this.collections[id].publish==false){
       cardsCollection = this.collections[id].cards.split(',');
@@ -206,7 +289,6 @@ export class GameConfigurationPanelComponent implements OnInit {
 
       this.collections[id].publish=true;
       this._dataService.updateCollection(this.collections[id]).subscribe(data=>{
-        console.log(data);
         
         this.clearData();
         this.getAllCollections();

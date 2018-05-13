@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import { Card } from '../interfaces/Card';
 import { Collection } from '../interfaces/Collection';
+import { Config } from '../interfaces/Config';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -139,6 +140,7 @@ export class DataService {
     _id: string;
     name: string;
     cards: string;
+    gamemode: number;
     fileURL: string;
     itemType: string;
     publish: boolean;
@@ -183,6 +185,53 @@ export class DataService {
 
     changeCollection(collection: Collection) {
         this.messageSource2.next(collection);
+    }
+
+
+    //METODOS PARA CONFIG///
+
+    updateConfigPoints(gamemode, type, value){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        var message;
+
+        if(gamemode==0){
+            if(type==0){
+                message = {
+                    "arcadesuccesspoints" : value 
+                }
+            }
+            else if(type==1){
+                message = {
+                    "arcadefailpoints" : value 
+                }
+            }
+            
+        }
+        else if (gamemode==1){
+            if(type==0){
+                message = {
+                    "survivalsuccesspoints" : value 
+                }
+            }
+            else if(type==1){
+                message = {
+                    "survivalfailpoints" : value 
+                }
+            }
+            else if(type==2){
+                message = {
+                    "survivallives" : value 
+                }
+            }
+        }
+        
+        let body= JSON.stringify(message);
+        return this.http.put('https://gameserver.centic.ovh/config',body, { headers: headers });
+
     }
 
 }// END OF DataService
