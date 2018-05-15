@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import { Card } from '../interfaces/Card';
 import { Collection } from '../interfaces/Collection';
 import { Config } from '../interfaces/Config';
+import { GamePlayed } from '../interfaces/GamePlayed';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -52,6 +53,15 @@ export class DataService {
             .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
         return this.http.get<Collection[]>('https://gameserver.centic.ovh/items', { headers: headers });
+    }
+
+    getAllItemsGamesPlayed(){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        return this.http.get<GamePlayed[]>('https://gameserver.centic.ovh/items', { headers: headers });
     }
 
     getItem(id){

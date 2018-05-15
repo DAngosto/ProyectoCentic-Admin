@@ -58,9 +58,9 @@ export class GameConfigurationPanelComponent implements OnInit {
 
   selectedGamemode: number = 0;
 
-  @ViewChild('someInput') someInput: ElementRef;
-
-
+  @ViewChild('livesInput') livesInput: ElementRef;
+  @ViewChild('successPointsInput') successPointsInput: ElementRef;
+  @ViewChild('failPointsInput') failPointsInput: ElementRef;
 
 
   constructor(private _authenticationService: AuthenticationService, private _dataService: DataService,  private router:Router) { }
@@ -161,12 +161,19 @@ export class GameConfigurationPanelComponent implements OnInit {
     var aux = gamemode.toLowerCase();
     if (aux=="arcade"){
       this.selectedGamemode = 0;
-      this.someInput.nativeElement.value = null;
-      this.someInput.nativeElement.disabled = true;
+      this.livesInput.nativeElement.value = null;
+      this.livesInput.nativeElement.disabled = true;
+
+      this.successPointsInput.nativeElement.disabled = false;
+      this.failPointsInput.nativeElement.disabled = false;
     } 
     else if (aux=="survival"){
       this.selectedGamemode = 1;
-      this.someInput.nativeElement.disabled = false;
+      this.livesInput.nativeElement.disabled = false;
+      this.successPointsInput.nativeElement.disabled = true;
+      this.failPointsInput.nativeElement.disabled = true;
+      this.successPointsInput.nativeElement.value = null;
+      this.failPointsInput.nativeElement.value = null;
 
     } 
     
@@ -179,7 +186,7 @@ export class GameConfigurationPanelComponent implements OnInit {
     
     
 
-    if ((!this.inputSuccessPoints) && (!this.inputFailPoints)&&(!this.someInput.nativeElement.value)){
+    if ((!this.inputSuccessPoints) && (!this.inputFailPoints)&&(!this.livesInput.nativeElement.value)){
       this.noValuePointsInput=true;
     }else{
       if(this.selectedGamemode==0){
@@ -195,17 +202,7 @@ export class GameConfigurationPanelComponent implements OnInit {
         }
       }
       else if(this.selectedGamemode==1){
-        if (this.inputSuccessPoints){
-          this.configUpdated = true;
-          this._dataService.updateConfigPoints(this.selectedGamemode, 0 , this.inputSuccessPoints).subscribe(data=>{
-          });
-        }
-        if (this.inputFailPoints){
-          this.configUpdated = true;
-          this._dataService.updateConfigPoints(this.selectedGamemode, 1,this.inputFailPoints).subscribe(data=>{
-          });
-        }
-        if(this.someInput.nativeElement.value){
+        if(this.livesInput.nativeElement.value){
           this.configUpdated = true;
           this._dataService.updateConfigPoints(this.selectedGamemode, 2, this.inputLives).subscribe(data=>{
           });
