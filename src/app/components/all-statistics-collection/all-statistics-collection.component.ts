@@ -3,18 +3,19 @@ import {AuthenticationService} from '../../services/authentication.service';
 import { DataService } from '../../services/data.service';
 import { ActivatedRoute, Router} from '@angular/router';
 
-
 declare var Morris:any;
 declare var $:any;
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  selector: 'app-all-statistics-collection',
+  templateUrl: './all-statistics-collection.component.html',
+  styleUrls: ['./all-statistics-collection.component.css']
 })
-export class MenuComponent implements OnInit {
+export class AllStatisticsCollectionComponent implements OnInit {
 
-  public tokenUser;
+
+  inputSearch: string="";
+
   actualCards:number;
   actualCollections:number;
   actualCollectionsPublished:number;
@@ -30,6 +31,9 @@ export class MenuComponent implements OnInit {
   gamesWithVolteoJoker:number;
   gamesWithBothJokers: number;
 
+  sawCharts:boolean=false;
+  data:boolean=false;
+  sawNoData:boolean=false;
 
 
   constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router) { }
@@ -37,37 +41,21 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
 
     this._authenticationService.isUserValidated();
-    this.getAllItems();
-    
-    
-
-    /*
-    if (localStorage.getItem('tokenUser')) {
-      this.tokenUser = localStorage.getItem('tokenUser');
-      console.log("  Login realizado correctamente. El token ha sido: " + this.tokenUser);
-      }else{
-        this.tokenUser = "no hay token almacenado";
-        console.log("  Login realizado correctamente. El token ha sido: " + this.tokenUser);
-    }
-    */
-
-   
-
-    /*
-    if(dd<10) {
-      dd='0'+dd
-    } 
-
-    if(mm<10) {
-      mm='0'+mm
-    } 
-    
-
-    hoy = mm +'/'+dd+'/'+yyyy; 
-    */
+    //this.getAllItems();
   }
 
-  getAllItems(){
+  doSpecificSearch(){
+    if (this.inputSearch==""){
+    }
+    else{
+      this.getAllItemsOfCollection(this.inputSearch);
+    }
+  }
+
+  getAllItemsOfCollection(id){
+    
+    this.data=false;
+
     this.actualCards = 0;
     this.actualCollections = 0;
     this.actualCollectionsPublished = 0;
@@ -81,20 +69,22 @@ export class MenuComponent implements OnInit {
     this.gamesWithBothJokers = 0;
 
 
+  var searchedID="";
+  if(id.charAt(0)=='&'){
+    searchedID = id.substring(12,id.length);
+  }else{
+    searchedID = id;
+  }
+  
     
     this._dataService.getAllItemsGamesPlayed().subscribe(data=>{
         //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
         for(let i=0; i<data.length; i++){
-            if (data[i].itemType=="0"){
-              this.actualCards++;
-            }
-            else if (data[i].itemType=="1"){
-              this.actualCollections++;
-              if(data[i].publish==true){
-                this.actualCollectionsPublished++;
-              }
-            }
-            else if (data[i].itemType=="2"){
+            
+          
+          if (data[i].itemType=="2"){
+            if(data[i].collectionID==searchedID){
+              this.data=true;
               this.actualNumberOfGamesPlayed++;
               if(data[i].gamemode==0){
                 console.log("entro 1º");
@@ -118,19 +108,39 @@ export class MenuComponent implements OnInit {
                 this.actualSurvivalGamesPlayed++;                
               }
             }
+          }
 
             
         }
 
-        this.loadStatistics();
+        console.log(this.data);
+
+        this.inputSearch="";
+        if(this.data){
+          this.loadStatistics();
+          this.sawNoData=false;
+
+        }else{
+          this.cleanCharts();
+          this.sawNoData=true;
+        }
+
     });
+  }
+
+
+  cleanCharts(){
+    $('#morris-donut-chart-gamemodevs').empty();
+    $('#morris-bar-chart-jokersvs').empty();
+    $('#morris-donut-chart-mostusedjokers').empty();
   }
 
 
   loadStatistics(){
 
+    this.cleanCharts();
+
     //Limpiamos los datos que ya estuvieran
-		$('#morris-donut-chart-gamemodevs').empty();
     Morris.Donut({
       element: 'morris-donut-chart-gamemodevs',
       data: [
@@ -139,7 +149,6 @@ export class MenuComponent implements OnInit {
       ]
     });
 
-    $('#morris-bar-chart-jokersvs').empty();
     Morris.Bar({
       element: 'morris-bar-chart-jokersvs',
       data: [
@@ -150,7 +159,6 @@ export class MenuComponent implements OnInit {
       labels: ['Con comodines', 'Sin comodines']
     });
 
-    $('#morris-donut-chart-mostusedjokers').empty();
     Morris.Donut({
       element: 'morris-donut-chart-mostusedjokers',
       data: [

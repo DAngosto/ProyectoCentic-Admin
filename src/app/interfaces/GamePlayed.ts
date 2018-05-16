@@ -10,5 +10,7 @@ export interface GamePlayed {
         initLives: number,
         date: string,
         itemType: string;
+        publish: boolean;
+
         //"invitation": "9aae05f0-2b97-11e8-9236-005056992599",
 }

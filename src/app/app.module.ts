@@ -21,8 +21,8 @@ import { CollectionsControlPanelComponent } from './components/collections-contr
 import { CreateCollectionComponent } from './components/create-collection/create-collection.component';
 import { UpdateCollectionComponent } from './components/update-collection/update-collection.component';
 import { GameConfigurationPanelComponent } from './components/game-configuration-panel/game-configuration-panel.component';
-import { StatisticsControlPanelComponent } from './components/statistics-control-panel/statistics-control-panel.component';
 import { AllStatisticsComponent } from './components/all-statistics/all-statistics.component';
+import { AllStatisticsCollectionComponent } from './components/all-statistics-collection/all-statistics-collection.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,7 +34,7 @@ const appRoutes: Routes = [
   { path: 'newCollection',component: CreateCollectionComponent },
   { path: 'updateCollection',component: UpdateCollectionComponent },
   { path: 'GameConfigCP',component: GameConfigurationPanelComponent },
-  { path: 'StatisticsCP',component: StatisticsControlPanelComponent },
+  { path: 'AllStatisticsCollection',component: AllStatisticsCollectionComponent },
   { path: 'AllStatistics',component: AllStatisticsComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' }
@@ -54,8 +54,8 @@ const appRoutes: Routes = [
     CreateCollectionComponent,
     UpdateCollectionComponent,
     GameConfigurationPanelComponent,
-    StatisticsControlPanelComponent,
-    AllStatisticsComponent
+    AllStatisticsComponent,
+    AllStatisticsCollectionComponent
   ],
   imports: [
     BrowserModule,

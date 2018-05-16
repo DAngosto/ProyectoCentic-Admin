@@ -1,4 +1,4 @@
-<div id="wrapper">
+
 
     <!-- Navigation -->
     <app-nav-bar></app-nav-bar>
@@ -17,7 +17,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-comments fa-5x"></i>
+                                <i class="fa fa-image fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">{{ actualCards }}</div>
@@ -39,7 +39,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-tasks fa-5x"></i>
+                                <i class="fa fa-image fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">{{ actualCollections }}</div>
@@ -61,7 +61,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-shopping-cart fa-5x"></i>
+                                <i class="fa fa-cog fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">{{ actualCollectionsPublished }}</div>
@@ -83,7 +83,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-support fa-5x"></i>
+                                <i class="fa fa-gamepad fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">{{ actualNumberOfGamesPlayed }}</div>
@@ -91,7 +91,7 @@
                             </div>
                         </div>
                     </div>
-                    <a routerLink="/StatisticsCP">
+                    <a routerLink="/AllStatistics">
                         <div class="panel-footer">
                             <span class="pull-left" >View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -100,13 +100,68 @@
                     </a>
                 </div>
             </div>
+        
+        
+        
+
+        <!-- /.row graficas -->
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Arcade Games vs Survival Games
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div id="morris-donut-chart-gamemodevs"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-6 -->
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Games were jokers were used vs not
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div id="morris-bar-chart-jokersvs"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
         </div>
         
-        <!-- /.row -->
+        <div class="col-lg-3">
+        </div>
+
+        <div class="text-center">
+            <!-- /.col-lg-6 -->
+        <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Uso de cada tipo de comodín
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div id="morris-donut-chart-mostusedjokers"></div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+
+        </div>
+
+    <!-- /.row graficas -->
+
+
     </div>
+</div>
     <!-- /#page-wrapper -->
 
-</div>
 
 
 
