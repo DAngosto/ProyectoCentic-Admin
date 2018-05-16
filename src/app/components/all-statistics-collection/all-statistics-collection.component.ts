@@ -152,7 +152,7 @@ export class AllStatisticsCollectionComponent implements OnInit {
     Morris.Bar({
       element: 'morris-bar-chart-jokersvs',
       data: [
-        { y: 'Partidas', a: this.actualGamesWithJokers, b: this.actualGamesWithoutJokers },
+        { y: 'Partidas Modo Arcade', a: this.actualGamesWithJokers, b: this.actualGamesWithoutJokers },
       ],
       xkey: 'y',
       ykeys: ['a', 'b'],

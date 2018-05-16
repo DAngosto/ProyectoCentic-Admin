@@ -9,16 +9,44 @@
                         </div>
                         <!-- /.col-lg-12 -->
                     </div>
+                    <div *ngIf="cardCoverUpdated" class="alert alert-info">
+                        El dosier de las cartas ha cambiado
+                    </div>
+                    <div *ngIf="errorNoImageSelected" class="alert alert-danger">
+                        Selecciona una imágen antes de intentar cambiar el dosier de las cartas
+                    </div>
                     <div *ngIf="configUpdated" class="alert alert-info">
                             The game configuration has been updated
                     </div>
                     <div *ngIf="noValuePointsInput" class="alert alert-danger">
                             Please select a number of success/fail points or lives before trying to update a gamemode.
                     </div>
+
+                    <div class="col-lg-2">
+                            
+                    </div>
                     <!-- /.row -->
                     <div class="row">
                         <div class="col-lg-4">
-                            
+                            <div class="panel panel-yellow">
+                                <div class="panel-heading">
+                                    <div class="text-center">Dosier de las cartas</div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+
+                                        
+                                            <input type="file" (change)="onFileSelected($event)"><br>
+                                            <img [src]=urlMostrar>
+                                        
+                                        
+
+                                    </div>
+                                 </div>
+                                <div class="panel-footer">
+                                    <div class="text-center"><button class="btn btn-primary" type="submit" (click)="updateCardCover()" value="Update Card Cover"> Update </button></div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.col-lg-4 -->
                         
@@ -38,7 +66,8 @@
 
                                         <label>Puntos por acierto: </label><div class="form-group"><input #successPointsInput class="form-control input-sm" type="number" name="pointsSuccess" placeholder="0" [(ngModel)]="inputSuccessPoints"></div>
                                         <label>Puntos por fallo: </label><div class="form-group"><input #failPointsInput class="form-control input-sm" type="number" name="pointsFail" placeholder="0" [(ngModel)]="inputFailPoints"></div>
-                                        <label>Vidas usuario: </label><div class="form-group"><input #livesInput class="form-control input-sm" type="number" min="5" name="userLives" placeholder="0" [(ngModel)]="inputLives" disabled></div>
+                                        <label>Vidas usuario: </label><div class="form-group"><input #livesInput class="form-control input-sm" type="number" min="5" name="userLives" placeholder="0" [(ngModel)]="inputLives" disabled>                                        <p class="text-info">El mínimo número de vidas disponible es 5</p>
+                                        </div>
 
                                         <label>Gamemode: </label>
                                         <select class="form-control-sm" (change)="setGamemode($event.target.value)">
@@ -53,7 +82,7 @@
                             </div>
                         </div>
                         <!-- /.col-lg-4 -->
-                        <div class="col-lg-4">
+                        <div class="col-lg-2">
                             
                         </div>
                         <!-- /.col-lg-4 -->

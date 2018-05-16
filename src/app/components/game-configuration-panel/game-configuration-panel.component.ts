@@ -9,6 +9,9 @@ import { Observable } from 'rxjs/observable';
 import { ActivatedRoute, Router} from '@angular/router';
 import { Collection } from '../../interfaces/Collection';
 
+import { Ng2ImgToolsService } from 'ng2-img-tools';
+
+
 @Component({
   selector: 'app-game-configuration-panel',
   templateUrl: './game-configuration-panel.component.html',
@@ -29,9 +32,12 @@ export class GameConfigurationPanelComponent implements OnInit {
   urlCopied: boolean = false;
   configUpdated: boolean = false;
   noValuePointsInput: boolean = false;
+  cardCoverUpdated: boolean = false;
+  errorNoImageSelected:boolean=false;
 
 
   url: any;
+  urlMostrar: any;
   nameDisplay: any;
   historyDisplay: any;
   tagsDisplay: any;
@@ -62,14 +68,21 @@ export class GameConfigurationPanelComponent implements OnInit {
   @ViewChild('successPointsInput') successPointsInput: ElementRef;
   @ViewChild('failPointsInput') failPointsInput: ElementRef;
 
+  selectedFile: File = null;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService,  private router:Router) { }
+
+
+  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService,  private router:Router, private ng2ImgToolsService: Ng2ImgToolsService) { }
 
   ngOnInit() {
     this._authenticationService.isUserValidated();
+    this.getCardCover();
     this.getAllCollections();
 
   }
+
+
+  
 
   getAllCollections(){
       this.clearData();
@@ -103,6 +116,10 @@ export class GameConfigurationPanelComponent implements OnInit {
   sawCollection(id){
     this.urlCopied = false;
     this.configUpdated = false;
+    this.cardCoverUpdated=false;
+
+    this.errorNoImageSelected=false;
+
 
 
     this.collectiondisplaying = this.collections[id].name;
@@ -135,6 +152,10 @@ export class GameConfigurationPanelComponent implements OnInit {
   
   changeGamemode(id){
     this.configUpdated = false;
+    this.cardCoverUpdated=false;
+
+    this.errorNoImageSelected=false;
+
 
     this.urlCopied = false;
 
@@ -183,7 +204,10 @@ export class GameConfigurationPanelComponent implements OnInit {
   updateGamemode(){
     this.configUpdated = false;
     this.noValuePointsInput=false;
-    
+    this.cardCoverUpdated=false;
+    this.errorNoImageSelected=false;
+
+
     
 
     if ((!this.inputSuccessPoints) && (!this.inputFailPoints)&&(!this.livesInput.nativeElement.value)){
@@ -218,8 +242,65 @@ export class GameConfigurationPanelComponent implements OnInit {
 
   }
 
+  onFileSelected(event){
+    if (event.target.files && event.target.files[0]) {
+      this.selectedFile = <File> event.target.files[0];
+      var reader = new FileReader();
+      reader.onload = (event:any) => {
+        this.url = event.target.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+      console.log(event.target.files[0]);
+      this.url = reader.result;
+
+      
+    }
+  }
+
+
+  getCardCover(){
+    this._dataService.getConfig().subscribe(data=>{
+      this.urlMostrar = data['cardCover'];
+    });
+  }
+
+  updateCardCover(){
+    if (this.selectedFile){
+      this.errorNoImageSelected=false;
+      const fd = new FormData();
+      this.ng2ImgToolsService.resizeExactCrop([this.selectedFile], 258, 183).subscribe(result => {
+        
+        console.log(result);
+        
+        //all good, result is a file
+        fd.append('file', result, this.selectedFile.name);
+        this._dataService.uploadFile(fd).subscribe(data=>{
+          let fileURL = data['file'];
+          this._dataService.updateConfigCardCover(fileURL).subscribe(data=>{
+            this.urlMostrar = 'https://gameserver.centic.ovh' + fileURL;
+            this.url = "";
+            this.cardCoverUpdated=true;
+          });
+        
+      })
+      
+      }, error => {
+        console.log(error);
+        //something went wrong 
+        //use result.compressedFile or handle specific error cases individually
+      });
+    }else{
+      console.log("hola");
+      this.errorNoImageSelected=true;
+    }
+          
+  }
+
   copyLink(id) {
     this.configUpdated = false;
+    this.cardCoverUpdated=false;
+    this.errorNoImageSelected=false;
+
 
     var text = "&collection=" + this.collections[id]._id;
     var event = (e: ClipboardEvent) => {
@@ -235,6 +316,10 @@ export class GameConfigurationPanelComponent implements OnInit {
   changeStatus(id){
     this.urlCopied = false;
     this.configUpdated = false;
+    this.cardCoverUpdated=false;
+    this.errorNoImageSelected=false;
+
+
 
     var cardsCollection;
     if(this.collections[id].publish==false){

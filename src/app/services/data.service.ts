@@ -222,22 +222,44 @@ export class DataService {
             
         }
         else if (gamemode==1){
-            if(type==0){
-                message = {
-                    "survivalsuccesspoints" : value 
+            
+            if(type==2){
+                var aux = value;
+                if(value<5){
+                    aux = 5;
                 }
-            }
-            else if(type==1){
                 message = {
-                    "survivalfailpoints" : value 
-                }
-            }
-            else if(type==2){
-                message = {
-                    "survivallives" : value 
+                    "survivallives" : aux 
                 }
             }
         }
+        
+        let body= JSON.stringify(message);
+        return this.http.put('https://gameserver.centic.ovh/config',body, { headers: headers });
+
+    }
+
+    getConfig(){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        return this.http.get('https://gameserver.centic.ovh/config',{ headers: headers });
+
+    }
+
+    updateConfigCardCover(url){
+        let userToken= localStorage.getItem('tokenUser');
+        let authorization = "Bearer " + userToken;
+        let headers = new HttpHeaders()
+            .set('Content-Type', 'application/json')
+            .set('Authorization', authorization);
+        var aux = "https://gameserver.centic.ovh" + url;
+        var message = {
+                    "cardCover" : aux 
+                }
+         
         
         let body= JSON.stringify(message);
         return this.http.put('https://gameserver.centic.ovh/config',body, { headers: headers });
