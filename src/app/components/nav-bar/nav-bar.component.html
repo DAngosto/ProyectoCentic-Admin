@@ -1,59 +1,54 @@
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="index.html">Zona Administración Minijuego Grupo 2</a>
+        <a class="navbar-brand">Zona Administración Minijuego Grupo 2</a>
     </div>
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li class="sidebar-search">
-                    <h4>Logged as {{ username }}</h4>
+                    <h4 class="text-center">Iniciada sesión como </h4>
+                    <h4 class="text-center">{{ username }}</h4>
                 </li>
                 <li>
-                    <a routerLink="/menu" routerLinkActive="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a routerLink="/menu" routerLinkActive="active"><i class="fa fa-dashboard fa-fw"></i> Panel General</a>
                 </li>
                 <li>
-                    <a><i class="fa fa-image"></i> Cards </a>
+                    <a><i class="fa fa-image"></i> Cartas </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a routerLink="/cardsCP" routerLinkActive="active">Cards Control Panel</a>
+                            <a routerLink="/cardsCP" routerLinkActive="active">Panel de Control de las Cartas</a>
                         </li>
                         <li>
-                            <a routerLink="/newCard" routerLinkActive="active">Create new card</a>
+                            <a routerLink="/newCard" routerLinkActive="active">Crear una nueva carta</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a ><i class="fa fa-image"></i> Collections</a>
+                    <a ><i class="fa fa-image"></i> Colecciones</a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a routerLink="/collectionsCP" routerLinkActive="active">Collections Control Panel</a>
+                            <a routerLink="/collectionsCP" routerLinkActive="active">Panel de Control de las Colecciones</a>
                         </li>
                         <li>
-                            <a routerLink="/newCollection" routerLinkActive="active">Create new collection</a>
+                            <a routerLink="/newCollection" routerLinkActive="active">Crear una nueva colección</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a routerLink="/GameConfigCP" routerLinkActive="active"><i class="fa fa-cog"></i> Game Configuration Panel</a>
+                    <a routerLink="/GameConfigCP" routerLinkActive="active"><i class="fa fa-cog"></i> Panel de Configuración</a>
                 </li>
                 <li>
-                    <a ><i class="fa fa-bar-chart-o"></i> Statistics</a>
+                    <a ><i class="fa fa-bar-chart-o"></i> Estadísticas</a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a routerLink="/AllStatistics" routerLinkActive="active">All Statistics</a>
+                            <a routerLink="/AllStatistics" routerLinkActive="active">Todas las Estadísticas</a>
                         </li>
                         <li>
-                            <a routerLink="/AllStatisticsCollection" routerLinkActive="active">All Statistics of a collection</a>
+                            <a routerLink="/AllStatisticsCollection" routerLinkActive="active">Todas las Estadísticas de una Colección</a>
                         </li>   
                     </ul>
                 </li>
-                <li><a (click)= "disconnect()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li><a (click)= "disconnect()"><i class="fa fa-sign-out fa-fw"></i> Desconectarse</a>
             </ul>
         </div>
     </div>

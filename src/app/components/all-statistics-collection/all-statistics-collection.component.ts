@@ -121,8 +121,8 @@ export class AllStatisticsCollectionComponent implements OnInit {
     Morris.Donut({
       element: 'morris-donut-chart-gamemodevs',
       data: [
-        {label: "Arcade Games", value: this.actualArcadeGamesPlayed},
-        {label: "Survival Games", value:  this.actualSurvivalGamesPlayed}
+        {label: "Juegos Arcade", value: this.actualArcadeGamesPlayed},
+        {label: "Juegos Survival", value:  this.actualSurvivalGamesPlayed}
       ]
     });
 
@@ -139,9 +139,9 @@ export class AllStatisticsCollectionComponent implements OnInit {
     Morris.Donut({
       element: 'morris-donut-chart-mostusedjokers',
       data: [
-        {label: "Games with Multi Joker", value: this.gamesWithMultiJoker},
-        {label: "Games with Volteo Joker", value:  this.gamesWithVolteoJoker},
-        {label: "Games with Both Jokers", value:  this.gamesWithBothJokers}
+        {label: "Juegos con comodín Multi", value: this.gamesWithMultiJoker},
+        {label: "Juegos con comodín Volteo", value:  this.gamesWithVolteoJoker},
+        {label: "Juegos con ambos comodines", value:  this.gamesWithBothJokers}
       ]
     });
   }

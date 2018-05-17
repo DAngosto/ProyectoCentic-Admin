@@ -1,24 +1,26 @@
 <app-nav-bar></app-nav-bar>
 <div id="page-wrapper">
     <div *ngIf="sawNoData" class="alert alert-info">
-        No games have been played with that ID
+        No se han jugado partidas con ese ID
     </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2 class="text-center">All Statistics of a Collection</h2> 
+                    <h2 class="text-center">Todas las Estadísticas de una Colección</h2> 
                 </div>
                 <br>
                 <div id="dataTables-example_filter" class="text-center">
-                    <label >Search:<input type="search" class="form-control input-sm" placeholder="Collection ID"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
+                    <label >Búsqueda:<input type="search" class="form-control input-sm" placeholder="ID de la colección"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                 Arcade Games vs Survival Games
+                                <div class="text-center">
+                                    Juegos Arcade vs Juegos Survival
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <div id="morris-donut-chart-gamemodevs"></div>
@@ -28,7 +30,9 @@
                     <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Games were jokers were used vs not
+                                <div class="text-center">
+                                    Juegos Arcade donde se hayan usado comodínes vs donde no
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <div id="morris-bar-chart-jokersvs"></div>
@@ -41,7 +45,9 @@
                         <div class="col-lg-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Uso de cada tipo de comodín
+                                    <div class="text-center">
+                                        Uso de cada tipo de comodín
+                                    </div>
                                 </div>
                                 <div class="panel-body">
                                     <div id="morris-donut-chart-mostusedjokers"></div>

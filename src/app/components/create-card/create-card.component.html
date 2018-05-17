@@ -3,16 +3,16 @@
     <div class="contact-clean">
         <form method="post">
             <br>
-            <h2 class="text-center">Create new card</h2>
+            <h2 class="text-center">Crear una nueva carta</h2>
             <div class="form-group">
-                <input class="form-control" type="text" name="name" placeholder="Name" [(ngModel)]="inputName">
+                <input class="form-control" type="text" name="name" placeholder="Nombre" [(ngModel)]="inputName">
             </div>
             <div class="form-group">
-                <textarea class="form-control" rows="9" name="history" placeholder="History" [(ngModel)]="inputHistory"></textarea>
+                <textarea class="form-control" rows="9" name="history" placeholder="Historia" [(ngModel)]="inputHistory"></textarea>
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="tags" placeholder="Tags" [(ngModel)]="inputTags">
-                <p class="text-info">In the case that you wish to put more than one, put them like Tag1, Tag2, Tag3...</p>
+                <input class="form-control" type="text" name="tags" placeholder="Etiquetas" [(ngModel)]="inputTags">
+                <p class="text-info">En el caso de querer poner mas de una etiqueta, introducirlas de la manera Etiqueta1, Etiqueta2, Etiqueta3...</p>
             </div>
             <input type="file" (change)="onFileSelected($event)">
             <div id="preview" class="preview" *ngIf="prevImage">
@@ -21,16 +21,16 @@
             </div>
             <br>
             <div *ngIf="errorNoImageSelected" class="alert alert-danger">
-                Select an image first before trying to create a new card!
+                ¡Selecciona una imagen antes de intentar crear una nueva carta!
             </div>
             <div *ngIf="errorNoInfo" class="alert alert-danger">
-                Incomplete name or history field, please enter the corresponding information.
+                Los campos nombre o historia estaban incompletos, por favor introduce la información correspondiente
             </div>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit" (click)="uploadCard()" value="Upload File"> Create </button>
             </div>
             <div *ngIf="cardUploaded" class="alert alert-success">
-                The new card has been created!
+                La carta ha sido creada con exito
             </div>
         </form>
     </div>

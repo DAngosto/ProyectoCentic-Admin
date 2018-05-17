@@ -98,17 +98,18 @@ export class CreateCollectionComponent implements OnInit {
       }else{
         this.noCardsWithSpecificTag = false;
       }
-  });
-}
+    });
+  }
 
-sawCard(id){
-  this.url = AppSettings.API_ENDPOINT + this.cards[id].fileURL;
-  this.nameDisplay = this.cards[id].name;
-  this.historyDisplay = this.cards[id].history;
-  this.tagsDisplay = this.cards[id].tags;
-}
+  sawCard(id){
+    this.url = AppSettings.API_ENDPOINT + this.cards[id].fileURL;
+    this.nameDisplay = this.cards[id].name;
+    this.historyDisplay = this.cards[id].history;
+    this.tagsDisplay = this.cards[id].tags;
+  }
 
   addCardtoCollection(id){
+    this.collectionUploaded=false;
     if (this.selectedCards.length>=6){
       this.collectionFull= true;
       this.cardRepeated=false;
@@ -210,7 +211,8 @@ sawCard(id){
         }
         this._dataService.uploadCollection(this.inputName,this.selectedGamemode,cardsID).subscribe(data=>{
           this.clearImagesURL();
-          this.clearData();
+          this.clearData();    
+          this.selectedCards = [];
           this.getAllItems();
           this.collectionFull = false;
           this.errorCollectionNotFull = false;
@@ -219,6 +221,7 @@ sawCard(id){
           this.collectionUploaded = true;
           this.inputName = "";
           this.prevImage = false;
+          this.sawCollection=false;
         });
       }else{
         this.collectionUploaded = false;
@@ -234,7 +237,6 @@ sawCard(id){
 
   clearData(){
     this.cards = [];
-    this.selectedCards = [];
   }
 
   doSpecificSearch(){
