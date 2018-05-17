@@ -1,25 +1,28 @@
+//MODULES
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router} from '@angular/router';
-import {AuthenticationService} from '../../services/authentication.service';
-import {Observable} from 'rxjs/Rx';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/observable';
+
+//SERVICES
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
 
   public inputUser;
   public inputPassword;
+
+  //Alarm Conditions
   public errorValidating=false;
 
   constructor(private _authenticationService: AuthenticationService, private router:Router) { }
 
   ngOnInit() {
-    
-    
-  
   }
 
   tryValidation(){
@@ -34,11 +37,8 @@ export class LoginComponent implements OnInit {
            this.errorValidating=true;
            return Observable.throw(error);
          }
-    );
-
-  }
-  
-
-}
+      );
+    } 
+}/// END OF COMPONENT LoginComponent ///
 
 

@@ -1,13 +1,17 @@
-import { Component, OnInit, AfterViewInit, Renderer2, ElementRef, ViewChild } from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service';
+//MODULES
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
+//SERVICES
+import {AuthenticationService} from '../../services/authentication.service';
+import { DataService } from '../../services/data.service';
+
+//INTERFACES
 import { Card } from '../../interfaces/Card';
 import { Collection } from '../../interfaces/Collection';
-import { DataService } from '../../services/data.service';
-import { CardsControlPanelComponent } from '../cards-control-panel/cards-control-panel.component';
 
-import { ActivatedRoute, Router} from '@angular/router';
-
+//SETTINGS
+import {AppSettings} from '../../AppSettings';
 
 @Component({
   selector: 'app-update-collection',
@@ -15,9 +19,27 @@ import { ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./update-collection.component.css']
 })
 
-export class UpdateCollectionComponent implements OnInit, AfterViewInit {
+export class UpdateCollectionComponent implements OnInit {
 
   selectedFile: File = null;
+  selectedCards: Card[] = [];
+  cards: Card[] = [];
+  inputName: string = "";
+  inputSearch: string = "";
+  url: string = "";
+  urlCard1: string = "";
+  urlCard2: string = "";
+  urlCard3: string = "";
+  urlCard4: string = "";
+  urlCard5: string = "";
+  urlCard6: string = "";
+  nameDisplay: any;
+  historyDisplay: any;
+  tagsDisplay: any;
+  collectionUpdating: Collection;
+  selectedGamemode: number;
+
+  //Alarm Conditions
   errorCollectionNotFull: boolean = false;
   errorNoInfo: boolean = false;
   collectionUpdated: boolean = false;
@@ -27,105 +49,65 @@ export class UpdateCollectionComponent implements OnInit, AfterViewInit {
   cardNotInCollection: boolean = false;
   sawCollection: boolean = false;
   cardRepeated: boolean = false;
-
-  inputName: string = "";
-  inputSearch: string = "";
-
-
-  url: string = "";
-
-  urlCard1: string = "";
-  urlCard2: string = "";
-  urlCard3: string = "";
-  urlCard4: string = "";
-  urlCard5: string = "";
-  urlCard6: string = "";
-  selectedCards: Card[] = [];
   noCardsWithSpecificTag: boolean = false;
-
-
-  cards: Card[] = [];
   noCards: boolean = false;
-  nameDisplay: any;
-  historyDisplay: any;
-  tagsDisplay: any;
 
-  collectionUpdating: Collection;
+  @ViewChild('gamemodeInput') gamemodeInput: ElementRef;
 
-  selectedGamemode: number;
-
-
-  //@ViewChild('tasknote') input: ElementRef;
-  @ViewChild('someInput') someInput: ElementRef;
-
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router, private renderer: Renderer2) { }
+  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router) { }
 
   ngOnInit() {
-
     this._authenticationService.isUserValidated();
     this.getCollectionForUpdate();
     this.getAllItems();
   }
 
-  ngAfterViewInit() {
-    //using selectRootElement instead of depreaced invokeElementMethod
-  }
-
   getCollectionForUpdate() {
-    //this._cardsService.changeCard("Hello from Sibling")
     this.sawCollection = true;
     this._dataService.currentCollectionUpdating.subscribe(collectionUpdating => this.collectionUpdating = collectionUpdating);
-
-    if(!this.collectionUpdating){
+    if (!this.collectionUpdating){
       this.router.navigate(["/collectionsCP"]);
+    }else{
+      this.inputName = this.collectionUpdating.name;
+      this.selectedGamemode = this.collectionUpdating.gamemode;
+      if (this.collectionUpdating.gamemode==0){
+        this.gamemodeInput.nativeElement.value = "Arcade";
+      }else if (this.collectionUpdating.gamemode==1){
+        this.gamemodeInput.nativeElement.value = "Survival";
+      }
+      var aux: Card;
+      var cardsCollection = this.collectionUpdating.cards.split(',');
+      this._dataService.getItem(cardsCollection[0]).subscribe(data=>{
+        aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
+        this.urlCard1 = AppSettings.API_ENDPOINT + aux.fileURL;
+        this.selectedCards.push(aux);
+      });
+      this._dataService.getItem(cardsCollection[1]).subscribe(data=>{
+        aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
+        this.urlCard2 = AppSettings.API_ENDPOINT + aux.fileURL;
+        this.selectedCards.push(aux);
+      });
+      this._dataService.getItem(cardsCollection[2]).subscribe(data=>{
+        aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
+        this.urlCard3 = AppSettings.API_ENDPOINT + aux.fileURL;
+        this.selectedCards.push(aux);
+      });
+      this._dataService.getItem(cardsCollection[3]).subscribe(data=>{
+        aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
+        this.urlCard4 = AppSettings.API_ENDPOINT + aux.fileURL;
+        this.selectedCards.push(aux);
+      });
+      this._dataService.getItem(cardsCollection[4]).subscribe(data=>{
+        aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
+        this.urlCard5 = AppSettings.API_ENDPOINT + aux.fileURL;
+        this.selectedCards.push(aux);
+      });
+      this._dataService.getItem(cardsCollection[5]).subscribe(data=>{
+        aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
+        this.urlCard6 = AppSettings.API_ENDPOINT + aux.fileURL;
+        this.selectedCards.push(aux);
+      });
     }
-    else{
-    this.inputName = this.collectionUpdating.name;
-    this.selectedGamemode = this.collectionUpdating.gamemode;
-    if (this.collectionUpdating.gamemode==0){
-      this.someInput.nativeElement.value = "Arcade";
-    }
-    else if (this.collectionUpdating.gamemode==1){
-      this.someInput.nativeElement.value = "Survival";
-    }
-    var aux: Card;
-    
-    var cardsCollection = this.collectionUpdating.cards.split(',');
-    this._dataService.getItem(cardsCollection[0]).subscribe(data=>{
-      aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
-      this.urlCard1 = 'https://gameserver.centic.ovh' + aux.fileURL;
-      this.selectedCards.push(aux);
-    });
-    
-    this._dataService.getItem(cardsCollection[1]).subscribe(data=>{
-      aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
-      this.urlCard2 = 'https://gameserver.centic.ovh' + aux.fileURL;
-      this.selectedCards.push(aux);
-    });
-    this._dataService.getItem(cardsCollection[2]).subscribe(data=>{
-      aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
-      this.urlCard3 = 'https://gameserver.centic.ovh' + aux.fileURL;
-      this.selectedCards.push(aux);
-    });
-    this._dataService.getItem(cardsCollection[3]).subscribe(data=>{
-      aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
-      this.urlCard4 = 'https://gameserver.centic.ovh' + aux.fileURL;
-      this.selectedCards.push(aux);
-    });
-    this._dataService.getItem(cardsCollection[4]).subscribe(data=>{
-      aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
-      this.urlCard5 = 'https://gameserver.centic.ovh' + aux.fileURL;
-      this.selectedCards.push(aux);
-    });
-    this._dataService.getItem(cardsCollection[5]).subscribe(data=>{
-      aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],data['publish']);
-      this.urlCard6 = 'https://gameserver.centic.ovh' + aux.fileURL;
-      this.selectedCards.push(aux);
-    });
-
-    }
-
- 
   }
 
   setCard(_id,name,history,tags,fileURL,itemType, publish) : Card{
@@ -138,45 +120,42 @@ export class UpdateCollectionComponent implements OnInit, AfterViewInit {
     cardAux.itemType = itemType;
     cardAux.publish = publish;
     return cardAux;
-
   }
 
   getAllItems(){
     this.clearData();
     this._dataService.getAllItems().subscribe(data=>{
-        
-        //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
-        for(let i=0; i<data.length; i++){
-            if (data[i].itemType=="0"){
-              this.cards.push(data[i]);
-            }
-            
-        }
-        this.noCardsWithSpecificTag = false;
-        if (this.cards.length == 0){
-          this.noCards = true;
-        }else{
-          this.noCards = false;
-        }
-    });
-}
-
-getSpecificItems(tag){
-  this.clearData();
-  var tagLowerCase= tag.toLowerCase();
-  this._dataService.getAllItems().subscribe(data=>{
       //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
-          if (data[i].itemType=="0"){
-            var cleanTags = data[i].tags.replace(' ','');
-            var cardTags = cleanTags.split(',');
-            for(let j=0;(j<cardTags.length);j++){
-              if(cardTags[j].toLowerCase()==tagLowerCase){
-                this.cards.push(data[i]);
-                break;
-              }
+        if (data[i].itemType=="0"){
+          this.cards.push(data[i]);
+        }   
+      }
+      this.noCardsWithSpecificTag = false;
+      if (this.cards.length == 0){
+        this.noCards = true;
+      }else{
+        this.noCards = false;
+      }
+    });
+  }
+
+  getSpecificItems(tag){
+    this.clearData();
+    var tagLowerCase= tag.toLowerCase();
+    this._dataService.getAllItems().subscribe(data=>{
+      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
+      for(let i=0; i<data.length; i++){
+        if (data[i].itemType=="0"){
+          var cleanTags = data[i].tags.replace(' ','');
+          var cardTags = cleanTags.split(',');
+          for(let j=0;(j<cardTags.length);j++){
+            if(cardTags[j].toLowerCase()==tagLowerCase){
+              this.cards.push(data[i]);
+              break;
             }
-          }     
+          }
+        }     
       }
       this.noCards = false;
       if (this.cards.length == 0){
@@ -184,10 +163,8 @@ getSpecificItems(tag){
       }else{
         this.noCardsWithSpecificTag = false;
       }
-  });
-}
-
-
+    });
+  }
 
   addCardtoCollection(id){
     if (this.selectedCards.length>=6){
@@ -195,9 +172,7 @@ getSpecificItems(tag){
       this.cardRepeated=false;
       this.collectionEmpty = false;
       this.cardRepeated=false;
-
-    }
-    else{
+    }else{
       this.collectionFull= false;
       this.collectionEmpty = false;
       this.cardRepeated=false;
@@ -215,8 +190,6 @@ getSpecificItems(tag){
         this.selectedCards.push(this.cards[id]);
         this.updateImages();
       }    
-      
-      
     }
   }
 
@@ -226,61 +199,55 @@ getSpecificItems(tag){
       this.collectionEmpty= true;
       this.collectionFull = false;
       this.cardNotInCollection = false;
-    }
-    else{
+    }else{
       this.collectionEmpty= false;
       this.collectionFull = false;
-          this.cardNotInCollection = false;
-          var deleted:boolean = false;
-          for(let i=0;i<this.selectedCards.length;i++){
-            if(this.selectedCards[i]._id == this.cards[id]._id){
-                deleted = true;
-                this.selectedCards.splice(i,1);
-                this.updateImages(); 
-                
-                break;
-            }
-          }
-          if (!deleted) {
-            this.cardNotInCollection = true;
-          } 
+      this.cardNotInCollection = false;
+      var deleted:boolean = false;
+      for(let i=0;i<this.selectedCards.length;i++){
+        if(this.selectedCards[i]._id == this.cards[id]._id){
+          deleted = true;
+          this.selectedCards.splice(i,1);
+          this.updateImages(); 
+          break;
+        }
+      }
+      if (!deleted) {
+        this.cardNotInCollection = true;
+      } 
     }
   }
 
   setGamemode(gamemode){
-    
     var aux = gamemode.toLowerCase();
     if (aux=="arcade"){
       this.selectedGamemode = 0;
-    } 
-    else if (aux=="survival"){
+    }else if (aux=="survival"){
       this.selectedGamemode = 1;
     } 
-
   }
-
 
   updateImages(){
     this.clearImagesURL();
     for(let i=0;i<this.selectedCards.length;i++){
       switch(i){
         case 0: 
-              this.urlCard1 = 'https://gameserver.centic.ovh' + this.selectedCards[i].fileURL;
+              this.urlCard1 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
               break;
         case 1: 
-              this.urlCard2 = 'https://gameserver.centic.ovh' + this.selectedCards[i].fileURL;
+              this.urlCard2 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
               break;
         case 2: 
-              this.urlCard3 = 'https://gameserver.centic.ovh' + this.selectedCards[i].fileURL;
+              this.urlCard3 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
               break;
         case 3: 
-              this.urlCard4 = 'https://gameserver.centic.ovh' + this.selectedCards[i].fileURL;
+              this.urlCard4 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
               break;
         case 4: 
-              this.urlCard5 = 'https://gameserver.centic.ovh' + this.selectedCards[i].fileURL;
+              this.urlCard5 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
               break;
         case 5: 
-              this.urlCard6 = 'https://gameserver.centic.ovh' + this.selectedCards[i].fileURL;
+              this.urlCard6 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
               break;
       }
     }
@@ -303,37 +270,31 @@ getSpecificItems(tag){
 
   updateCollection(){
     if (this.selectedCards.length==6){
-      
-         if(this.inputName!=""){
-          var cardsID: string = "";
-          for(let i=0;i<this.selectedCards.length;i++){
-            if (i==0){
-              cardsID = cardsID + this.selectedCards[i]._id;
-            }
-            else{
-              cardsID = cardsID + ',' + this.selectedCards[i]._id;
-            }
+      if(this.inputName!=""){
+        var cardsID: string = "";
+        for(let i=0;i<this.selectedCards.length;i++){
+          if (i==0){
+            cardsID = cardsID + this.selectedCards[i]._id;
+          }else{
+            cardsID = cardsID + ',' + this.selectedCards[i]._id;
           }
-
-          this.collectionUpdating.cards = cardsID;
-          this.collectionUpdating.name = this.inputName;
-          this.collectionUpdating.gamemode = this.selectedGamemode;
-
-
-
-          this._dataService.updateCollection(this.collectionUpdating).subscribe(data=>{
-              this.clearData();
-              this.getAllItems();
-              this.errorCollectionNotFull = false;
-              this.errorNoInfo = false;
-              this.prevImage = false;
-              this.collectionUpdated = true;
-          });
-        }else{
-          this.collectionUpdated = false;
-          this.errorNoInfo = true;
+        }
+        this.collectionUpdating.cards = cardsID;
+        this.collectionUpdating.name = this.inputName;
+        this.collectionUpdating.gamemode = this.selectedGamemode;
+        this._dataService.updateCollection(this.collectionUpdating).subscribe(data=>{
+          this.clearData();
+          this.getAllItems();
           this.errorCollectionNotFull = false;
-         }
+          this.errorNoInfo = false;
+          this.prevImage = false;
+          this.collectionUpdated = true;
+        });
+      }else{
+        this.collectionUpdated = false;
+        this.errorNoInfo = true;
+        this.errorCollectionNotFull = false;
+      }
     }else {
       this.collectionUpdated = false;
       this.errorCollectionNotFull = true;
@@ -342,7 +303,7 @@ getSpecificItems(tag){
   }
 
   sawCard(id){
-    this.url = 'https://gameserver.centic.ovh' + this.cards[id].fileURL;
+    this.url = AppSettings.API_ENDPOINT + this.cards[id].fileURL;
     this.nameDisplay = this.cards[id].name;
     this.historyDisplay = this.cards[id].history;
     this.tagsDisplay = this.cards[id].tags;
@@ -361,4 +322,4 @@ getSpecificItems(tag){
     }
   }
 
-}
+}/// END OF COMPONENT UpdateCollectionComponent ///

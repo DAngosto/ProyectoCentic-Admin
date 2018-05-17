@@ -6,4 +6,5 @@ export interface Card {
     fileURL: string;
     itemType: string;
     publish: boolean;
-}
+
+}/// END OF INTERFACE Card ///

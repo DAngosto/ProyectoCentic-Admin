@@ -1,78 +1,76 @@
 <app-nav-bar></app-nav-bar>
 <div id="page-wrapper">
-  <div *ngIf="noCards" class="alert alert-info">
-    There're no cards created
-  </div>
-  <div *ngIf="noCardsWithSpecificTag" class="alert alert-info">
+    <div *ngIf="noCards" class="alert alert-info">
+        There're no cards created
+    </div>
+    <div *ngIf="noCardsWithSpecificTag" class="alert alert-info">
         There're no cards created with the specified tag.
     </div>
-  <div *ngIf="cardDeleted" class="alert alert-success">
-    The card has been removed correctly
-  </div>
-  <div *ngIf="dependenceExists" class="alert alert-info">
-    The card you are trying to remove currently belongs to one or more collections. Delete the collection(s) first and then proceed to delete the card.
-  </div>
-  <div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="text-center">Cards Control Panel</h2> 
-            </div>
-            <div id="dataTables-example_filter" class="text-center">
-                <label >Search:<input type="search" class="form-control input-sm" placeholder="Tag"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
-            </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>History</th>
-                            <th>Tags</th>
-                            <th class="text-center">Watch Card</th>
-                            <th class="text-center">Update</th>
-                            <th class="text-center">Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of items ; let i = index">
-                            <td >{{ item.name }}</td>
-                            <td>{{ item.history }}</td>
-                            <td>{{ item.tags }}</td>
-                            <td class="text-center"><button class="btn btn-info btn-circle" (click)= "sawCard(i)" data-toggle="modal" data-target="#myModal"><i class="fa fa-search-plus"></i></button></td>
-                            <td class="text-center"><button class="btn btn-info btn-circle" (click)= "updateCard(i)" ><i class="fa fa-pencil"></i></button></td>
-                            <td class="text-center"><button type="button" class="btn btn-danger btn-circle" (click)= "deleteCard(i)"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div *ngIf="cardDeleted" class="alert alert-success">
+        The card has been removed correctly
+    </div>
+    <div *ngIf="dependenceExists" class="alert alert-info">
+        The card you are trying to remove currently belongs to one or more collections. Delete the collection(s) first and then proceed to delete the card.
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="text-center">Cards Control Panel</h2> 
+                </div>
+                <div id="dataTables-example_filter" class="text-center">
+                    <label >Search:<input type="search" class="form-control input-sm" placeholder="Tag"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
+                </div>
+                <div class="panel-body">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>History</th>
+                                <th>Tags</th>
+                                <th class="text-center">Watch Card</th>
+                                <th class="text-center">Update</th>
+                                <th class="text-center">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of items ; let i = index">
+                                <td >{{ item.name }}</td>
+                                <td>{{ item.history }}</td>
+                                <td>{{ item.tags }}</td>
+                                <td class="text-center"><button class="btn btn-info btn-circle" (click)= "sawCard(i)" data-toggle="modal" data-target="#myModal"><i class="fa fa-search-plus"></i></button></td>
+                                <td class="text-center"><button class="btn btn-info btn-circle" (click)= "updateCard(i)" ><i class="fa fa-pencil"></i></button></td>
+                                <td class="text-center"><button type="button" class="btn btn-danger btn-circle" (click)= "deleteCard(i)"><i class="fa fa-times"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="text-center" id="myModalLabel">Card Display</h3>
-            </div>
-            <div class="modal-body">
-                    <br><img [src] = "url" ><br>
-                    <p class="text-info">Name</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ nameDisplay }}" disabled><br>
-                    <p class="text-info">History</p> <textarea class="form-control" id="disabledInput" type="text" rows="9" placeholder="{{ historyDisplay }}" disabled></textarea><br>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="text-center" id="myModalLabel">Card Display</h3>
+                </div>
+                <div class="modal-body">
+                    <br>
+                    <img [src] = "url" >
+                    <br>
+                    <p class="text-info">Name</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ nameDisplay }}" disabled>
+                    <br>
+                    <p class="text-info">History</p> <textarea class="form-control" id="disabledInput" type="text" rows="9" placeholder="{{ historyDisplay }}" disabled></textarea>
+                    <br>
                     <p class="text-info">Tags</p> <input class="form-control" id="disabledInput" type="text" placeholder="{{ tagsDisplay }}" disabled>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-            
+    </div>            
 </div>
 

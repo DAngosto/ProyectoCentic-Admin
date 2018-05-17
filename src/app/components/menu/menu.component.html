@@ -1,166 +1,135 @@
-
-
-    <!-- Navigation -->
-    <app-nav-bar></app-nav-bar>
-
-    <div id="page-wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">Dashboard</h1>
-            </div>
-            <!-- /.col-lg-12 -->
+<app-nav-bar></app-nav-bar>
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Dashboard</h1>
         </div>
-        <!-- /.row -->
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-image fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">{{ actualCards }}</div>
-                                <div>Actual Cards!</div>
-                            </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-image fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ actualCards }}</div>
+                            <div>Actual Cards!</div>
                         </div>
                     </div>
-                    <a routerLink="/cardsCP">
-                        <div class="panel-footer">
-                            <span class="pull-left" >View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
                 </div>
+                <a routerLink="/cardsCP">
+                    <div class="panel-footer">
+                        <span class="pull-left" >View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-image fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">{{ actualCollections }}</div>
-                                <div>Actual Collections!</div>
-                            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-image fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ actualCollections }}</div>
+                            <div>Actual Collections!</div>
                         </div>
                     </div>
-                    <a routerLink="/collectionsCP">
-                        <div class="panel-footer">
-                            <span class="pull-left" >View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
                 </div>
+                <a routerLink="/collectionsCP">
+                    <div class="panel-footer">
+                        <span class="pull-left" >View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-yellow">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-cog fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">{{ actualCollectionsPublished }}</div>
-                                <div>Actual Collections Active!</div>
-                            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-cog fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ actualCollectionsPublished }}</div>
+                            <div>Actual Collections Active!</div>
                         </div>
                     </div>
-                    <a routerLink="/GameConfigCP">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
                 </div>
+                <a routerLink="/GameConfigCP">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-red">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-gamepad fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">{{ actualNumberOfGamesPlayed }}</div>
-                                <div>Number of games played</div>
-                            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-gamepad fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{ actualNumberOfGamesPlayed }}</div>
+                            <div>Number of games played</div>
                         </div>
                     </div>
-                    <a routerLink="/AllStatistics">
-                        <div class="panel-footer">
-                            <span class="pull-left" >View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
                 </div>
+                <a routerLink="/AllStatistics">
+                    <div class="panel-footer">
+                        <span class="pull-left" >View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
             </div>
-        
-        
-        
-
-        <!-- /.row graficas -->
+        </div>
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Arcade Games vs Survival Games
                 </div>
-                <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div id="morris-donut-chart-gamemodevs"></div>
                 </div>
-                <!-- /.panel-body -->
             </div>
-            <!-- /.panel -->
         </div>
-        <!-- /.col-lg-6 -->
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Games were jokers were used vs not
                 </div>
-                <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div id="morris-bar-chart-jokersvs"></div>
                 </div>
-                <!-- /.panel-body -->
             </div>
-            <!-- /.panel -->
         </div>
-        
         <div class="col-lg-3">
         </div>
-
         <div class="text-center">
-            <!-- /.col-lg-6 -->
-        <div class="col-lg-6">
+            <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Uso de cada tipo de comodín
                     </div>
-                    <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div id="morris-donut-chart-mostusedjokers"></div>
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel -->
             </div>
-
-
         </div>
-
-    <!-- /.row graficas -->
-
-
     </div>
 </div>
-    <!-- /#page-wrapper -->
 
 
 

@@ -1,17 +1,17 @@
-import {Injectable} from '@angular/core';
+//MODULES
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+//INTERFACES
 import { Card } from '../interfaces/Card';
 import { Collection } from '../interfaces/Collection';
 import { Config } from '../interfaces/Config';
 import { GamePlayed } from '../interfaces/GamePlayed';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
- 
-const httpOptions = {
-    //headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+//SETTINGS
+import {AppSettings} from '../AppSettings';
  
 @Injectable()
 export class DataService {
@@ -26,15 +26,14 @@ export class DataService {
 
     constructor(private http:HttpClient) {}
 
-    //METODOS COMUNES///
+    //COMMON METHODS///
 
     uploadFile(fd:FormData){
         let userToken= localStorage.getItem('tokenUser');
         let body= fd;
         let authorization = "Bearer " + userToken;
-        let headers = new HttpHeaders().set('Authorization', authorization);
-            
-		return this.http.post('https://gameserver.centic.ovh/files',body, { headers: headers });
+        let headers = new HttpHeaders().set('Authorization', authorization); 
+		return this.http.post(AppSettings.API_ENDPOINT_FILES,body, { headers: headers });
     }
 
     getAllItems(){
@@ -43,7 +42,7 @@ export class DataService {
         let headers = new HttpHeaders()
             .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
-        return this.http.get<Card[]>('https://gameserver.centic.ovh/items', { headers: headers });
+        return this.http.get<Card[]>(AppSettings.API_ENDPOINT_ITEMS, { headers: headers });
     }
 
     getAllItemsCollection(){
@@ -52,7 +51,7 @@ export class DataService {
         let headers = new HttpHeaders()
             .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
-        return this.http.get<Collection[]>('https://gameserver.centic.ovh/items', { headers: headers });
+        return this.http.get<Collection[]>(AppSettings.API_ENDPOINT_ITEMS, { headers: headers });
     }
 
     getAllItemsGamesPlayed(){
@@ -61,7 +60,7 @@ export class DataService {
         let headers = new HttpHeaders()
             .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
-        return this.http.get<GamePlayed[]>('https://gameserver.centic.ovh/items', { headers: headers });
+        return this.http.get<GamePlayed[]>(AppSettings.API_ENDPOINT_ITEMS, { headers: headers });
     }
 
     getItem(id){
@@ -70,7 +69,7 @@ export class DataService {
         let headers = new HttpHeaders()
             .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
-        return this.http.get('https://gameserver.centic.ovh/items/' + id, { headers: headers });
+        return this.http.get(AppSettings.API_ENDPOINT_ITEMS + '/' + id, { headers: headers });
     }
 
     deleteItem(id){
@@ -79,25 +78,10 @@ export class DataService {
         let headers = new HttpHeaders()
             .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
-        return this.http.delete('https://gameserver.centic.ovh/items/' + id, { headers: headers });
+        return this.http.delete(AppSettings.API_ENDPOINT_ITEMS + '/' + id, { headers: headers });
     }
 
-    /*  //De momento no es necesario
-    getFile(url){
-        let userToken= localStorage.getItem('tokenUser');
-        let authorization = "Bearer " + userToken;
-        let headers = new HttpHeaders()
-            .set('Authorization', authorization);
-        return this.http.get('https://gameserver.centic.ovh' + url);
-
-        
-        //return this.http.get('https://gameserver.centic.ovh' + url, { headers: headers });
-    }
-    */
-
-
-
-    //METODOS PARA CARDS///
+    //CARD METHODS///
 
     uploadCard(name, history, tags, fileURL){
         let userToken= localStorage.getItem('tokenUser');
@@ -114,10 +98,9 @@ export class DataService {
                 "publish": false
         }
         let body= JSON.stringify(message);
-        return this.http.post('https://gameserver.centic.ovh/items/',body, { headers: headers });
+        return this.http.post(AppSettings.API_ENDPOINT_ITEMS + '/',body, { headers: headers });
     }
 
-    
     updateCard(card: Card){
         let userToken= localStorage.getItem('tokenUser');
         let authorization = "Bearer " + userToken;
@@ -133,28 +116,14 @@ export class DataService {
                 "publish": card.publish
         }
         let body= JSON.stringify(message);
-        return this.http.put('https://gameserver.centic.ovh/items/' + card._id,body, { headers: headers });
+        return this.http.put(AppSettings.API_ENDPOINT_ITEMS + '/' + card._id,body, { headers: headers });
     }
 
-    
     changeCard(card: Card) {
         this.messageSource.next(card);
     }
 
-    
-    
-
-    //METODOS PARA COLLECTIONS///
-
-    /* Estructura de una coleccion
-    _id: string;
-    name: string;
-    cards: string;
-    gamemode: number;
-    fileURL: string;
-    itemType: string;
-    publish: boolean;
-    */
+    //COLLECTION METHODS///
 
     uploadCollection(name, gamemode, cards){
         let userToken= localStorage.getItem('tokenUser');
@@ -170,7 +139,7 @@ export class DataService {
                 "publish": false
         }
         let body= JSON.stringify(message);
-        return this.http.post('https://gameserver.centic.ovh/items/',body, { headers: headers });
+        return this.http.post(AppSettings.API_ENDPOINT_ITEMS + '/',body, { headers: headers });
     }
 
     updateCollection(collection: Collection){
@@ -187,18 +156,14 @@ export class DataService {
                 "publish": collection.publish
         }
         let body= JSON.stringify(message);
-        return this.http.put('https://gameserver.centic.ovh/items/' + collection._id,body, { headers: headers });
+        return this.http.put(AppSettings.API_ENDPOINT_ITEMS + '/' + collection._id,body, { headers: headers });
     }
-
-    
-
 
     changeCollection(collection: Collection) {
         this.messageSource2.next(collection);
     }
 
-
-    //METODOS PARA CONFIG///
+    //CONFIG METHODS///
 
     updateConfigPoints(gamemode, type, value){
         let userToken= localStorage.getItem('tokenUser');
@@ -207,7 +172,6 @@ export class DataService {
             .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
         var message;
-
         if(gamemode==0){
             if(type==0){
                 message = {
@@ -218,11 +182,9 @@ export class DataService {
                 message = {
                     "arcadefailpoints" : value 
                 }
-            }
-            
+            } 
         }
         else if (gamemode==1){
-            
             if(type==2){
                 var aux = value;
                 if(value<5){
@@ -233,10 +195,8 @@ export class DataService {
                 }
             }
         }
-        
         let body= JSON.stringify(message);
-        return this.http.put('https://gameserver.centic.ovh/config',body, { headers: headers });
-
+        return this.http.put(AppSettings.API_ENDPOINT_CONFIG,body, { headers: headers });
     }
 
     getConfig(){
@@ -245,7 +205,7 @@ export class DataService {
         let headers = new HttpHeaders()
             .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
-        return this.http.get('https://gameserver.centic.ovh/config',{ headers: headers });
+        return this.http.get(AppSettings.API_ENDPOINT_CONFIG,{ headers: headers });
 
     }
 
@@ -255,15 +215,12 @@ export class DataService {
         let headers = new HttpHeaders()
             .set('Content-Type', 'application/json')
             .set('Authorization', authorization);
-        var aux = "https://gameserver.centic.ovh" + url;
+        var aux = AppSettings.API_ENDPOINT + url;
         var message = {
                     "cardCover" : aux 
                 }
-         
-        
         let body= JSON.stringify(message);
-        return this.http.put('https://gameserver.centic.ovh/config',body, { headers: headers });
-
+        return this.http.put(AppSettings.API_ENDPOINT_CONFIG,body, { headers: headers });
     }
 
 }// END OF DataService

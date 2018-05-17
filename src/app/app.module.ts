@@ -1,3 +1,4 @@
+//MODULES
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -5,16 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Ng2ImgToolsModule } from 'ng2-img-tools'; 
 
-//componentes
+//COMPONENTS
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { CreateCardComponent } from './components/create-card/create-card.component';
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';   // our custom service responsible of communications between the front-end and back-end of the application
-
-//servicios
-import { AuthenticationService } from './services/authentication.service';
-import { DataService } from './services/data.service';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component'; 
 import { CardsControlPanelComponent } from './components/cards-control-panel/cards-control-panel.component';
 import { UpdateCardComponent } from './components/update-card/update-card.component';
 import { CollectionsControlPanelComponent } from './components/collections-control-panel/collections-control-panel.component';
@@ -23,6 +20,10 @@ import { UpdateCollectionComponent } from './components/update-collection/update
 import { GameConfigurationPanelComponent } from './components/game-configuration-panel/game-configuration-panel.component';
 import { AllStatisticsComponent } from './components/all-statistics/all-statistics.component';
 import { AllStatisticsCollectionComponent } from './components/all-statistics-collection/all-statistics-collection.component';
+
+//SERVICES
+import { AuthenticationService } from './services/authentication.service';
+import { DataService } from './services/data.service';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -38,7 +39,6 @@ const appRoutes: Routes = [
   { path: 'AllStatistics',component: AllStatisticsComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' }
-  //{ path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
@@ -69,4 +69,5 @@ const appRoutes: Routes = [
   providers: [AuthenticationService, DataService],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

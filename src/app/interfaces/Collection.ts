@@ -5,4 +5,5 @@ export interface Collection {
     gamemode: number;
     itemType: string;
     publish: boolean;
-}
+
+}/// END OF INTERFACE Collection ///

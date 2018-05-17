@@ -1,87 +1,59 @@
-
-
-    <!-- Navigation -->
-    <app-nav-bar></app-nav-bar>
-    <div id="page-wrapper">
-        <div *ngIf="sawNoData" class="alert alert-info">
-                    No games have been played with that ID
-        </div>
-        <div class="row">
-                <div class="col-lg-12">
+<app-nav-bar></app-nav-bar>
+<div id="page-wrapper">
+    <div *ngIf="sawNoData" class="alert alert-info">
+        No games have been played with that ID
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="text-center">All Statistics of a Collection</h2> 
+                </div>
+                <br>
+                <div id="dataTables-example_filter" class="text-center">
+                    <label >Search:<input type="search" class="form-control input-sm" placeholder="Collection ID"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h2 class="text-center">All Statistics of a Collection</h2> 
-                            </div><br>
-            <!-- /.col-lg-12 -->
-            <div id="dataTables-example_filter" class="text-center">
-                
-                    <label >Search:<input type="search" class="form-control input-sm" placeholder="Collection ID"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
-            </div><br>
-        <!-- /.row -->
-        <div class="row">
-            
-                
-        
-        
-
-        <!-- /.row graficas -->
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Arcade Games vs Survival Games
-                </div>
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                    <div id="morris-donut-chart-gamemodevs"></div>
-                </div>
-                <!-- /.panel-body -->
-            </div>
-            <!-- /.panel -->
-        </div>
-        <!-- /.col-lg-6 -->
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Games were jokers were used vs not
-                </div>
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                    <div id="morris-bar-chart-jokersvs"></div>
-                </div>
-                <!-- /.panel-body -->
-            </div>
-            <!-- /.panel -->
-        </div>
-        
-        <div class="col-lg-3">
-        </div>
-
-        <div class="text-center">
-            <!-- /.col-lg-6 -->
-        <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Uso de cada tipo de comodín
+                                 Arcade Games vs Survival Games
+                            </div>
+                            <div class="panel-body">
+                                <div id="morris-donut-chart-gamemodevs"></div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <div id="morris-donut-chart-mostusedjokers"></div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Games were jokers were used vs not
+                            </div>
+                            <div class="panel-body">
+                                <div id="morris-bar-chart-jokersvs"></div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- /.panel-body -->
+                    <div class="col-lg-3">
+                    </div>
+                    <div class="text-center">
+                        <div class="col-lg-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Uso de cada tipo de comodín
+                                </div>
+                                <div class="panel-body">
+                                    <div id="morris-donut-chart-mostusedjokers"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- /.panel -->
             </div>
-
-
         </div>
-
-    <!-- /.row graficas -->
-        </div>
-    </div>
-
     </div>
 </div>
-    <!-- /#page-wrapper -->
 
 
 

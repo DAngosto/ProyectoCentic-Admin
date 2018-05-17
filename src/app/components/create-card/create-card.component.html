@@ -2,32 +2,37 @@
 <div id="page-wrapper">
     <div class="contact-clean">
         <form method="post">
-            <br><h2 class="text-center">Create new card</h2>
-            <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name" [(ngModel)]="inputName"></div>
-            
-            <div class="form-group"><textarea class="form-control" rows="9" name="history" placeholder="History" [(ngModel)]="inputHistory"></textarea></div>
+            <br>
+            <h2 class="text-center">Create new card</h2>
+            <div class="form-group">
+                <input class="form-control" type="text" name="name" placeholder="Name" [(ngModel)]="inputName">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" rows="9" name="history" placeholder="History" [(ngModel)]="inputHistory"></textarea>
+            </div>
             <div class="form-group">
                 <input class="form-control" type="text" name="tags" placeholder="Tags" [(ngModel)]="inputTags">
                 <p class="text-info">In the case that you wish to put more than one, put them like Tag1, Tag2, Tag3...</p>
             </div>
             <input type="file" (change)="onFileSelected($event)">
             <div id="preview" class="preview" *ngIf="prevImage">
-                <br><img [src] = "url">
-            </div><br>
+                <br>
+                <img [src] = "url">
+            </div>
+            <br>
             <div *ngIf="errorNoImageSelected" class="alert alert-danger">
                 Select an image first before trying to create a new card!
             </div>
             <div *ngIf="errorNoInfo" class="alert alert-danger">
                 Incomplete name or history field, please enter the corresponding information.
             </div>
-            <div class="form-group"><button class="btn btn-primary" type="submit" (click)="uploadCard()" value="Upload File"> Create </button></div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit" (click)="uploadCard()" value="Upload File"> Create </button>
+            </div>
             <div *ngIf="cardUploaded" class="alert alert-success">
                 The new card has been created!
             </div>
         </form>
     </div>
-
-    
-
 </div>
 

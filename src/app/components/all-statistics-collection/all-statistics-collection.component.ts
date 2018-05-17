@@ -1,8 +1,12 @@
+//MODULES
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service';
-import { DataService } from '../../services/data.service';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
+//SERVICES
+import { AuthenticationService } from '../../services/authentication.service';
+import { DataService } from '../../services/data.service';
+
+//CHARTS
 declare var Morris:any;
 declare var $:any;
 
@@ -11,51 +15,45 @@ declare var $:any;
   templateUrl: './all-statistics-collection.component.html',
   styleUrls: ['./all-statistics-collection.component.css']
 })
+
 export class AllStatisticsCollectionComponent implements OnInit {
 
-
   inputSearch: string="";
-
   actualCards:number;
   actualCollections:number;
   actualCollectionsPublished:number;
   actualNumberOfGamesPlayed:number;
-
   actualArcadeGamesPlayed:number;
   actualSurvivalGamesPlayed:number;
-
   actualGamesWithJokers:number;
   actualGamesWithoutJokers:number;
-
   gamesWithMultiJoker:number;
   gamesWithVolteoJoker:number;
   gamesWithBothJokers: number;
 
+  //Alarm Conditions
   sawCharts:boolean=false;
   data:boolean=false;
   sawNoData:boolean=false;
 
-
   constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router) { }
 
   ngOnInit() {
-
     this._authenticationService.isUserValidated();
-    //this.getAllItems();
   }
 
   doSpecificSearch(){
+    console.log(this.inputSearch);
     if (this.inputSearch==""){
-    }
-    else{
+      this.cleanCharts();
+      this.sawNoData=true;
+    }else{
       this.getAllItemsOfCollection(this.inputSearch);
     }
   }
 
   getAllItemsOfCollection(id){
-    
     this.data=false;
-
     this.actualCards = 0;
     this.actualCollections = 0;
     this.actualCollectionsPublished = 0;
@@ -67,67 +65,50 @@ export class AllStatisticsCollectionComponent implements OnInit {
     this.gamesWithMultiJoker = 0;
     this.gamesWithVolteoJoker = 0;
     this.gamesWithBothJokers = 0;
-
-
-  var searchedID="";
-  if(id.charAt(0)=='&'){
-    searchedID = id.substring(12,id.length);
-  }else{
-    searchedID = id;
-  }
-  
-    
+    var searchedID="";
+    if(id.charAt(0)=='&'){
+      searchedID = id.substring(12,id.length);
+    }else{
+      searchedID = id;
+    }
     this._dataService.getAllItemsGamesPlayed().subscribe(data=>{
-        //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
-        for(let i=0; i<data.length; i++){
-            
-          
-          if (data[i].itemType=="2"){
-            if(data[i].collectionID==searchedID){
-              this.data=true;
-              this.actualNumberOfGamesPlayed++;
-              if(data[i].gamemode==0){
-                console.log("entro 1º");
-                this.actualArcadeGamesPlayed++;
-                if((data[i].jokermultiwasted)||(data[i].jokervolteowasted)){
-                  this.actualGamesWithJokers++;
-                  if((data[i].jokermultiwasted)&&(!data[i].jokervolteowasted)){
-                    this.gamesWithMultiJoker++;
-
-                  }else if((!data[i].jokermultiwasted)&&(data[i].jokervolteowasted)){
-                    this.gamesWithVolteoJoker++;
-
-                  }else{
-                    this.gamesWithBothJokers++;
-                  }
+      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
+      for(let i=0; i<data.length; i++){
+        if (data[i].itemType=="2"){
+          if(data[i].collectionID==searchedID){
+            this.data=true;
+            this.actualNumberOfGamesPlayed++;
+            if(data[i].gamemode==0){
+              this.actualArcadeGamesPlayed++;
+              if((data[i].jokermultiwasted)||(data[i].jokervolteowasted)){
+                this.actualGamesWithJokers++;
+                if((data[i].jokermultiwasted)&&(!data[i].jokervolteowasted)){
+                  this.gamesWithMultiJoker++;
+                }else if((!data[i].jokermultiwasted)&&(data[i].jokervolteowasted)){
+                  this.gamesWithVolteoJoker++;
                 }else{
-                  this.actualGamesWithoutJokers++;
+                  this.gamesWithBothJokers++;
                 }
-              }else if(data[i].gamemode==1){
-                console.log("entro 2º");
-                this.actualSurvivalGamesPlayed++;                
+              }else{
+                this.actualGamesWithoutJokers++;
               }
+            }else if(data[i].gamemode==1){
+              this.actualSurvivalGamesPlayed++;                
             }
           }
-
-            
-        }
-
-        console.log(this.data);
-
+        }    
+      }
+      if(this.data){
+        this.inputSearch=searchedID;
+        this.loadStatistics();
+        this.sawNoData=false;
+      }else{
         this.inputSearch="";
-        if(this.data){
-          this.loadStatistics();
-          this.sawNoData=false;
-
-        }else{
-          this.cleanCharts();
-          this.sawNoData=true;
-        }
-
+        this.cleanCharts();
+        this.sawNoData=true;
+      }
     });
   }
-
 
   cleanCharts(){
     $('#morris-donut-chart-gamemodevs').empty();
@@ -135,12 +116,8 @@ export class AllStatisticsCollectionComponent implements OnInit {
     $('#morris-donut-chart-mostusedjokers').empty();
   }
 
-
   loadStatistics(){
-
     this.cleanCharts();
-
-    //Limpiamos los datos que ya estuvieran
     Morris.Donut({
       element: 'morris-donut-chart-gamemodevs',
       data: [
@@ -167,53 +144,6 @@ export class AllStatisticsCollectionComponent implements OnInit {
         {label: "Games with Both Jokers", value:  this.gamesWithBothJokers}
       ]
     });
-    
-
-    /*
-		//Cremos el objeto de estadisticas
-		for(let cuestionario of this.cuestionariosEst){
-			if(cuestionario._id==id){
-				$('#cuestionarioActivo').html('Estadísticas de <b>'+cuestionario.nombre+'</b>');
-				for(let p of cuestionario.preguntas ){
-					var obj = {y:cont,a:p.estadisticas[0],b:p.estadisticas[1],c:p.estadisticas[2],d:p.estadisticas[3], todo:p}
-					result.push(obj);
-					cont++;
-				}
-			}
-    }
-    
-
-   Morris.Donut({
-    element: 'morris-donut-chart-gamemodevs',
-    data: [
-      {label: "Download Sales", value: 12},
-      {label: "In-Store Sales", value: 30},
-      {label: "Mail-Order Sales", value: 20}
-    ]
-  });
-  */
   }
 
-  /*
-  swapScreen(option){
-    switch(option){
-      case 0:
-        this.router.navigate(["/cardsCP"]);
-        break;
-      case 1:
-        this.router.navigate(["/collectionsCP"]);
-        break;
-      case 2:
-        this.router.navigate(["/GameConfigCP"]);
-        break;
-      case 3:
-        this.router.navigate(["/StatisticsCP"]);
-        break;
-    }
-
-  }
-  */
-
- 
-
-}
+}/// END OF COMPONENT AllStatisticsCollectionComponent ///
