@@ -31,14 +31,15 @@ export class LoginComponent implements OnInit {
             let token = data['token'];
             localStorage.setItem('tokenUser', token);
             localStorage.setItem('username', this.inputUser);
-            this.router.navigate(["/menu"]);
+            this.router.navigate(["/dashboard"]);
          },
          error => {
            this.errorValidating=true;
            return Observable.throw(error);
          }
       );
-    } 
+    }
+     
 }/// END OF COMPONENT LoginComponent ///
 
 

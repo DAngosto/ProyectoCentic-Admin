@@ -53,7 +53,6 @@ export class CreateCollectionComponent implements OnInit {
   constructor(private _authenticationService: AuthenticationService, private _dataService: DataService) { }
 
   ngOnInit() {
-    this._authenticationService.isUserValidated();
     this.getAllItems();
   }
 

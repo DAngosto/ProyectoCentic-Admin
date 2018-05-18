@@ -25,9 +25,9 @@ export class AuthenticationService {
     isUserValidated(){
         if (localStorage.getItem('tokenUser')) {
             return true;
+        }else{
+            return false;
         }         
-        this.router.navigate(['/login']);
-        return false;
     }
 
     logout(): void {

@@ -33,7 +33,6 @@ export class MenuComponent implements OnInit {
   constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router) { }
 
   ngOnInit() {
-    this._authenticationService.isUserValidated();
     this.getAllItems();
   }
 

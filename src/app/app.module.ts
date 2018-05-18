@@ -25,18 +25,21 @@ import { AllStatisticsCollectionComponent } from './components/all-statistics-co
 import { AuthenticationService } from './services/authentication.service';
 import { DataService } from './services/data.service';
 
+//GUARDS
+import { AuthGuard } from './auth.guard';
+
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'menu', component: MenuComponent },
-  { path: 'cardsCP',component: CardsControlPanelComponent },
-  { path: 'newCard',component: CreateCardComponent },
-  { path: 'updateCard',component: UpdateCardComponent },
-  { path: 'collectionsCP',component: CollectionsControlPanelComponent },
-  { path: 'newCollection',component: CreateCollectionComponent },
-  { path: 'updateCollection',component: UpdateCollectionComponent },
-  { path: 'GameConfigCP',component: GameConfigurationPanelComponent },
-  { path: 'AllStatisticsCollection',component: AllStatisticsCollectionComponent },
-  { path: 'AllStatistics',component: AllStatisticsComponent },
+  { path: 'dashboard', canActivate: [AuthGuard], component: MenuComponent },
+  { path: 'cardsCP',  canActivate: [AuthGuard], component: CardsControlPanelComponent },
+  { path: 'newCard', canActivate: [AuthGuard], component: CreateCardComponent },
+  { path: 'updateCard', canActivate: [AuthGuard], component: UpdateCardComponent },
+  { path: 'collectionsCP', canActivate: [AuthGuard], component: CollectionsControlPanelComponent },
+  { path: 'newCollection', canActivate: [AuthGuard], component: CreateCollectionComponent },
+  { path: 'updateCollection', canActivate: [AuthGuard], component: UpdateCollectionComponent },
+  { path: 'GameConfigCP', canActivate: [AuthGuard], component: GameConfigurationPanelComponent },
+  { path: 'AllStatisticsCollection', canActivate: [AuthGuard], component: AllStatisticsCollectionComponent },
+  { path: 'AllStatistics', canActivate: [AuthGuard], component: AllStatisticsComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];
@@ -66,7 +69,7 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: false }) //Poner a true en el caso de querer saber que ruta está itnenta encontrar
   ],
-  providers: [AuthenticationService, DataService],
+  providers: [AuthenticationService, DataService, AuthGuard],
   bootstrap: [AppComponent]
 })
 

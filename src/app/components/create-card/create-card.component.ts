@@ -30,7 +30,6 @@ export class CreateCardComponent implements OnInit {
   constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private ng2ImgToolsService: Ng2ImgToolsService) { }
 
   ngOnInit() {
-    this._authenticationService.isUserValidated();
   }
 
   onFileSelected(event){

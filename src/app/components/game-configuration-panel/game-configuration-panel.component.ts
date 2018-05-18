@@ -68,7 +68,6 @@ export class GameConfigurationPanelComponent implements OnInit {
   constructor(private _authenticationService: AuthenticationService, private _dataService: DataService,  private router:Router, private ng2ImgToolsService: Ng2ImgToolsService) { }
 
   ngOnInit() {
-    this._authenticationService.isUserValidated();
     this.getCardCover();
     this.getAllCollections();
   }
