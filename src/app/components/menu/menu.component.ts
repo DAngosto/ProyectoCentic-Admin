@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 //SERVICES
-import { AuthenticationService } from '../../services/authentication.service';
 import { DataService } from '../../services/data.service';
 
 declare var Morris:any;
@@ -30,7 +29,7 @@ export class MenuComponent implements OnInit {
   gamesWithVolteoJoker:number;
   gamesWithBothJokers: number;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router) { }
+  constructor(private _dataService: DataService, private router:Router) { }
 
   ngOnInit() {
     this.getAllItems();
@@ -49,7 +48,6 @@ export class MenuComponent implements OnInit {
     this.gamesWithVolteoJoker = 0;
     this.gamesWithBothJokers = 0;
     this._dataService.getAllItemsGamesPlayed().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="0"){
           this.actualCards++;

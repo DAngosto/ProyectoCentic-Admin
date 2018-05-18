@@ -4,7 +4,6 @@ import { NgForm } from '@angular/forms';
 
 //SERVICES
 import { DataService } from '../../services/data.service';
-import { AuthenticationService } from '../../services/authentication.service';
 import { Ng2ImgToolsService } from 'ng2-img-tools';
 
 @Component({
@@ -27,7 +26,7 @@ export class CreateCardComponent implements OnInit {
   cardUploaded: boolean = false;
   prevImage: boolean = false;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private ng2ImgToolsService: Ng2ImgToolsService) { }
+  constructor(private _dataService: DataService, private ng2ImgToolsService: Ng2ImgToolsService) { }
 
   ngOnInit() {
   }

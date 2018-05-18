@@ -2,7 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 
 //SERVICES
-import { AuthenticationService } from '../../services/authentication.service';
 import { DataService } from '../../services/data.service';
 
 //INTERFACES
@@ -18,7 +17,7 @@ export class AllStatisticsComponent implements OnInit {
 
   itemsArcade: GamePlayed[] = [];
   itemsSurvival: GamePlayed[] = [];
-
+  
   inputSearch:string;
   selectedGamemode:number=0;
 
@@ -26,7 +25,7 @@ export class AllStatisticsComponent implements OnInit {
   noGames:boolean=false;
   noGamesWithSpecificTag:boolean=false;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService) { }
+  constructor(private _dataService: DataService) { }
 
   ngOnInit() {
     this.getAllItems();
@@ -85,7 +84,6 @@ export class AllStatisticsComponent implements OnInit {
       searchedID = id;
     }
     this._dataService.getAllItemsGamesPlayed().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="2"){
           if(data[i].gamemode==this.selectedGamemode){

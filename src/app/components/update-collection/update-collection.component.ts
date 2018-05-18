@@ -3,7 +3,6 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 //SERVICES
-import {AuthenticationService} from '../../services/authentication.service';
 import { DataService } from '../../services/data.service';
 
 //INTERFACES
@@ -54,13 +53,17 @@ export class UpdateCollectionComponent implements OnInit {
 
   @ViewChild('gamemodeInput') gamemodeInput: ElementRef;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router) { }
+  constructor(private _dataService: DataService, private router:Router) { }
 
   ngOnInit() {
     this.getCollectionForUpdate();
     this.getAllItems();
   }
 
+  /*
+  EN:Function in charge of obtaining the information of the collection susceptible to being modified and to introduce its data in the corresponding fields.
+  ES:Función encargada de obtener la información de la colección susceptible a ser modificada e introducir sus datos en los campos correspondientes.
+  */
   getCollectionForUpdate() {
     this.sawCollection = true;
     this._dataService.currentCollectionUpdating.subscribe(collectionUpdating => this.collectionUpdating = collectionUpdating);
@@ -124,7 +127,6 @@ export class UpdateCollectionComponent implements OnInit {
   getAllItems(){
     this.clearData();
     this._dataService.getAllItems().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="0"){
           this.cards.push(data[i]);
@@ -143,7 +145,6 @@ export class UpdateCollectionComponent implements OnInit {
     this.clearData();
     var tagLowerCase= tag.toLowerCase();
     this._dataService.getAllItems().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="0"){
           var cleanTags = data[i].tags.replace(' ','');

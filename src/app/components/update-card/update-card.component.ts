@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 
 //SERVICES
-import {AuthenticationService} from '../../services/authentication.service';
 import { DataService } from '../../services/data.service';
 
 //INTERFACES
@@ -34,12 +33,16 @@ export class UpdateCardComponent implements OnInit {
   sawImage: boolean = false;
   imgChanged: boolean = false;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService, private router:Router) { }
+  constructor(private _dataService: DataService, private router:Router) { }
 
   ngOnInit() {
     this.getCardForUpdate();
   }
 
+  /*
+  EN:Function in charge of obtaining the information of the card susceptible to being modified and to introduce its data in the corresponding fields.
+  ES:Función encargada de obtener la información de la carta susceptible a ser modificada e introducir sus datos en los campos correspondientes.
+  */
   getCardForUpdate() {
     this._dataService.currentCardUpdating.subscribe(cardUpdating => this.cardUpdating = cardUpdating);
     if(!this.cardUpdating){
@@ -69,9 +72,7 @@ export class UpdateCardComponent implements OnInit {
 
   updateCard(){
     if((this.cardUpdating)||((this.inputName!="")&&(this.inputHistory!=""))){
-      //Si no ha cambiado la imagen no hace falta volver a subirla para obtener un nuevo fileURL
       if(!this.imgChanged){
-        //Actualizamos los campos que puedan haber cambiado
         this.cardUpdating.name = this.inputName;
         this.cardUpdating.history = this.inputHistory;
         this.cardUpdating.tags = this.inputTags;
@@ -81,7 +82,6 @@ export class UpdateCardComponent implements OnInit {
           this.cardUploaded = true;
         })
       }else{
-        //Subimos la nueva imagen y actualizamos la carta
         const fd = new FormData();
         fd.append('file', this.selectedFile, this.selectedFile.name);
         this._dataService.uploadFile(fd).subscribe(data=>{

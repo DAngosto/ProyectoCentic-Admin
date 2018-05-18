@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/observable';
 import { ActivatedRoute, Router } from '@angular/router';
 
 //SERVICES
-import { AuthenticationService } from '../../services/authentication.service';
 import { DataService } from '../../services/data.service';
 
 //INTERFACES
@@ -37,7 +36,7 @@ export class CardsControlPanelComponent implements OnInit {
   dependenceExists: boolean = false;
   noCardsWithSpecificTag: boolean = false;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService,  private router:Router) { }
+  constructor(private _dataService: DataService,  private router:Router) { }
 
   ngOnInit() {
     this.getAllItems();
@@ -46,7 +45,6 @@ export class CardsControlPanelComponent implements OnInit {
   getAllItems(){
     this.clearData();
     this._dataService.getAllItems().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="0"){
           this.items.push(data[i]);
@@ -65,7 +63,6 @@ export class CardsControlPanelComponent implements OnInit {
     this.clearData();
     var tagLowerCase= tag.toLowerCase();
     this._dataService.getAllItems().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="0"){
           var cleanTags = data[i].tags.replace(' ','');
@@ -87,6 +84,10 @@ export class CardsControlPanelComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of introducing the card information in the modal window.
+  ES:Función encargada de introducir la información de la carta en la ventana modal.
+  */
   sawCard(id){
     this.cardDeleted = false;
     this.url = AppSettings.API_ENDPOINT + this.items[id].fileURL;
@@ -110,12 +111,16 @@ export class CardsControlPanelComponent implements OnInit {
     this.items = [];
   }
 
+  /*
+  EN:Function in charge of going through the collections to find out if any of them depend on this card, in case there is any 
+    dependency we cut the search loops and notify that it cannot be deleted. Otherwise, the card is removed.
+  ES:Función encargada de recorrer las colecciones para averiguar si alguna depende de esta carta, en el caso de que exista alguna 
+    dependencia cortamos los bucles de búsqueda y notificamos que no puede ser eliminada. En el caso contrario se elimina la carta.
+  */
   cardInACollection(idCardSearching){
     var NotFreeOfDependencies = false;
     this.dependenceExists = false;
     this._dataService.getAllItemsCollection().subscribe(data=>{
-      //recorremos las colecciones para averiguar si alguna depende de esta carta, en el caso de que exista alguna dependencia cortamos los bucles de búsqueda y 
-      //notificamos que no puede ser eliminada. En el caso contrario se elimina la carta.;
       for(let i=0; (i<data.length); i++){
         if (data[i].itemType=="1"){
           var cardsCollection = data[i].cards.split(',');

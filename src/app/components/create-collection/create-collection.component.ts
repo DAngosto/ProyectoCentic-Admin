@@ -4,7 +4,6 @@ import { NgForm } from '@angular/forms';
 
 //SERVICES
 import { DataService } from '../../services/data.service';
-import { AuthenticationService } from '../../services/authentication.service';
 
 //INTERFACES
 import { Card } from '../../interfaces/Card';
@@ -50,7 +49,7 @@ export class CreateCollectionComponent implements OnInit {
   noCardsWithSpecificTag: boolean = false;
   noCards: boolean = false;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService) { }
+  constructor(private _dataService: DataService) { }
 
   ngOnInit() {
     this.getAllItems();
@@ -59,7 +58,6 @@ export class CreateCollectionComponent implements OnInit {
   getAllItems(){
     this.clearData();
     this._dataService.getAllItems().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="0"){
           this.cards.push(data[i]);
@@ -78,7 +76,6 @@ export class CreateCollectionComponent implements OnInit {
     this.clearData();
     var tagLowerCase= tag.toLowerCase();
     this._dataService.getAllItems().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="0"){
           var cleanTags = data[i].tags.replace(' ','');
@@ -156,6 +153,10 @@ export class CreateCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of refreshing the images of the selected cards.
+  ES:Función encargada de refrescar las imagenes de las cartas seleccionadas.
+  */
   updateImages(){
     this.clearImagesURL();
     for(let i=0;i<this.selectedCards.length;i++){

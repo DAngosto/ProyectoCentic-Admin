@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/observable';
 import { ActivatedRoute, Router } from '@angular/router';
 
 //SERVICES
-import { AuthenticationService } from '../../services/authentication.service';
 import { DataService } from '../../services/data.service';
 import { Ng2ImgToolsService } from 'ng2-img-tools';
 
@@ -65,7 +64,7 @@ export class GameConfigurationPanelComponent implements OnInit {
   @ViewChild('successPointsInput') successPointsInput: ElementRef;
   @ViewChild('failPointsInput') failPointsInput: ElementRef;
 
-  constructor(private _authenticationService: AuthenticationService, private _dataService: DataService,  private router:Router, private ng2ImgToolsService: Ng2ImgToolsService) { }
+  constructor(private _dataService: DataService,  private router:Router, private ng2ImgToolsService: Ng2ImgToolsService) { }
 
   ngOnInit() {
     this.getCardCover();
@@ -75,7 +74,6 @@ export class GameConfigurationPanelComponent implements OnInit {
   getAllCollections(){
     this.clearData();
     this._dataService.getAllItemsCollection().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 1 debido a que son las colecciones
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="1"){
           this.collections.push(data[i]);
@@ -88,7 +86,6 @@ export class GameConfigurationPanelComponent implements OnInit {
       }
     });
     this._dataService.getAllItems().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="0"){
           this.cards.push(data[i]);
@@ -241,6 +238,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     }      
   }
 
+  /*
+  EN:Function in charge of copy the url of the desired collection to the clipboard.
+  ES:Función encargada de copiar en el portapapeles la url de la colección deseada.
+  */
   copyLink(id) {
     this.configUpdated = false;
     this.cardCoverUpdated=false;
@@ -256,6 +257,12 @@ export class GameConfigurationPanelComponent implements OnInit {
     this.urlCopied = true;
   }
   
+  /*
+  EN:Function in charge of changing the publish status of a collection. If a letter belongs to another published collection, its status will remain intact.
+     Otherwise its status will become false.
+  ES:Función encargada de cambiar el estado publish de una colección.En el caso de que una carta pertenezca a otra colección publicada, su estado permanecerá intacto.
+     En otro caso su estado pasará a ser false.
+  */
   changeStatus(id){
     this.urlCopied = false;
     this.configUpdated = false;
@@ -313,17 +320,17 @@ export class GameConfigurationPanelComponent implements OnInit {
       });
     }else{
       this.collections[id].publish = false;
-      var cardsCheck = this.collections[id].cards.split(',');  //Las cartas de la coleccion que deseo borrar y tengo que comprobar si en el caso de que no haya otra coleccion activa con esa carta la ponga a false
+      var cardsCheck = this.collections[id].cards.split(',');
       var check0:boolean = false;
       var check1:boolean = false;
       var check2:boolean = false;
       var check3:boolean = false;
       var check4:boolean = false;
       var check5:boolean = false;
-      for(let i=0;i<this.collections.length;i++){  //Recorre todas las coleeciones
-        if(this.collections[i].publish==true){    //Entro si esta en publish true
+      for(let i=0;i<this.collections.length;i++){ 
+        if(this.collections[i].publish==true){    
           cardsCollection = this.collections[i].cards.split(',');
-          for(let j=0;j<=cardsCollection.length;j++){   //para cada carta de la coleccion publish=true encontrada compruebo si es una de las que estoy buscando, si es asi pongo su check a true para luego saber que esa carta debe permanecer en true y no modificarla
+          for(let j=0;j<=cardsCollection.length;j++){   
             if (cardsCollection[j]==cardsCheck[0]){
               check0=true;
             }else if (cardsCollection[j]==cardsCheck[1]){
@@ -340,7 +347,6 @@ export class GameConfigurationPanelComponent implements OnInit {
           }
         }
       }
-      //En el caso de que un check siga a falso es que no hay mas colecciones a true que tengan dicha carta, por lo tanto ponemos dicha carta en publish=false;
       if (!check0){
         this._dataService.getItem(cardsCheck[0]).subscribe(data=>{
           var aux = this.setCard(data['_id'],data['name'],data['history'],data['tags'],data['fileURL'],data['itemType'],false);
