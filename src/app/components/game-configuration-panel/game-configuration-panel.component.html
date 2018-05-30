@@ -9,18 +9,6 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="cardCoverUpdated" class="alert alert-info">
-                El dorso de las cartas ha cambiado
-            </div>
-            <div *ngIf="errorNoImageSelected" class="alert alert-danger">
-                Selecciona una imágen antes de intentar cambiar el dorso de las cartas
-            </div>
-            <div *ngIf="configUpdated" class="alert alert-info">
-                La configuración del juego ha sido actualizada
-            </div>
-            <div *ngIf="noValuePointsInput" class="alert alert-danger">
-                Por favor selecciona un número de puntos por acierto/fallo o de vidas antes de actualizar un modo de juego
-            </div>
             <div class="col-lg-2">     
             </div>
             <div class="row">
@@ -33,7 +21,7 @@
                             <div class="form-group">
                                 <input type="file" (change)="onFileSelected($event)">
                                 <br>
-                                <img [src]=urlMostrar>
+                                <img [src]=urlMostrar alt="No hay imágen establecida para el dorso de las cartas">
                             </div>
                         </div>
                         <div class="panel-footer">
@@ -78,12 +66,6 @@
                 <div class="col-lg-2">
                 </div>
             </div>
-            <div *ngIf="noCollection" class="alert alert-info">
-                No hay colecciones creadas
-            </div>
-            <div *ngIf="urlCopied" class="alert alert-info">
-                La url deseada ha sido copiada al portapapeles
-            </div>
             <div class="panel-body">
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
@@ -112,9 +94,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>  
-        <div *ngIf="collectionStatusUpdated" class="alert alert-success">
-            El estado de la colección ha sido actualizado
         </div>
     </div>
     <!-- Modal -->

@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Ng2ImgToolsModule } from 'ng2-img-tools'; 
 
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 //COMPONENTS
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -65,9 +68,11 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule,
     Ng2ImgToolsModule,
+    BrowserAnimationsModule, 
+    ToastModule.forRoot(),
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: false }) //Poner a true en el caso de querer saber que ruta está itnenta encontrar
+      { enableTracing: false }) 
   ],
   providers: [AuthenticationService, DataService, AuthGuard],
   bootstrap: [AppComponent]

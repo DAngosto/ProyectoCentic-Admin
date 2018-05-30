@@ -19,9 +19,6 @@
                                 <input class="form-control" placeholder="Contraseña" name="password" type="password" value="" [(ngModel)]="inputPassword">
                             </div>
                             <button class="btn btn-lg btn-success btn-block" (click)= "tryValidation()">Login</button>
-                            <div *ngIf="errorValidating" class="alert alert-danger">
-                                Usuario o contraseña incorrectos
-                            </div>
                         </fieldset>
                     </form>
                 </div>

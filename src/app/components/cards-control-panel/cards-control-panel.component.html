@@ -1,17 +1,5 @@
 <app-nav-bar></app-nav-bar>
 <div id="page-wrapper">
-    <div *ngIf="noCards" class="alert alert-info">
-        No hay cartas creadas
-    </div>
-    <div *ngIf="noCardsWithSpecificTag" class="alert alert-info">
-        No hay cartas creadas con la etiqueta especificada
-    </div>
-    <div *ngIf="cardDeleted" class="alert alert-success">
-        La carta ha sido eliminada correctamente
-    </div>
-    <div *ngIf="dependenceExists" class="alert alert-info">
-        La carta que está intentando eliminar pertenece a una o mas colecciones. Elimine primero la/las coleccion/es y después proceda a eliminar la carta
-    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">

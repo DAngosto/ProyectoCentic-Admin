@@ -1,6 +1,8 @@
 //MODULES
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 //SERVICES
 import { DataService } from '../../services/data.service';
@@ -29,22 +31,36 @@ export class AllStatisticsCollectionComponent implements OnInit {
   gamesWithMultiJoker:number;
   gamesWithVolteoJoker:number;
   gamesWithBothJokers: number;
-
-  //Alarm Conditions
-  sawCharts:boolean=false;
   data:boolean=false;
-  sawNoData:boolean=false;
 
-  constructor(private _dataService: DataService, private router:Router) { }
+  constructor(private _dataService: DataService, private router:Router, public toastr: ToastsManager, vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
   }
 
+  showToast(type, message){
+    switch(type){
+      case 0:
+            this.toastr.error(message);
+            break;
+      case 1:
+            this.toastr.success(message);
+            break;
+      case 2:
+            this.toastr.info(message);
+            break;
+      case 3:
+            this.toastr.warning(message);
+            break;
+    }
+  }
+
   doSpecificSearch(){
-    console.log(this.inputSearch);
     if (this.inputSearch==""){
       this.cleanCharts();
-      this.sawNoData=true;
+      this.showToast(2,"No se han jugado partidas con ese ID");
     }else{
       this.getAllItemsOfCollection(this.inputSearch);
     }
@@ -98,11 +114,10 @@ export class AllStatisticsCollectionComponent implements OnInit {
       if(this.data){
         this.inputSearch=searchedID;
         this.loadStatistics();
-        this.sawNoData=false;
       }else{
         this.inputSearch="";
         this.cleanCharts();
-        this.sawNoData=true;
+        this.showToast(2,"No se han jugado partidas con ese ID");
       }
     });
   }

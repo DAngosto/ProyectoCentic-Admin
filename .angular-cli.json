@@ -20,7 +20,8 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "./assets/startbootstrap-sb-admin-2-gh-pages/dist/css/sb-admin-2.css"
+        "./assets/startbootstrap-sb-admin-2-gh-pages/dist/css/sb-admin-2.css",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

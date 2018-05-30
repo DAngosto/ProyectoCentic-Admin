@@ -1,7 +1,9 @@
 //MODULES
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs/observable';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 //SERVICES
 import { DataService } from '../../services/data.service';
@@ -43,15 +45,29 @@ export class CollectionsControlPanelComponent implements OnInit {
   nameDisplay5: string = "";
   nameDisplay6:string = "";
 
-  //Alarm Conditions
-  visualizeImage: boolean = false;
-  collectionDeleted: boolean = false;
-  noCollection: boolean = false;
-
-  constructor(private _dataService: DataService,  private router:Router) { }
+  constructor(private _dataService: DataService,  private router:Router, public toastr: ToastsManager, vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
     this.getAllCollections();
+  }
+
+  showToast(type, message){
+    switch(type){
+      case 0:
+            this.toastr.error(message);
+            break;
+      case 1:
+            this.toastr.success(message);
+            break;
+      case 2:
+            this.toastr.info(message);
+            break;
+      case 3:
+            this.toastr.warning(message);
+            break;
+    }
   }
 
   getAllCollections(){
@@ -63,9 +79,7 @@ export class CollectionsControlPanelComponent implements OnInit {
         }  
       }
       if (this.collections.length == 0){
-        this.noCollection = true;
-      }else{
-        this.noCollection = false;
+        this.showToast(2,"No hay colecciones creadas");
       }
     });
     this._dataService.getAllItems().subscribe(data=>{
@@ -123,7 +137,6 @@ export class CollectionsControlPanelComponent implements OnInit {
      a otra existente publicada. En el caso de pertenecer a otra su estado publish no variaría. En el caso contrario su estadio publish pasaría a ser false.
   */
   deleteCollection(id){
-    this.collectionDeleted = false;
     this.collections[id].publish = false;
     var cardsCheck = this.collections[id].cards.split(',');
     var cardsCollection;
@@ -191,7 +204,7 @@ export class CollectionsControlPanelComponent implements OnInit {
     }
     this._dataService.deleteItem(this.collections[id]._id).subscribe(data=>{
       this.clearData();
-      this.collectionDeleted = true;
+      this.showToast(1,"La colección ha sido elimianda correctamente");
       this.getAllCollections();
     });
   }

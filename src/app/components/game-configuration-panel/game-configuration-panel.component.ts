@@ -1,7 +1,8 @@
 //MODULES
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs/observable';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 //SERVICES
 import { DataService } from '../../services/data.service';
@@ -49,26 +50,35 @@ export class GameConfigurationPanelComponent implements OnInit {
   inputLives: number;
   selectedGamemode: number = 0;
 
-  //Alarm Conditions
-  visualizeImage: boolean = false;
-  collectionDeleted: boolean = false;
-  noCollection: boolean = false;
-  collectionStatusUpdated: boolean = false;
-  urlCopied: boolean = false;
-  configUpdated: boolean = false;
-  noValuePointsInput: boolean = false;
-  cardCoverUpdated: boolean = false;
-  errorNoImageSelected:boolean=false;
 
   @ViewChild('livesInput') livesInput: ElementRef;
   @ViewChild('successPointsInput') successPointsInput: ElementRef;
   @ViewChild('failPointsInput') failPointsInput: ElementRef;
 
-  constructor(private _dataService: DataService,  private router:Router, private ng2ImgToolsService: Ng2ImgToolsService) { }
+  constructor(private _dataService: DataService,  private router:Router, private ng2ImgToolsService: Ng2ImgToolsService, public toastr: ToastsManager, vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
     this.getCardCover();
     this.getAllCollections();
+  }
+
+  showToast(type, message){
+    switch(type){
+      case 0:
+            this.toastr.error(message);
+            break;
+      case 1:
+            this.toastr.success(message);
+            break;
+      case 2:
+            this.toastr.info(message);
+            break;
+      case 3:
+            this.toastr.warning(message);
+            break;
+    }
   }
 
   getAllCollections(){
@@ -80,9 +90,7 @@ export class GameConfigurationPanelComponent implements OnInit {
         }  
       }
       if (this.collections.length == 0){
-        this.noCollection = true;
-      }else{
-        this.noCollection = false;
+        this.showToast(2, "No hay colecciones creadas");
       }
     });
     this._dataService.getAllItems().subscribe(data=>{
@@ -95,10 +103,6 @@ export class GameConfigurationPanelComponent implements OnInit {
   }
   
   sawCollection(id){
-    this.urlCopied = false;
-    this.configUpdated = false;
-    this.cardCoverUpdated=false;
-    this.errorNoImageSelected=false;
     this.collectiondisplaying = this.collections[id].name;
     var cardsCollection = this.collections[id].cards.split(',');
     this._dataService.getItem(cardsCollection[0]).subscribe(data=>{
@@ -128,10 +132,6 @@ export class GameConfigurationPanelComponent implements OnInit {
   }
   
   changeGamemode(id){
-    this.configUpdated = false;
-    this.cardCoverUpdated=false;
-    this.errorNoImageSelected=false;
-    this.urlCopied = false;
     if(this.collections[id].gamemode == 0){
       this.collections[id].gamemode = 1;
       this._dataService.updateCollection(this.collections[id]).subscribe(data=>{
@@ -145,7 +145,8 @@ export class GameConfigurationPanelComponent implements OnInit {
         this.clearData();
         this.getAllCollections();
       });
-    } 
+    }
+    this.showToast(1,"Modo de juego actualizado"); 
   }
 
   setGamemode(gamemode){
@@ -168,29 +169,24 @@ export class GameConfigurationPanelComponent implements OnInit {
   }
 
   updateGamemode(){
-    this.configUpdated = false;
-    this.noValuePointsInput=false;
-    this.cardCoverUpdated=false;
-    this.errorNoImageSelected=false;
     if ((!this.inputSuccessPoints) && (!this.inputFailPoints)&&(!this.livesInput.nativeElement.value)){
-      this.noValuePointsInput=true;
+      this.showToast(0,"Por favor selecciona un número de puntos por acierto/fallo o de vidas antes de actualizar un modo de juego");
     }else{
       if(this.selectedGamemode==0){
         if (this.inputSuccessPoints){
-          this.configUpdated = true;
           this._dataService.updateConfigPoints(this.selectedGamemode, 0, this.inputSuccessPoints).subscribe(data=>{
           });
         }
         if (this.inputFailPoints){
-          this.configUpdated = true;
           this._dataService.updateConfigPoints(this.selectedGamemode, 1, this.inputFailPoints).subscribe(data=>{
           });
         }
+        this.showToast(1,"La configuración del juego ha sido actualizada");
       }
       else if(this.selectedGamemode==1){
         if(this.livesInput.nativeElement.value){
-          this.configUpdated = true;
           this._dataService.updateConfigPoints(this.selectedGamemode, 2, this.inputLives).subscribe(data=>{
+            this.showToast(1,"La configuración del juego ha sido actualizada");
           });
         }
       }
@@ -205,7 +201,6 @@ export class GameConfigurationPanelComponent implements OnInit {
         this.url = event.target.result;
       }
       reader.readAsDataURL(event.target.files[0]);
-      console.log(event.target.files[0]);
       this.url = reader.result; 
     }
   }
@@ -218,7 +213,6 @@ export class GameConfigurationPanelComponent implements OnInit {
 
   updateCardCover(){
     if (this.selectedFile){
-      this.errorNoImageSelected=false;
       const fd = new FormData();
       this.ng2ImgToolsService.resizeExactCrop([this.selectedFile], 258, 183).subscribe(result => {
         fd.append('file', result, this.selectedFile.name);
@@ -227,26 +221,24 @@ export class GameConfigurationPanelComponent implements OnInit {
           this._dataService.updateConfigCardCover(fileURL).subscribe(data=>{
             this.urlMostrar = AppSettings.API_ENDPOINT + fileURL;
             this.url = "";
-            this.cardCoverUpdated=true;
+            this.showToast(1,"El dorso de las cartas ha cambiado");
           });
       })
       }, error => {
-        console.log(error);
+        this.showToast(0,error);
       });
     }else{
-      this.errorNoImageSelected=true;
+      this.showToast(0,"Selecciona una imágen antes de intentar cambiar el dorso de las cartas");
     }      
   }
+
 
   /*
   EN:Function in charge of copy the url of the desired collection to the clipboard.
   ES:Función encargada de copiar en el portapapeles la url de la colección deseada.
   */
   copyLink(id) {
-    this.configUpdated = false;
-    this.cardCoverUpdated=false;
-    this.errorNoImageSelected=false;
-    var text = "&collection=" + this.collections[id]._id;
+    var text = this.collections[id]._id;
     var event = (e: ClipboardEvent) => {
         e.clipboardData.setData('text/plain', text);
         e.preventDefault();
@@ -254,7 +246,7 @@ export class GameConfigurationPanelComponent implements OnInit {
     }
     document.addEventListener('copy', event);
     document.execCommand('copy');
-    this.urlCopied = true;
+    this.showToast(1,"Id seleccionado copiado al portapapeles");
   }
   
   /*
@@ -264,10 +256,6 @@ export class GameConfigurationPanelComponent implements OnInit {
      En otro caso su estado pasará a ser false.
   */
   changeStatus(id){
-    this.urlCopied = false;
-    this.configUpdated = false;
-    this.cardCoverUpdated=false;
-    this.errorNoImageSelected=false;
     var cardsCollection;
     if(this.collections[id].publish==false){
       cardsCollection = this.collections[id].cards.split(',');
@@ -395,7 +383,7 @@ export class GameConfigurationPanelComponent implements OnInit {
         this.getAllCollections();
       });
     }
-    this.collectionStatusUpdated = false;
+    this.showToast(1,"El estado de la colección ha sido actualizado");
   }
 
   setCard(_id,name,history,tags,fileURL,itemType, publish) : Card{

@@ -1,6 +1,8 @@
 //MODULES
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 //SERVICES
 import { DataService } from '../../services/data.service';
@@ -37,27 +39,35 @@ export class UpdateCollectionComponent implements OnInit {
   tagsDisplay: any;
   collectionUpdating: Collection;
   selectedGamemode: number;
-
-  //Alarm Conditions
-  errorCollectionNotFull: boolean = false;
-  errorNoInfo: boolean = false;
-  collectionUpdated: boolean = false;
   prevImage: boolean = false;
-  collectionFull: boolean = false;
-  collectionEmpty: boolean = false;
-  cardNotInCollection: boolean = false;
   sawCollection: boolean = false;
-  cardRepeated: boolean = false;
-  noCardsWithSpecificTag: boolean = false;
-  noCards: boolean = false;
 
   @ViewChild('gamemodeInput') gamemodeInput: ElementRef;
 
-  constructor(private _dataService: DataService, private router:Router) { }
+  constructor(private _dataService: DataService, private router:Router, public toastr: ToastsManager, vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
     this.getCollectionForUpdate();
     this.getAllItems();
+  }
+
+  showToast(type, message){
+    switch(type){
+      case 0:
+            this.toastr.error(message);
+            break;
+      case 1:
+            this.toastr.success(message);
+            break;
+      case 2:
+            this.toastr.info(message);
+            break;
+      case 3:
+            this.toastr.warning(message);
+            break;
+    }
   }
 
   /*
@@ -132,11 +142,8 @@ export class UpdateCollectionComponent implements OnInit {
           this.cards.push(data[i]);
         }   
       }
-      this.noCardsWithSpecificTag = false;
       if (this.cards.length == 0){
-        this.noCards = true;
-      }else{
-        this.noCards = false;
+        this.showToast(2,"No hay cartas creadas actualmente");
       }
     });
   }
@@ -157,36 +164,25 @@ export class UpdateCollectionComponent implements OnInit {
           }
         }     
       }
-      this.noCards = false;
       if (this.cards.length == 0){
-        this.noCardsWithSpecificTag = true;
-      }else{
-        this.noCardsWithSpecificTag = false;
+        this.showToast(2,"No hay cartas creadas actualmente con la etiqueta especificada");
       }
     });
   }
 
   addCardtoCollection(id){
     if (this.selectedCards.length>=6){
-      this.collectionFull= true;
-      this.cardRepeated=false;
-      this.collectionEmpty = false;
-      this.cardRepeated=false;
+      this.showToast(0,"La colección ya posee 6 cartas, si deseas añadir otra carta más procede primero a eliminar una de las ya introducidas");
     }else{
-      this.collectionFull= false;
-      this.collectionEmpty = false;
-      this.cardRepeated=false;
-      this.cardNotInCollection = false;
       var cortado=false;
       for(let i=0; i<this.selectedCards.length; i++){
           if(this.selectedCards[i]._id==this.cards[id]._id){
-            this.cardRepeated=true;
+            this.showToast(0,"La carta que está intentando añadir ya se encuentra en la colección. Está prohibido introducir dos cartas iguales en una misma colección");
             cortado=true;
             break;
           }
       }
       if(!cortado){
-        this.cardRepeated=false;
         this.selectedCards.push(this.cards[id]);
         this.updateImages();
       }    
@@ -194,15 +190,9 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   deleteCardfromCollection(id){
-    this.cardRepeated=false;
     if (this.selectedCards.length==0){
-      this.collectionEmpty= true;
-      this.collectionFull = false;
-      this.cardNotInCollection = false;
+      this.showToast(2,"La colección está vacía actualmente. Por favor añade cartas a la colección antes de intentar quitar una");
     }else{
-      this.collectionEmpty= false;
-      this.collectionFull = false;
-      this.cardNotInCollection = false;
       var deleted:boolean = false;
       for(let i=0;i<this.selectedCards.length;i++){
         if(this.selectedCards[i]._id == this.cards[id]._id){
@@ -213,7 +203,7 @@ export class UpdateCollectionComponent implements OnInit {
         }
       }
       if (!deleted) {
-        this.cardNotInCollection = true;
+        this.showToast(0,"La carta que está intentando quitar no se encuentra almacenada en la colección");
       } 
     }
   }
@@ -285,20 +275,14 @@ export class UpdateCollectionComponent implements OnInit {
         this._dataService.updateCollection(this.collectionUpdating).subscribe(data=>{
           this.clearData();
           this.getAllItems();
-          this.errorCollectionNotFull = false;
-          this.errorNoInfo = false;
           this.prevImage = false;
-          this.collectionUpdated = true;
+          this.showToast(1,"La colección ha sido actualizada correctamente");
         });
       }else{
-        this.collectionUpdated = false;
-        this.errorNoInfo = true;
-        this.errorCollectionNotFull = false;
+        this.showToast(0,"Campo nombre incompleto, por favor introduzca la información correspondiente");
       }
     }else {
-      this.collectionUpdated = false;
-      this.errorCollectionNotFull = true;
-      this.errorNoInfo = false;
+      this.showToast(0,"La colección a crear no posee 6 cartas, por favor seleccionalas antes de intentar crear una colección");
     }
   }
 

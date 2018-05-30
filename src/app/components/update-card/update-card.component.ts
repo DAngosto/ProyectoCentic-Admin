@@ -1,6 +1,7 @@
 //MODULES
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 //SERVICES
 import { DataService } from '../../services/data.service';
@@ -25,18 +26,33 @@ export class UpdateCardComponent implements OnInit {
   inputHistory: string = "";
   inputTags: string = "";
   url: string = "";
-
-  //Alarm Conditions
-  errorNoImageSelected: boolean = false;
-  errorNoInfo: boolean = false;
-  cardUploaded: boolean = false;
   sawImage: boolean = false;
   imgChanged: boolean = false;
+  
 
-  constructor(private _dataService: DataService, private router:Router) { }
+  constructor(private _dataService: DataService, private router:Router, public toastr: ToastsManager, vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
     this.getCardForUpdate();
+  }
+
+  showToast(type, message){
+    switch(type){
+      case 0:
+            this.toastr.error(message);
+            break;
+      case 1:
+            this.toastr.success(message);
+            break;
+      case 2:
+            this.toastr.info(message);
+            break;
+      case 3:
+            this.toastr.warning(message);
+            break;
+    }
   }
 
   /*
@@ -65,7 +81,6 @@ export class UpdateCardComponent implements OnInit {
       }
       reader.readAsDataURL(event.target.files[0]);
       this.url = reader.result;
-      this.errorNoImageSelected = false;
       this.imgChanged = true;
     }
   }
@@ -77,9 +92,7 @@ export class UpdateCardComponent implements OnInit {
         this.cardUpdating.history = this.inputHistory;
         this.cardUpdating.tags = this.inputTags;
         this._dataService.updateCard(this.cardUpdating).subscribe(data=>{
-          this.errorNoImageSelected = false;
-          this.errorNoInfo = false;
-          this.cardUploaded = true;
+          this.showToast(1,"La carta ha sido actualizada con exito");
         })
       }else{
         const fd = new FormData();
@@ -91,19 +104,14 @@ export class UpdateCardComponent implements OnInit {
           this.cardUpdating.tags = this.inputTags;
           this.cardUpdating.fileURL = fileURL;
           this._dataService.updateCard(this.cardUpdating).subscribe(data=>{
-            this.errorNoImageSelected = false;
-            this.errorNoInfo = false;
-            this.cardUploaded = true; 
+            this.showToast(1,"La carta ha sido actualizada con exito");
           })
         })
       }
     }else{
-      this.cardUploaded = false;
-      this.errorNoInfo = true;
+      this,this.showToast(0,"Los campos nombre o historia estaban incompletos, por favor introduce la información correspondiente");
       if (!this.cardUpdating){
-        this.errorNoImageSelected = true;
-      }else{
-        this.errorNoImageSelected = false;
+        this.showToast(0,"¡Selecciona una imágen antes de intentar crear una nueva carta!");
       }
     }
   }

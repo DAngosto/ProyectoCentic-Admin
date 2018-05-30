@@ -1,7 +1,8 @@
 //MODULES
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/observable';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 //SERVICES
 import { AuthenticationService } from '../../services/authentication.service';
@@ -20,7 +21,9 @@ export class LoginComponent implements OnInit {
   //Alarm Conditions
   public errorValidating=false;
 
-  constructor(private _authenticationService: AuthenticationService, private router:Router) { }
+  constructor(private _authenticationService: AuthenticationService, private router:Router, public toastr: ToastsManager, vcr: ViewContainerRef) { 
+    this.toastr.setRootViewContainerRef(vcr);
+  }
 
   ngOnInit() {
   }
@@ -34,7 +37,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(["/dashboard"]);
          },
          error => {
-           this.errorValidating=true;
+           this.toastr.error("Usuario o contraseña incorrectos");
            return Observable.throw(error);
          }
       );

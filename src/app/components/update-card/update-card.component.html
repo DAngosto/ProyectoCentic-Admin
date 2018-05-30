@@ -4,10 +4,10 @@
         <form method="post">
             <h2 class="text-center">Actualizar Carta</h2>
             <div class="form-group">
-                <input class="form-control" type="text" name="name" placeholder="Nombre" [(ngModel)]="inputName">
+                <input class="form-control" type="text" name="name" placeholder="Nombre" maxlength="40" [(ngModel)]="inputName">
             </div>
             <div class="form-group">
-                <textarea class="form-control" rows="9" name="history" placeholder="Historia" [(ngModel)]="inputHistory"></textarea>
+                <textarea class="form-control" rows="5" name="history" placeholder="Historia" maxlength="1000" [(ngModel)]="inputHistory"></textarea>
             </div>
             <div class="form-group">
                 <input class="form-control" type="text" name="tags" placeholder="Etiquetas" [(ngModel)]="inputTags">
@@ -19,19 +19,10 @@
                 <img [src] = "url">
             </div>
             <br>
-            <div *ngIf="errorNoImageSelected" class="alert alert-danger">
-                ¡Selecciona una imagen antes de intentar crear una nueva carta!
-            </div>
-            <div *ngIf="errorNoInfo" class="alert alert-danger">
-                Los campos nombre o historia estaban incompletos, por favor introduce la información correspondiente
-            </div>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit" (click)="updateCard()" value="Update File"> Actualizar </button>
             </div>   
             <br> 
-            <div *ngIf="cardUploaded" class="alert alert-success">
-                    La carta ha sido actualizada con exito
-            </div>
         </form>
     </div>
 </div>

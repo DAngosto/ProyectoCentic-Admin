@@ -5,7 +5,7 @@
                 <h2 class="text-center">Crear una nueva colección</h2>
                 <div class="panel-body">
                         <div class="form-group">
-                                <input class="form-control" type="text" name="name" placeholder="Nombre" [(ngModel)]="inputName">
+                                <input class="form-control" type="text" name="name" placeholder="Nombre" maxlength="40" [(ngModel)]="inputName">
                         </div>
                         <label>Modo de juego: </label>
                         <select class="form-control-sm" (change)="setGamemode($event.target.value)">
@@ -14,24 +14,6 @@
                         </select>
                         <div id="dataTables-example_filter" class="text-center">
                                 <label>Búsqueda:<input  class="form-control input-sm" type="search" name="tag" placeholder="Etiqueta"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
-                        </div>
-                        <div *ngIf="collectionFull" class="alert alert-info">
-                                La colección ya posee 6 cartas, si deseas añadir otra carta más procede primero a eliminar una de las ya introducidas
-                        </div>
-                        <div *ngIf="collectionEmpty" class="alert alert-info">
-                                La colección está vacía actualmente. Por favor añade cartas a la colección antes de intentar quitar una
-                        </div>
-                        <div *ngIf="cardNotInCollection" class="alert alert-info">
-                                La carta que está intentando quitar no se encuentra almacenada en la colección
-                        </div>
-                        <div *ngIf="cardRepeated" class="alert alert-info">
-                                La carta que está intentando añadir ya se encuentra en la colección. Está prohibido introducir dos cartas iguales en una misma colección
-                        </div>
-                        <div *ngIf="noCards" class="alert alert-info">
-                                No hay cartas creadas actualmente
-                        </div>
-                        <div *ngIf="noCardsWithSpecificTag" class="alert alert-info">
-                                No hay cartas creadas actualmente con la etiqueta especificada
                         </div>
                         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
@@ -88,18 +70,9 @@
                                 </div>
                                 <br>
                         </div>
-                </div>   
-                <div *ngIf="errorNoInfo" class="alert alert-danger">
-                        Campo nombre incompleto, por favor introduzca la información correspondiente
-                </div>
-                <div *ngIf="errorCollectionNotFull" class="alert alert-danger">
-                        La colección a crear no posee 6 cartas, por favor seleccionalas antes de intentar crear una colección
-                </div>
+                </div> 
                 <div class="form-group">
                         <button class="btn btn-primary" type="submit" (click)="uploadCollection()" value="Upload File"> Crear </button>
-                </div>
-                <div *ngIf="collectionUploaded" class="alert alert-success">
-                        La colección ha sido creada correctamente
                 </div>
         </div>
         <!-- Modal -->

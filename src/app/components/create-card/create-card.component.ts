@@ -1,6 +1,8 @@
 //MODULES
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 //SERVICES
 import { DataService } from '../../services/data.service';
@@ -19,16 +21,33 @@ export class CreateCardComponent implements OnInit {
   inputHistory: string = "";
   inputTags: string = "";
   url: string = "";
-
-  //Alarm Conditions
-  errorNoImageSelected: boolean = false;
-  errorNoInfo: boolean = false;
-  cardUploaded: boolean = false;
   prevImage: boolean = false;
 
-  constructor(private _dataService: DataService, private ng2ImgToolsService: Ng2ImgToolsService) { }
+
+  
+
+  constructor(private _dataService: DataService, private ng2ImgToolsService: Ng2ImgToolsService, public toastr: ToastsManager, vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
+  }
+
+  showToast(type, message){
+    switch(type){
+      case 0:
+            this.toastr.error(message);
+            break;
+      case 1:
+            this.toastr.success(message);
+            break;
+      case 2:
+            this.toastr.info(message);
+            break;
+      case 3:
+            this.toastr.warning(message);
+            break;
+    }
   }
 
   onFileSelected(event){
@@ -41,7 +60,6 @@ export class CreateCardComponent implements OnInit {
       }
       reader.readAsDataURL(event.target.files[0]);
       this.url = reader.result;
-      this.errorNoImageSelected = false;
     }
   }
 
@@ -54,10 +72,8 @@ export class CreateCardComponent implements OnInit {
           this._dataService.uploadFile(fd).subscribe(data=>{
             let fileURL = data['file'];
             this._dataService.uploadCard(this.inputName, this.inputHistory, this.inputTags, fileURL).subscribe(data=>{
-              this.errorNoImageSelected = false;
-              this.errorNoInfo = false;
               this.prevImage = false;
-              this.cardUploaded = true;
+              this.showToast(1,"La carta ha sido creada con exito");
               this.inputName = "";
               this.inputHistory = "";
               this.inputTags = "";
@@ -68,14 +84,10 @@ export class CreateCardComponent implements OnInit {
           console.log(error);
         });
       }else{
-        this.cardUploaded = false;
-        this.errorNoInfo = true;
-        this.errorNoImageSelected = false;
+        this.showToast(0,"Los campos nombre o historia estaban incompletos, por favor introduce la información correspondiente");
       }
     }else {
-      this.cardUploaded = false;
-      this.errorNoImageSelected = true;
-      this.errorNoInfo = false;
+      this.showToast(0,"¡Selecciona una imagen antes de intentar crear una nueva carta!");
     }
   }
 

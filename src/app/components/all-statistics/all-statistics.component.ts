@@ -1,5 +1,7 @@
 //MODULES
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 //SERVICES
 import { DataService } from '../../services/data.service';
@@ -21,14 +23,30 @@ export class AllStatisticsComponent implements OnInit {
   inputSearch:string;
   selectedGamemode:number=0;
 
-  //Alarm Conditions
-  noGames:boolean=false;
-  noGamesWithSpecificTag:boolean=false;
 
-  constructor(private _dataService: DataService) { }
+  constructor(private _dataService: DataService, public toastr: ToastsManager, vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
     this.getAllItems();
+  }
+
+  showToast(type, message){
+    switch(type){
+      case 0:
+            this.toastr.error(message);
+            break;
+      case 1:
+            this.toastr.success(message);
+            break;
+      case 2:
+            this.toastr.info(message);
+            break;
+      case 3:
+            this.toastr.warning(message);
+            break;
+    }
   }
 
   getAllItems(){
@@ -44,16 +62,11 @@ export class AllStatisticsComponent implements OnInit {
           }
         }    
       }
-      this.noGamesWithSpecificTag = false;
       if (this.itemsArcade.length == 0){
-        this.noGames = true;
-      }else{
-        this.noGames = false;
+        this.showToast(2,"No se han jugado partidas del modo de juego arcade");
       }
       if (this.itemsSurvival.length == 0){
-        this.noGames = true;
-      }else{
-        this.noGames = false;
+        this.showToast(2,"No se han jugado partidas del modo de juego survival");
       }
     });
   }
@@ -97,19 +110,14 @@ export class AllStatisticsComponent implements OnInit {
           } 
         }
       }
-      this.noGames = false;
       this.inputSearch = "";
       if(this.selectedGamemode==0){
         if (this.itemsArcade.length == 0){
-          this.noGamesWithSpecificTag = true;
-        }else{
-          this.noGamesWithSpecificTag = false;
+          this.showToast(2,"No se han jugado partidas con ese ID");
         }
       }else if(this.selectedGamemode==1){
         if (this.itemsSurvival.length == 0){
-          this.noGamesWithSpecificTag = true;
-        }else{
-          this.noGamesWithSpecificTag = false;
+          this.showToast(2,"No se han jugado partidas con ese ID");
         }
       }   
     });

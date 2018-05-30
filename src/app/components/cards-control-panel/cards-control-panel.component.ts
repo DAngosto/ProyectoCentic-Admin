@@ -1,7 +1,9 @@
 //MODULES
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs/observable';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+
 
 //SERVICES
 import { DataService } from '../../services/data.service';
@@ -28,18 +30,31 @@ export class CardsControlPanelComponent implements OnInit {
   nameDisplay: any;
   historyDisplay: any;
   tagsDisplay: any;
-
-  //Alarm Conditions
   visualizeImage: boolean = false;
-  cardDeleted: boolean = false;
-  noCards: boolean = false;
-  dependenceExists: boolean = false;
-  noCardsWithSpecificTag: boolean = false;
 
-  constructor(private _dataService: DataService,  private router:Router) { }
+  constructor(private _dataService: DataService,  private router:Router, public toastr: ToastsManager, vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
+   }
 
   ngOnInit() {
     this.getAllItems();
+  }
+
+  showToast(type, message){
+    switch(type){
+      case 0:
+            this.toastr.error(message);
+            break;
+      case 1:
+            this.toastr.success(message);
+            break;
+      case 2:
+            this.toastr.info(message);
+            break;
+      case 3:
+            this.toastr.warning(message);
+            break;
+    }
   }
 
   getAllItems(){
@@ -50,11 +65,8 @@ export class CardsControlPanelComponent implements OnInit {
           this.items.push(data[i]);
         }
       }
-      this.noCardsWithSpecificTag = false;
       if (this.items.length == 0){
-        this.noCards = true;
-      }else{
-        this.noCards = false;
+        this.showToast(2,"No hay cartas creadas");
       }
     });
   }
@@ -75,11 +87,8 @@ export class CardsControlPanelComponent implements OnInit {
           }
         }   
       }
-      this.noCards = false;
       if (this.items.length == 0){
-        this.noCardsWithSpecificTag = true;
-      }else{
-        this.noCardsWithSpecificTag = false;
+        this.showToast(2,"No hay cartas creadas con la etiqueta especificada");
       }
     });
   }
@@ -89,7 +98,6 @@ export class CardsControlPanelComponent implements OnInit {
   ES:Función encargada de introducir la información de la carta en la ventana modal.
   */
   sawCard(id){
-    this.cardDeleted = false;
     this.url = AppSettings.API_ENDPOINT + this.items[id].fileURL;
     this.nameDisplay = this.items[id].name;
     this.historyDisplay = this.items[id].history;
@@ -103,7 +111,6 @@ export class CardsControlPanelComponent implements OnInit {
   }
 
   deleteCard(id){
-    this.cardDeleted = false;
     this.cardInACollection(this.items[id]._id);
   }
 
@@ -119,7 +126,6 @@ export class CardsControlPanelComponent implements OnInit {
   */
   cardInACollection(idCardSearching){
     var NotFreeOfDependencies = false;
-    this.dependenceExists = false;
     this._dataService.getAllItemsCollection().subscribe(data=>{
       for(let i=0; (i<data.length); i++){
         if (data[i].itemType=="1"){
@@ -127,7 +133,7 @@ export class CardsControlPanelComponent implements OnInit {
           for(let j=0;(j<cardsCollection.length);j++){
             if(cardsCollection[j]==idCardSearching){
               NotFreeOfDependencies = true;
-              this.dependenceExists = true;
+              this.showToast(3,"La carta que está intentando eliminar pertenece a una o más colecciones. Elimine primero la/las coleccion/es y después proceda a eliminar la carta");
               break;
             }
           }
@@ -137,7 +143,7 @@ export class CardsControlPanelComponent implements OnInit {
       if(!NotFreeOfDependencies){
         this._dataService.deleteItem(idCardSearching).subscribe(data=>{
           this.clearData();
-          this.cardDeleted = true;
+          this.showToast(1,"La carta ha sido eliminada correctamente");
           this.getAllItems();
         });
       }
