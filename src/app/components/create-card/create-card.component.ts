@@ -3,7 +3,6 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-
 //SERVICES
 import { DataService } from '../../services/data.service';
 import { Ng2ImgToolsService } from 'ng2-img-tools';
@@ -23,9 +22,6 @@ export class CreateCardComponent implements OnInit {
   url: string = "";
   prevImage: boolean = false;
 
-
-  
-
   constructor(private _dataService: DataService, private ng2ImgToolsService: Ng2ImgToolsService, public toastr: ToastsManager, vcr: ViewContainerRef) {
     this.toastr.setRootViewContainerRef(vcr);
    }
@@ -33,6 +29,10 @@ export class CreateCardComponent implements OnInit {
   ngOnInit() {
   }
 
+  /*
+  EN:Function in charge of displaying a Toast message on the screen.
+  ES:Función encargada de mostrar un mensaje Toast en la pantalla.
+  */
   showToast(type, message){
     switch(type){
       case 0:
@@ -50,6 +50,10 @@ export class CreateCardComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of storing the selected image to be the corresponding one in the new Card and preview it on the screen.
+  ES:Función encargada de almacenar la imagen seleccionada para ser la correspondiente de la nueva Carta y previsualizarla en la pantalla.
+  */
   onFileSelected(event){
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = <File> event.target.files[0];
@@ -63,6 +67,10 @@ export class CreateCardComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of creating the new card in the API.
+  ES:Función encargada de realizar la creación de la nueva carta en la API.
+  */
   uploadCard(){
     if (this.selectedFile){
       if((this.inputName!="")&&(this.inputHistory!="")){

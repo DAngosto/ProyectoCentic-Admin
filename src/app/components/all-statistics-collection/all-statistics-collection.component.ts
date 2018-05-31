@@ -3,7 +3,6 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-
 //SERVICES
 import { DataService } from '../../services/data.service';
 
@@ -40,6 +39,10 @@ export class AllStatisticsCollectionComponent implements OnInit {
   ngOnInit() {
   }
 
+  /*
+  EN:Function in charge of displaying a Toast message on the screen.
+  ES:Función encargada de mostrar un mensaje Toast en la pantalla.
+  */
   showToast(type, message){
     switch(type){
       case 0:
@@ -57,6 +60,10 @@ export class AllStatisticsCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of performing a specific search or displaying all the games played.
+  ES:Función encargada de realizar una búsqueda específica o mostrar todas las partidas jugadas.
+  */
   doSpecificSearch(){
     if (this.inputSearch==""){
       this.cleanCharts();
@@ -66,6 +73,10 @@ export class AllStatisticsCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of performing a specific search for games played in a particular collection.
+  ES:Función encargada de realizar una búsqueda específica de partidas juagadas de una colección en particular.
+  */
   getAllItemsOfCollection(id){
     this.data=false;
     this.actualCards = 0;
@@ -122,12 +133,20 @@ export class AllStatisticsCollectionComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of deleting the data shown in the charts.
+  ES:Función encargada de eliminar los datos mostrados en las gráficas.
+  */
   cleanCharts(){
     $('#morris-donut-chart-gamemodevs').empty();
     $('#morris-bar-chart-jokersvs').empty();
     $('#morris-donut-chart-mostusedjokers').empty();
   }
 
+  /*
+  EN:Function in charge of entering the corresponding data in the charts.
+  ES:Función encargada de introducir los datos corrspondientes en las gráficas.
+  */
   loadStatistics(){
     this.cleanCharts();
     Morris.Donut({

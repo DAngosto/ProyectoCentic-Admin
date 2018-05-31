@@ -64,6 +64,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     this.getAllCollections();
   }
 
+  /*
+  EN:Function in charge of displaying a Toast message on the screen.
+  ES:Función encargada de mostrar un mensaje Toast en la pantalla.
+  */
   showToast(type, message){
     switch(type){
       case 0:
@@ -81,6 +85,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of obtaining all the existing collections.
+  ES:Función encargada de obtener todas las colecciones existentes.
+  */
   getAllCollections(){
     this.clearData();
     this._dataService.getAllItemsCollection().subscribe(data=>{
@@ -102,6 +110,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     }); 
   }
   
+  /*
+  EN:Function in charge of inserting the information of a collection in the modal window.
+  ES:Función encargada de introducir la información de una colección en la ventana modal.
+  */
   sawCollection(id){
     this.collectiondisplaying = this.collections[id].name;
     var cardsCollection = this.collections[id].cards.split(',');
@@ -131,6 +143,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     });
   }
   
+  /*
+  EN:Function in charge of changing the game mode of a collection.
+  ES:Función encargada de cambiar el modo de juego de una colección.
+  */
   changeGamemode(id){
     if(this.collections[id].gamemode == 0){
       this.collections[id].gamemode = 1;
@@ -149,6 +165,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     this.showToast(1,"Modo de juego actualizado"); 
   }
 
+  /*
+  EN:Function in charge of being able to change its respective configuration according to the selected game mode.
+  ES:Función encargada de, según el modo de juego seleccionado, poder cambiar su respectiva configuración.
+  */
   setGamemode(gamemode){
     var aux = gamemode.toLowerCase();
     if (aux=="arcade"){
@@ -168,6 +188,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     } 
   }
 
+  /*
+  EN:Function in charge of updating the configuration of the selected game mode.
+  ES:Función encargada de actualizar la configuración del modo de juego seleccionado.
+  */
   updateGamemode(){
     if ((!this.inputSuccessPoints) && (!this.inputFailPoints)&&(!this.livesInput.nativeElement.value)){
       this.showToast(0,"Por favor selecciona un número de puntos por acierto/fallo o de vidas antes de actualizar un modo de juego");
@@ -193,6 +217,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of storing the selected image to be the corresponding one on the back of the cards during the game.
+  ES:Función encargada de almacenar la imagen seleccionada para ser la correspondiente del dorso de las cartas durante el juego.
+  */
   onFileSelected(event){
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = <File> event.target.files[0];
@@ -205,12 +233,20 @@ export class GameConfigurationPanelComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of getting the current back of the cards.
+  ES:Función encargada de obtener el dorso actual de las cartas.
+  */
   getCardCover(){
     this._dataService.getConfig().subscribe(data=>{
       this.urlMostrar = data['cardCover'];
     });
   }
 
+  /*
+  EN:Function in charge of updating the back of the cards during the game.
+  ES:Función encargada de actualizar el dorso de las cartas durante el juego.
+  */
   updateCardCover(){
     if (this.selectedFile){
       const fd = new FormData();
@@ -228,14 +264,13 @@ export class GameConfigurationPanelComponent implements OnInit {
         this.showToast(0,error);
       });
     }else{
-      this.showToast(0,"Selecciona una imágen antes de intentar cambiar el dorso de las cartas");
+      this.showToast(0,"Selecciona una imagen antes de intentar cambiar el dorso de las cartas");
     }      
   }
 
-
   /*
-  EN:Function in charge of copy the url of the desired collection to the clipboard.
-  ES:Función encargada de copiar en el portapapeles la url de la colección deseada.
+  EN:Function in charge of copy the ID of the desired collection to the clipboard.
+  ES:Función encargada de copiar en el portapapeles el id de la colección deseada.
   */
   copyLink(id) {
     var text = this.collections[id]._id;
@@ -386,6 +421,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     this.showToast(1,"El estado de la colección ha sido actualizado");
   }
 
+  /*
+  EN:Function in charge of creating a Card object with the data provided.
+  ES:Función encargada de crear un objeto Carta con los datos proporcionados.
+  */
   setCard(_id,name,history,tags,fileURL,itemType, publish) : Card{
     var cardAux: Card = {_id,name,history,tags,fileURL,itemType, publish};
     cardAux._id = _id;
@@ -398,6 +437,10 @@ export class GameConfigurationPanelComponent implements OnInit {
     return cardAux;
   }
 
+  /*
+  EN:Function in charge of emptying the items stored in the component.
+  ES:Función encargada de vaciar los items almacenados en el componente.
+  */
   clearData(){
     this.collections = [];
   }

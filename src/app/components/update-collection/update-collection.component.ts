@@ -3,7 +3,6 @@ import { Component, OnInit, ElementRef, ViewChild, ViewContainerRef } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-
 //SERVICES
 import { DataService } from '../../services/data.service';
 
@@ -53,6 +52,10 @@ export class UpdateCollectionComponent implements OnInit {
     this.getAllItems();
   }
 
+  /*
+  EN:Function in charge of displaying a Toast message on the screen.
+  ES:Función encargada de mostrar un mensaje Toast en la pantalla.
+  */
   showToast(type, message){
     switch(type){
       case 0:
@@ -122,6 +125,10 @@ export class UpdateCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of creating a Card object with the data provided.
+  ES:Función encargada de crear un objeto Carta con los datos proporcionados.
+  */
   setCard(_id,name,history,tags,fileURL,itemType, publish) : Card{
     var cardAux: Card = {_id,name,history,tags,fileURL,itemType, publish};
     cardAux._id = _id;
@@ -134,6 +141,10 @@ export class UpdateCollectionComponent implements OnInit {
     return cardAux;
   }
 
+  /*
+  EN:Function in charge of getting all the existing cards.
+  ES:Función encargada de obtener todas las cartas existentes.
+  */
   getAllItems(){
     this.clearData();
     this._dataService.getAllItems().subscribe(data=>{
@@ -148,6 +159,10 @@ export class UpdateCollectionComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of performing a specific search obtaining those cards that have the tag entered.
+  ES:Función encargada de realizar una búsqueda específica obteniendo aquellas cartas que tengan la etiqueta introducida.
+  */
   getSpecificItems(tag){
     this.clearData();
     var tagLowerCase= tag.toLowerCase();
@@ -170,6 +185,10 @@ export class UpdateCollectionComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of inserting the selected card into the future collection to be created.
+  ES:Función encargada de introducir la carta seleccionada a la futura colección a ser creada.
+  */
   addCardtoCollection(id){
     if (this.selectedCards.length>=6){
       this.showToast(0,"La colección ya posee 6 cartas, si deseas añadir otra carta más procede primero a eliminar una de las ya introducidas");
@@ -189,6 +208,10 @@ export class UpdateCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of removing the selected card from the future collection to be created.
+  ES:Función encargada de eliminar la carta seleccionada en la futura colección a ser creada.
+  */
   deleteCardfromCollection(id){
     if (this.selectedCards.length==0){
       this.showToast(2,"La colección está vacía actualmente. Por favor añade cartas a la colección antes de intentar quitar una");

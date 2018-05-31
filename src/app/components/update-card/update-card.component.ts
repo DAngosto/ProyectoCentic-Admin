@@ -28,7 +28,6 @@ export class UpdateCardComponent implements OnInit {
   url: string = "";
   sawImage: boolean = false;
   imgChanged: boolean = false;
-  
 
   constructor(private _dataService: DataService, private router:Router, public toastr: ToastsManager, vcr: ViewContainerRef) {
     this.toastr.setRootViewContainerRef(vcr);
@@ -38,6 +37,10 @@ export class UpdateCardComponent implements OnInit {
     this.getCardForUpdate();
   }
 
+  /*
+  EN:Function in charge of displaying a Toast message on the screen.
+  ES:Función encargada de mostrar un mensaje Toast en la pantalla.
+  */
   showToast(type, message){
     switch(type){
       case 0:
@@ -72,6 +75,10 @@ export class UpdateCardComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of storing the selected image to be the corresponding one on the back of the cards during the game.
+  ES:Función encargada de almacenar la imagen seleccionada para ser la correspondiente del dorso de las cartas durante el juego.
+  */
   onFileSelected(event){
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = <File> event.target.files[0];
@@ -85,6 +92,10 @@ export class UpdateCardComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of updating the information of the selected card.
+  ES:Función encargada de actualizar la información de la carta seleccionada.
+  */
   updateCard(){
     if((this.cardUpdating)||((this.inputName!="")&&(this.inputHistory!=""))){
       if(!this.imgChanged){

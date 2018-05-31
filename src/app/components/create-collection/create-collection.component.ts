@@ -3,7 +3,6 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-
 //SERVICES
 import { DataService } from '../../services/data.service';
 
@@ -40,9 +39,6 @@ export class CreateCollectionComponent implements OnInit {
   prevImage: boolean = false;
   sawCollection: boolean = false;
 
-
-  
-
   constructor(private _dataService: DataService, public toastr: ToastsManager, vcr: ViewContainerRef) {
     this.toastr.setRootViewContainerRef(vcr);
    }
@@ -51,6 +47,10 @@ export class CreateCollectionComponent implements OnInit {
     this.getAllItems();
   }
 
+  /*
+  EN:Function in charge of displaying a Toast message on the screen.
+  ES:Función encargada de mostrar un mensaje Toast en la pantalla.
+  */
   showToast(type, message){
     switch(type){
       case 0:
@@ -68,6 +68,10 @@ export class CreateCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of getting all the existing cards.
+  ES:Función encargada de obtener todas las cartas existentes.
+  */
   getAllItems(){
     this.clearData();
     this._dataService.getAllItems().subscribe(data=>{
@@ -82,6 +86,10 @@ export class CreateCollectionComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of performing a specific search obtaining those cards that have the tag entered.
+  ES:Función encargada de realizar una búsqueda específica obteniendo aquellas cartas que tengan la etiqueta introducida.
+  */
   getSpecificItems(tag){
     this.clearData();
     var tagLowerCase= tag.toLowerCase();
@@ -104,6 +112,10 @@ export class CreateCollectionComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of inserting the card information in the modal window.
+  ES:Función encargada de introducir la información de la carta en la ventana modal.
+  */
   sawCard(id){
     this.url = AppSettings.API_ENDPOINT + this.cards[id].fileURL;
     this.nameDisplay = this.cards[id].name;
@@ -111,6 +123,10 @@ export class CreateCollectionComponent implements OnInit {
     this.tagsDisplay = this.cards[id].tags;
   }
 
+  /*
+  EN:Function in charge of inserting the selected card into the future collection to be created.
+  ES:Función encargada de introducir la carta seleccionada a la futura colección a ser creada.
+  */
   addCardtoCollection(id){
     if (this.selectedCards.length>=6){
       this.showToast(2,"La colección ya posee 6 cartas, si deseas añadir otra carta más procede primero a eliminar una de las ya introducidas");
@@ -130,6 +146,10 @@ export class CreateCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of removing the selected card from the future collection to be created.
+  ES:Función encargada de eliminar la carta seleccionada en la futura colección a ser creada.
+  */
   deleteCardfromCollection(id){
     if (this.selectedCards.length==0){
       this.showToast(2,"La colección está vacía actualmente. Por favor añade cartas a la colección antes de intentar quitar una");
@@ -151,7 +171,7 @@ export class CreateCollectionComponent implements OnInit {
 
   /*
   EN:Function in charge of refreshing the images of the selected cards.
-  ES:Función encargada de refrescar las imagenes de las cartas seleccionadas.
+  ES:Función encargada de refrescar las imágenes de las cartas seleccionadas.
   */
   updateImages(){
     this.clearImagesURL();
@@ -179,6 +199,10 @@ export class CreateCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of deleting the displayed images of the selected cards in the collection to be created.
+  ES:Función encargada de eliminar las imágenes mostradas de las cartas seleccionadas en la colección a crear.
+  */
   clearImagesURL(){
     this.urlCard1= "";
     this.urlCard2= "";
@@ -194,6 +218,10 @@ export class CreateCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of creating the new collection in the API.
+  ES:Función encargada de realizar la creación de la nueva colección en la API.
+  */
   uploadCollection(){
     if (this.selectedCards.length==6){
       if(this.inputName!=""){
@@ -223,10 +251,18 @@ export class CreateCollectionComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of emptying the items stored in the component.
+  ES:Función encargada de vaciar los items almacenados en el componente.
+  */
   clearData(){
     this.cards = [];
   }
 
+  /*
+  EN:Function in charge of performing a specific search or displaying all existing cards.
+  ES:Función encargada de realizar una búsqueda específica o mostrar todas las cartas existentes.
+  */
   doSpecificSearch(){
     if (this.inputSearch==""){
       this.getAllItems();
@@ -236,7 +272,10 @@ export class CreateCollectionComponent implements OnInit {
     }
   }
 
-
+  /*
+  EN:Function in charge of storing the game mode of the collection to be created.
+  ES:Función encargada de almacenar el modo de juego de la colección a ser creada.
+  */
   setGamemode(gamemode){
     var aux = gamemode.toLowerCase();
     if (aux=="arcade"){

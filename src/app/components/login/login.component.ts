@@ -28,6 +28,10 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  /*
+  EN:Function in charge of validating the user against the API.
+  ES:Función encargada de realizar la validación del usuario contra la API.
+  */
   tryValidation(){
     this._authenticationService.validate(this.inputUser,this.inputPassword).subscribe(
       data => {

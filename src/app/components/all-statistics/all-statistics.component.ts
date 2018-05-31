@@ -2,7 +2,6 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-
 //SERVICES
 import { DataService } from '../../services/data.service';
 
@@ -23,7 +22,6 @@ export class AllStatisticsComponent implements OnInit {
   inputSearch:string;
   selectedGamemode:number=0;
 
-
   constructor(private _dataService: DataService, public toastr: ToastsManager, vcr: ViewContainerRef) {
     this.toastr.setRootViewContainerRef(vcr);
    }
@@ -32,6 +30,10 @@ export class AllStatisticsComponent implements OnInit {
     this.getAllItems();
   }
 
+  /*
+  EN:Function in charge of displaying a Toast message on the screen.
+  ES:Función encargada de mostrar un mensaje Toast en la pantalla.
+  */
   showToast(type, message){
     switch(type){
       case 0:
@@ -49,10 +51,13 @@ export class AllStatisticsComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of getting the games played.
+  ES:Función encargada de obtener las partidas jugadas.
+  */
   getAllItems(){
     this.clearData();
     this._dataService.getAllItemsGamesPlayed().subscribe(data=>{
-      //Solo guardamos para mostrar los que son del tipo 0 debido a que son las cartas
       for(let i=0; i<data.length; i++){
         if (data[i].itemType=="2"){
           if(data[i].gamemode==0){
@@ -71,6 +76,10 @@ export class AllStatisticsComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of storing the game mode selected by the user and displaying its games.
+  ES:Función encargada de almacenar el modo de juego seleccionado por el usuario y así mostrar las partidas de este.
+  */
   setGamemode(gamemode){ 
     var aux = gamemode.toLowerCase();
     if (aux=="arcade"){
@@ -80,6 +89,10 @@ export class AllStatisticsComponent implements OnInit {
     } 
   }
 
+  /*
+  EN:Function in charge of performing a specific search or displaying all the games played.
+  ES:Función encargada de realizar una búsqueda específica o mostrar todas las partidas jugadas.
+  */
   doSpecificSearch(){
     if (this.inputSearch==""){
       this.getAllItems();
@@ -88,6 +101,10 @@ export class AllStatisticsComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of performing a specific search for games played in a particular collection.
+  ES:Función encargada de realizar una búsqueda específica de partidas juagadas de una colección en particular.
+  */
   getSpecificItems(id){
     this.clearData();
     var searchedID;
@@ -123,6 +140,10 @@ export class AllStatisticsComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of emptying the items stored in the component.
+  ES:Función encargada de vaciar las partidas almacenadas en el componente.
+  */
   clearData(){
     this.itemsArcade = [];
     this.itemsSurvival = [];

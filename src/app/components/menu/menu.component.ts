@@ -35,6 +35,10 @@ export class MenuComponent implements OnInit {
     this.getAllItems();
   }
 
+  /*
+  EN:Function in charge of getting all the existing cards.
+  ES:Función encargada de obtener todos los items existentes.
+  */
   getAllItems(){
     this.actualCards = 0;
     this.actualCollections = 0;
@@ -81,12 +85,20 @@ export class MenuComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of deleting the data shown in the charts.
+  ES:Función encargada de eliminar los datos mostrados en las gráficas.
+  */
   cleanCharts(){
     $('#morris-donut-chart-gamemodevs').empty();
     $('#morris-bar-chart-jokersvs').empty();
     $('#morris-donut-chart-mostusedjokers').empty();
   }
 
+  /*
+  EN:Function in charge of entering the corresponding data in the charts.
+  ES:Función encargada de introducir los datos corrspondientes en las gráficas.
+  */
   loadStatistics(){
     this.cleanCharts();
     Morris.Donut({

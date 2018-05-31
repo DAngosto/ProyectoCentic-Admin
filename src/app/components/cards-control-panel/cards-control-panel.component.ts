@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-
 //SERVICES
 import { DataService } from '../../services/data.service';
 
@@ -40,6 +39,10 @@ export class CardsControlPanelComponent implements OnInit {
     this.getAllItems();
   }
 
+  /*
+  EN:Function in charge of displaying a Toast message on the screen.
+  ES:Función encargada de mostrar un mensaje Toast en la pantalla.
+  */
   showToast(type, message){
     switch(type){
       case 0:
@@ -57,6 +60,10 @@ export class CardsControlPanelComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of getting all the existing cards.
+  ES:Función encargada de obtener todas las cartas existentes.
+  */
   getAllItems(){
     this.clearData();
     this._dataService.getAllItems().subscribe(data=>{
@@ -71,6 +78,10 @@ export class CardsControlPanelComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of performing a specific search obtaining those cards that have the tag entered.
+  ES:Función encargada de realizar una búsqueda específica obteniendo aquellas cartas que tengan la etiqueta introducida.
+  */
   getSpecificItems(tag){
     this.clearData();
     var tagLowerCase= tag.toLowerCase();
@@ -105,15 +116,27 @@ export class CardsControlPanelComponent implements OnInit {
     this.visualizeImage = true;
   }
 
+  /*
+  EN:Function in charge of passing the data of the card to be updated to the service and performing the redirection.
+  ES:Función encargada de pasar los datos de la carta a actualizar al servicio y realizar la redirección.
+  */
   updateCard(id){
     this._dataService.changeCard(this.items[id]);
     this.router.navigate(["/updateCard"]);
   }
 
+  /*
+  EN:Function in charge of making the call for the deletion of a letter.
+  ES:Función encargada de realizar la llamada para la eliminación de una carta.
+  */
   deleteCard(id){
     this.cardInACollection(this.items[id]._id);
   }
 
+  /*
+  EN:Function in charge of emptying the items stored in the component.
+  ES:Función encargada de vaciar los items almacenados en el componente.
+  */
   clearData(){
     this.items = [];
   }
@@ -150,6 +173,10 @@ export class CardsControlPanelComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of performing a specific search or displaying all existing cards.
+  ES:Función encargada de realizar una búsqueda específica o mostrar todas las cartas existentes.
+  */
   doSpecificSearch(){
     if (this.inputSearch==""){
       this.getAllItems();

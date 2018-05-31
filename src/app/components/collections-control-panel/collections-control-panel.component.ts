@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/observable';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
-
 //SERVICES
 import { DataService } from '../../services/data.service';
 
@@ -53,6 +52,10 @@ export class CollectionsControlPanelComponent implements OnInit {
     this.getAllCollections();
   }
 
+  /*
+  EN:Function in charge of displaying a Toast message on the screen.
+  ES:Función encargada de mostrar un mensaje Toast en la pantalla.
+  */
   showToast(type, message){
     switch(type){
       case 0:
@@ -70,6 +73,10 @@ export class CollectionsControlPanelComponent implements OnInit {
     }
   }
 
+  /*
+  EN:Function in charge of obtaining all the existing collections.
+  ES:Función encargada de obtener todas las colecciones existentes.
+  */
   getAllCollections(){
     this.clearData();
     this._dataService.getAllItemsCollection().subscribe(data=>{
@@ -92,8 +99,8 @@ export class CollectionsControlPanelComponent implements OnInit {
   }
 
   /*
-  EN:Function in charge of introducing the collection information in the modal window.
-  ES:Función encargada de introducir la información de la colección en la ventana modal.
+  EN:Function in charge of inserting the information of a collection in the modal window.
+  ES:Función encargada de introducir la información de una colección en la ventana modal.
   */
   sawCollection(id){
     this.collectiondisplaying = this.collections[id].name;
@@ -124,7 +131,10 @@ export class CollectionsControlPanelComponent implements OnInit {
     });
   }
 
-  
+  /*
+  EN:Function in charge of passing the data of the collection to be updated to the service and performing the redirection.
+  ES:Función encargada de pasar los datos de la colección a actualizar al servicio y realizar la redirección.
+  */
   updateCollection(id){
     this._dataService.changeCollection(this.collections[id]);
     this.router.navigate(["/updateCollection"]);
@@ -209,6 +219,10 @@ export class CollectionsControlPanelComponent implements OnInit {
     });
   }
 
+  /*
+  EN:Function in charge of creating a Card object with the data provided.
+  ES:Función encargada de crear un objeto Carta con los datos proporcionados.
+  */
   setCard(_id,name,history,tags,fileURL,itemType, publish) : Card{
     var cardAux: Card = {_id,name,history,tags,fileURL,itemType, publish};
     cardAux._id = _id;
@@ -221,6 +235,10 @@ export class CollectionsControlPanelComponent implements OnInit {
     return cardAux;
   }
 
+  /*
+  EN:Function in charge of emptying the items stored in the component.
+  ES:Función encargada de vaciar los items almacenados en el componente.
+  */
   clearData(){
     this.collections = [];
   }
