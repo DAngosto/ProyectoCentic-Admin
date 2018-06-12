@@ -1,7 +1,7 @@
 //MODULES
 import { Component, OnInit, ElementRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs/observable';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 //SERVICES

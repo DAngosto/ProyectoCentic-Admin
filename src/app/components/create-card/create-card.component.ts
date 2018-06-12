@@ -1,6 +1,5 @@
 //MODULES
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 //SERVICES
@@ -85,7 +84,8 @@ export class CreateCardComponent implements OnInit {
               this.inputName = "";
               this.inputHistory = "";
               this.inputTags = "";
-              this.url = "";    
+              this.url = "";  
+              this.selectedFile= null;  
             })
           })
         }, error => {

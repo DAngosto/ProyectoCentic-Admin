@@ -83,6 +83,9 @@ export class CreateCollectionComponent implements OnInit {
       if (this.cards.length == 0){
         this.showToast(2,"No hay cartas creadas actualmente");
       }
+      for(let i=0; i<this.cards.length; i++){
+        this.cards[i].fileURL = AppSettings.API_ENDPOINT + this.cards[i].fileURL;
+      }
     });
   }
 
@@ -117,7 +120,7 @@ export class CreateCollectionComponent implements OnInit {
   ES:Función encargada de introducir la información de la carta en la ventana modal.
   */
   sawCard(id){
-    this.url = AppSettings.API_ENDPOINT + this.cards[id].fileURL;
+    this.url = this.cards[id].fileURL;
     this.nameDisplay = this.cards[id].name;
     this.historyDisplay = this.cards[id].history;
     this.tagsDisplay = this.cards[id].tags;
@@ -141,6 +144,7 @@ export class CreateCollectionComponent implements OnInit {
       }
       if(!cortado){
         this.selectedCards.push(this.cards[id]);
+        this.showToast(1,"Carta añadida a la colección");
         this.updateImages();
       }
     }
@@ -158,6 +162,7 @@ export class CreateCollectionComponent implements OnInit {
       for(let i=0; i<this.selectedCards.length; i++){
         if(this.selectedCards[i]._id==this.cards[id]._id){
           this.selectedCards.splice(i,1);
+          this.showToast(1,"Carta eliminada de la colección");
           this.updateImages();
           cortado=true;
           break;
@@ -178,22 +183,22 @@ export class CreateCollectionComponent implements OnInit {
     for(let i=0;i<this.selectedCards.length;i++){
       switch(i){
         case 0: 
-              this.urlCard1 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
+              this.urlCard1 = this.selectedCards[i].fileURL;
               break;
         case 1: 
-              this.urlCard2 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
+              this.urlCard2 = this.selectedCards[i].fileURL;
               break;
         case 2: 
-              this.urlCard3 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
+              this.urlCard3 = this.selectedCards[i].fileURL;
               break;
         case 3: 
-              this.urlCard4 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
+              this.urlCard4 = this.selectedCards[i].fileURL;
               break;
         case 4: 
-              this.urlCard5 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
+              this.urlCard5 = this.selectedCards[i].fileURL;
               break;
         case 5: 
-              this.urlCard6 = AppSettings.API_ENDPOINT + this.selectedCards[i].fileURL;
+              this.urlCard6 = this.selectedCards[i].fileURL;
               break;
       }
     }

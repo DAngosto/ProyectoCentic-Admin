@@ -11,12 +11,55 @@
                 <option>Arcade</option>
                 <option>Survival</option>
             </select>
+            <div class="text-center">
+                    <h2 class="text-info">Cartas en la colección</h2>
+                </div>
+                <div class="row" *ngIf="sawCollection"> 
+                    <div class="column">
+                        <img [src] = "urlCard1" >
+                        <br>
+                    </div>
+                    <br>
+                    <div class="column">
+                        <img [src] = "urlCard2" >
+                        <br>
+                    </div>
+                    <br>
+                    <div class="column">
+                        <img [src] = "urlCard3" >
+                        <br>
+                    </div>
+                    <br>
+                    <div class="column">
+                        <img [src] = "urlCard4" >
+                        <br>
+                    </div>
+                    <br>
+                    <div class="column">
+                        <img [src] = "urlCard5" >
+                        <br>
+                    </div>
+                    <br>
+                    <div class="column">
+                        <img [src] = "urlCard6" >
+                        <br>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <button class="btn btn-primary" type="submit" (click)="updateCollection()" value="Upload File"> Actualizar </button>
+                </div>
+            </div>
+            <br>
             <div id="dataTables-example_filter" class="text-center">
                 <label>Búsqueda:<input  class="form-control input-sm" type="search" name="tag" placeholder="Etiqueta"  (keyup.enter)="doSpecificSearch()" [(ngModel)]="inputSearch"></label>
             </div>
             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                 <thead>
                     <tr>
+                        <th class="text-center">Imágen</th>
                         <th>Nombre</th>
                         <th>Etiquetas</th>
                         <th class="text-center">Visualizar</th>
@@ -26,54 +69,15 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let card of cards ; let i = index">
+                        <td ><img src="{{ card.fileURL }}"></td>
                         <td >{{ card.name }}</td>
                         <td >{{ card.tags }}</td>
                         <td class="text-center"><button class="btn btn-info btn-circle" (click)= "sawCard(i)" data-toggle="modal" data-target="#myModal"><i class="fa fa-search-plus"></i></button></td>
-                        <td class="text-center"><button class="btn btn-info btn-circle" (click)= "addCardtoCollection(i)" ><i class="fa fa-pencil"></i></button></td>
-                        <td class="text-center"><button type="button" class="btn btn-danger btn-circle" (click)= "deleteCardfromCollection(i)"><i class="fa fa-times"></i></button></td>
+                        <td class="text-center"><button class="btn btn-info btn-circle" (click)= "addCardtoCollection(i)" ><i class="fa fa-plus"></i></button></td>
+                        <td class="text-center"><button type="button" class="btn btn-danger btn-circle" (click)= "deleteCardfromCollection(i)"><i class="fa fa-minus"></i></button></td>
                     </tr>
                 </tbody>
             </table>
-            <div class="text-center">
-                <h2 class="text-info">Cartas en la colección</h2>
-            </div>
-            <div class="row" *ngIf="sawCollection"> 
-                <div class="column">
-                    <img [src] = "urlCard1" >
-                    <br>
-                </div>
-                <br>
-                <div class="column">
-                    <img [src] = "urlCard2" >
-                    <br>
-                </div>
-                <br>
-                <div class="column">
-                    <img [src] = "urlCard3" >
-                    <br>
-                </div>
-                <br>
-                <div class="column">
-                    <img [src] = "urlCard4" >
-                    <br>
-                </div>
-                <br>
-                <div class="column">
-                    <img [src] = "urlCard5" >
-                    <br>
-                </div>
-                <br>
-                <div class="column">
-                    <img [src] = "urlCard6" >
-                    <br>
-                </div>
-                <br>
-            </div>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary" type="submit" (click)="updateCollection()" value="Upload File"> Actualizar </button>
-        </div>
-        <br>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
